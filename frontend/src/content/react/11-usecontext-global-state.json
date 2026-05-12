@@ -1,0 +1,48 @@
+{
+  "id": "react-11",
+  "title": "useContext - Global State",
+  "slug": "11-usecontext-global-state",
+  "category": "react",
+  "chapterNumber": 11,
+  "level": "intermediate",
+  "estimatedTime": "18 min",
+  "theory": {
+    "english": "Props drilling is the problem of passing data through many layers of components just to reach a deeply nested child. useContext solves this by providing a way to share data globally across the component tree without passing props at every level. You create a context with React.createContext(), wrap components with a Provider that has a value, and consume it with the useContext hook. Context is great for global state like the current user, theme, or language. Do not overuse context — it re-renders all consumers when the context value changes.",
+    "hindi": "Props drilling woh problem hai jab data ko bahut saare layers ke through pass karna padta hai sirf ek nested child component tak pahunchne ke liye. useContext yeh solve karta hai by providing ek tarika jo data ko globally component tree mein share karne deta hai bina har level par props pass kiye. Aap React.createContext() se context banate ho, Provider se components wrap karte ho, aur useContext hook se consume karte ho.",
+    "hinglish": "Props drilling problem tab aati hai jab data bohot saare components se guzar ke jaata hai. useContext se global state share karo bina props drilling ke. createContext() se context banao, Provider se wrap karo, useContext() se consume karo. Theme, language, auth user jaisi global cheezon ke liye best hai."
+  },
+  "examples": [
+    {
+      "title": "Theme Context",
+      "code": "import { createContext, useContext, useState } from 'react';\n\n// 1. Create context\nconst ThemeContext = createContext('light');\n\n// 2. Provider component\nfunction ThemeProvider({ children }) {\n  const [theme, setTheme] = useState('light');\n\n  return (\n    <ThemeContext.Provider value={{ theme, setTheme }}>\n      {children}\n    </ThemeContext.Provider>\n  );\n}\n\n// 3. Consume context\nfunction ThemeButton() {\n  const { theme, setTheme } = useContext(ThemeContext);\n\n  return (\n    <button\n      onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}\n      style={{ background: theme === 'dark' ? '#333' : '#fff', color: theme === 'dark' ? '#fff' : '#333' }}\n    >\n      Current: {theme} — Toggle\n    </button>\n  );\n}\n\n// 4. Wrap app\nfunction App() {\n  return (\n    <ThemeProvider>\n      <ThemeButton />\n    </ThemeProvider>\n  );\n}",
+      "explanation": "Three steps: create, provide, consume. Any component inside ThemeProvider can access theme without receiving it as a prop."
+    }
+  ],
+  "exercises": [
+    {
+      "prompt": "Create a LanguageContext that stores a language string ('en' or 'hi'). Create a toggle button and a component that shows a greeting in the selected language.",
+      "expectedOutcome": "Context with Provider, useContext to read and update language, conditional greeting display."
+    }
+  ],
+  "quiz": [
+    {
+      "question": "What problem does useContext solve?",
+      "options": ["Slow rendering", "Prop drilling — passing props through many component layers", "API fetching", "Form validation"],
+      "answer": 1,
+      "explanation": "useContext eliminates prop drilling by making data available to any component in the tree without passing it as props."
+    },
+    {
+      "question": "What do you need to wrap around components that should access a context?",
+      "options": ["Context.Consumer", "Context.Provider", "Context.Wrapper", "Context.Root"],
+      "answer": 1,
+      "explanation": "Context.Provider wraps the component tree and provides the value through the value prop."
+    },
+    {
+      "question": "When a Context value changes, which components re-render?",
+      "options": ["All components in the app", "Only the Provider", "All components consuming that context", "No components"],
+      "answer": 2,
+      "explanation": "All components that call useContext with that context will re-render when the context value changes."
+    }
+  ],
+  "summary": "useContext chapter complete! Aapne seekha prop drilling kya hai, Context kaise banate hain, aur useContext hook se global state kaise consume karte hain."
+}

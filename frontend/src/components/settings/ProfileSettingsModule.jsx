@@ -100,6 +100,13 @@ export default function ProfileSettingsModule({
   const [feedback, setFeedback] = useState(null)
   const [securityPending, setSecurityPending] = useState(false)
   const [pendingDialog, setPendingDialog] = useState(null)
+  
+  useEffect(() => {
+    if (feedback && feedback.type !== 'error') {
+      const timer = setTimeout(() => setFeedback(null), 5000)
+      return () => clearTimeout(timer)
+    }
+  }, [feedback])
 
   const currentUser = state.user
   const ownerKey = useMemo(() => getProfileOwnerKey(currentUser), [currentUser])
@@ -352,9 +359,9 @@ export default function ProfileSettingsModule({
       return (
         <PanelShell title="Profile Overview" description={compactCopy ? '' : 'A quick snapshot of your learner identity, stats, and next actions.'}>
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-            <MetricCard label="Level" value={`Lv. ${xpProgress.level}`} icon={Trophy} />
-            <MetricCard label="Study Points" value={state.studyPoints.toLocaleString()} icon={Star} />
-            <MetricCard label="Weekly Points" value={weeklyPoints.toLocaleString()} icon={WalletCards} />
+            <MetricCard label="Level" value={`Lv. ${xpProgress?.level || 1}`} icon={Trophy} />
+            <MetricCard label="Study Points" value={(state.studyPoints || 0).toLocaleString()} icon={Star} />
+            <MetricCard label="Weekly Points" value={(weeklyPoints || 0).toLocaleString()} icon={WalletCards} />
             <MetricCard label="Streak" value={`${state.streak} days`} icon={Flame} />
             <MetricCard label="Daily Goal" value={`${state.dailyGoal} chapters`} icon={Target} />
             <MetricCard label="Focus Session" value={formatFocusDurationLabel(state.focusDurationMinutes)} icon={BookOpenCheck} />
@@ -631,25 +638,53 @@ export default function ProfileSettingsModule({
       return (
         <PanelShell title="Study & Earn" description="">
           <div className="grid gap-4 md:grid-cols-3">
-            <MetricCard label="Total Points" value={state.studyPoints.toLocaleString()} icon={Star} />
-            <MetricCard label="Weekly Points" value={weeklyPoints.toLocaleString()} icon={WalletCards} />
-            <MetricCard label="Current Streak" value={`${state.streak} days`} icon={Flame} />
+            <MetricCard label="Total Points" value={(state.studyPoints || 0).toLocaleString()} icon={Star} />
+            <MetricCard label="Weekly Points" value={(weeklyPoints || 0).toLocaleString()} icon={WalletCards} />
+            <MetricCard label="Current Streak" value={`${state.streak || 0} days`} icon={Flame} />
           </div>
           <div className="mt-6 rounded-[26px] border border-slate-200 bg-white/90 p-5 shadow-sm dark:border-slate-700 dark:bg-slate-900/70">
             <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
               <div>
-                <p className="text-sm font-semibold text-slate-900 dark:text-white">Points Overview</p>
+                <p className="text-sm font-semibold text-slate-900 dark:text-white">Convert XP to SP</p>
                 <p className="mt-1 text-sm text-slate-600 dark:text-slate-300">
-                  Rewards are being prepared. Your points, streak, and progress are already tracked live.
+                  Exchange your hard-earned XP for Study Points (SP). 
+                  <span className="ml-1 font-bold text-brand-cyan">100 XP = 1 SP</span>.
+                </p>
+                <p className="mt-2 text-xs font-medium text-brand-purple">
+                  Current Study Points Balance: <span className="font-bold">{state.studyPoints || 0} SP</span>
                 </p>
               </div>
-              <button
-                type="button"
-                disabled
-                className="cursor-not-allowed rounded-2xl border border-slate-300 bg-slate-100 px-5 py-3 text-sm font-semibold text-slate-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400"
-              >
-                Redeem (Coming Soon)
-              </button>
+              <div className="flex items-center gap-3">
+                <select 
+                  id="xp-convert-amount"
+                  className="rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm outline-none focus:border-brand-cyan dark:border-slate-700 dark:bg-slate-800"
+                  defaultValue="100"
+                >
+                  <option value="100">100 XP → 1 SP</option>
+                  <option value="500">500 XP → 5 SP</option>
+                  <option value="1000">1000 XP → 10 SP</option>
+                  <option value="5000">5000 XP → 50 SP</option>
+                </select>
+                <button
+                  type="button"
+                  onClick={async () => {
+                    const select = document.getElementById('xp-convert-amount');
+                    const amount = parseInt(select.value);
+                    if (state.xp < amount) {
+                      setFeedback({ type: 'error', message: 'Insufficient XP for this conversion.' });
+                      return;
+                    }
+                    setFeedback({ type: 'info', message: 'Processing conversion...' });
+                    const res = await actions.convertXPToRP(amount);
+                    if (res.success) {
+                      setFeedback({ type: 'success', message: `Successfully converted ${amount} XP to RP!` });
+                    }
+                  }}
+                  className="interactive-strong rounded-2xl bg-brand-cyan px-6 py-3 text-sm font-bold text-bg-deep hover:shadow-lg hover:shadow-brand-cyan/20"
+                >
+                  Convert Now
+                </button>
+              </div>
             </div>
           </div>
         </PanelShell>

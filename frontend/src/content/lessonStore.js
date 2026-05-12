@@ -1,100 +1,71 @@
-import { supabase } from '../lib/supabase'
+import { courseAPI } from '../lib/api'
 
 export let LESSONS = []
 export let COURSES = []
 
-const COURSE_TITLE = {
-  html: 'HTML',
-  css: 'CSS',
-  javascript: 'JavaScript',
-}
-
-const COURSE_DESCRIPTION = {
-  en: {
-    html: 'Learn modern semantic HTML with practical structure and accessibility.',
-    css: 'Master layout, responsive design, and scalable styling systems.',
-    javascript: 'Build interactive web apps with core and advanced JavaScript.',
-  },
-  hi: {
-    html: 'Modern semantic HTML ko practical structure aur accessibility ke saath sikhiye.',
-    css: 'Layout, responsive design aur scalable styling system me mastery hasil kariye.',
-    javascript: 'Core aur advanced JavaScript ke saath interactive web apps banaiye.',
-  },
-  hinglish: {
-    html: 'Modern semantic HTML ko practical structure aur accessibility ke saath seekho.',
-    css: 'Layout, responsive design, aur scalable styling system me strong bano.',
-    javascript: 'Core plus advanced JavaScript use karke interactive web apps build karo.',
-  },
-}
-
+/**
+ * Initialize content from Production API
+ */
 export async function fetchContentFromDB() {
-  if (!supabase) return
-
   try {
-    const { data: lessons, error } = await supabase.from('lessons').select('*').order('chapter_number', { ascending: true })
-    if (error) {
-      console.error('Error fetching lessons:', error)
-      return
-    }
+    const { data: response } = await courseAPI.getCourses()
+    const coursesData = response.data
 
-    // Map database columns to app format
-    LESSONS = lessons.map(lesson => ({
-      id: lesson.slug,
-      slug: lesson.slug,
-      title: lesson.title,
-      category: lesson.course_id,
-      chapterNumber: lesson.chapter_number,
-      level: lesson.level || 'beginner',
-      estimatedTime: lesson.estimated_time || '10 min',
-      theory: typeof lesson.theory === 'string' ? JSON.parse(lesson.theory) : (lesson.theory || {}),
-      examples: typeof lesson.examples === 'string' ? JSON.parse(lesson.examples) : (lesson.examples || []),
-      exercises: typeof lesson.exercises === 'string' ? JSON.parse(lesson.exercises) : (lesson.exercises || []),
-      quiz: typeof lesson.quiz === 'string' ? JSON.parse(lesson.quiz) : (lesson.quiz || []),
-      summary: lesson.summary || ''
-    })).sort((a, b) => {
-      if (a.category === b.category) return a.chapterNumber - b.chapterNumber
-      return a.category.localeCompare(b.category)
+    // Flatten for LESSONS array (Legacy support)
+    LESSONS = (coursesData || []).flatMap(course => {
+      const sections = course.sections || []
+      if (sections.length > 0) {
+        return sections.flatMap(section => 
+          (section.lessons || []).map(lesson => ({
+            ...lesson,
+            category: course.slug || course.category || course.id,
+            courseId: course.id,
+            sectionId: section.id
+          }))
+        )
+      } else if (course.lessons) {
+        // Fallback for flat lesson structure
+        return course.lessons.map(lesson => ({
+          ...lesson,
+          category: course.slug || course.category || course.id,
+          courseId: course.id,
+          sectionId: 'default'
+        }))
+      }
+      return []
     })
 
-    const grouped = LESSONS.reduce((acc, lesson) => {
-      const key = lesson.category
-      if (!acc[key]) acc[key] = []
-      acc[key].push(lesson)
-      return acc
-    }, {})
+    // Format for COURSES array (Legacy support)
+    COURSES = (coursesData || []).map(course => {
+      const sections = course.sections || []
+      return {
+        ...course,
+        id: course.id,
+        slug: course.slug || course.category || course.id,
+        chapters: sections.length > 0 
+          ? sections.flatMap(s => (s.lessons || []).map(l => ({ ...l, sectionTitle: s.title })))
+          : (course.lessons || []).map(l => ({ ...l, sectionTitle: 'Lessons' }))
+      }
+    })
 
-    COURSES = Object.entries(grouped)
-      .map(([id, chapters]) => ({
-        id,
-        slug: id,
-        category: 'Core',
-        title: { en: COURSE_TITLE[id] || id, hi: COURSE_TITLE[id] || id, hinglish: COURSE_TITLE[id] || id },
-        description: {
-          en: COURSE_DESCRIPTION.en[id] || '',
-          hi: COURSE_DESCRIPTION.hi[id] || '',
-          hinglish: COURSE_DESCRIPTION.hinglish[id] || '',
-        },
-        chapters: chapters.sort((a, b) => a.chapterNumber - b.chapterNumber),
-      }))
-      .sort((a, b) => a.title.en.localeCompare(b.title.en))
-
+    return { LESSONS, COURSES }
   } catch (err) {
-    console.error('Failed to fetch content:', err)
+    console.error('Failed to sync content from API:', err)
+    return { LESSONS: [], COURSES: [] }
   }
 }
-
-export const popularCourseIds = ['html', 'css', 'javascript']
 
 export function getCourses() {
   return COURSES
 }
 
 export function getCourseById(courseId) {
-  return COURSES.find((course) => course.id === courseId)
+  return COURSES.find((course) => course.id === courseId || course.slug === courseId)
 }
 
 export function getLesson(courseId, lessonSlug) {
-  return getCourseById(courseId)?.chapters.find((lesson) => lesson.slug === lessonSlug)
+  const course = getCourseById(courseId)
+  return course?.chapters.find((lesson) => lesson.slug === lessonSlug)
 }
 
 export function getAdjacentLessons(courseId, lessonSlug) {
@@ -108,21 +79,13 @@ export function getAdjacentLessons(courseId, lessonSlug) {
   }
 }
 
-function inferDifficulty(index, total) {
-  if (total <= 1) return 'medium'
-  const progress = index / (total - 1)
-  if (progress < 0.34) return 'low'
-  if (progress < 0.67) return 'medium'
-  return 'high'
-}
-
-export function searchLessons(query, language = 'english') {
+export function searchLessons(query, language = 'en') {
   const q = query.trim().toLowerCase()
   if (!q) return []
   return LESSONS.filter((lesson) => {
     const text = [
       lesson.title,
-      lesson.theory?.[language] || lesson.theory?.english || '',
+      lesson.content || '',
       lesson.summary || '',
     ]
       .join(' ')
@@ -130,25 +93,7 @@ export function searchLessons(query, language = 'english') {
     return text.includes(q)
   }).map((lesson) => ({
     courseId: lesson.category,
-    courseTitle: COURSE_TITLE[lesson.category] || lesson.category,
     chapterId: lesson.slug,
     chapterTitle: lesson.title,
   }))
-}
-
-export function getCourseQuizzes() {
-  const quizzes = {}
-  for (const course of COURSES) {
-    quizzes[course.id] = course.chapters.flatMap((lesson, lessonIndex, lessons) =>
-      (lesson.quiz || []).map((q, index) => ({
-        id: `${lesson.id}-q${index + 1}`,
-        question: { en: q.question, hi: q.question, hinglish: q.question },
-        options: q.options,
-        answer: q.answer,
-        explanation: { en: q.explanation, hi: q.explanation, hinglish: q.explanation },
-        difficulty: inferDifficulty(lessonIndex, lessons.length),
-      })),
-    )
-  }
-  return quizzes
 }

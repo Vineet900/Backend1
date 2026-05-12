@@ -1,0 +1,98 @@
+{
+  "title": "Git Final Quiz",
+  "topic": "Git",
+  "difficulty": "Easy",
+  "status": "Active",
+  "questions": [
+    {
+      "question": "What command initializes a new Git repository?",
+      "options": ["git start", "git create", "git init", "git new"],
+      "correct_answer": "git init",
+      "explanation": "git init creates a hidden .git directory in the current folder, initializing an empty Git repository."
+    },
+    {
+      "question": "What is the correct order of the Git workflow?",
+      "options": ["commit → add → push", "add → commit → push", "push → commit → add", "commit → push → add"],
+      "correct_answer": "add → commit → push",
+      "explanation": "The Git workflow is: edit files → git add (stage) → git commit (save snapshot) → git push (send to remote)."
+    },
+    {
+      "question": "What does 'git add .' do?",
+      "options": ["Commits all changes", "Stages all modified and new files in the current directory", "Pushes to remote", "Removes files from tracking"],
+      "correct_answer": "Stages all modified and new files in the current directory",
+      "explanation": "git add . stages all changes (modified and new files) in the current directory and subdirectories for the next commit."
+    },
+    {
+      "question": "What is the Staging Area in Git?",
+      "options": ["The production server", "A temporary area where you prepare changes before committing", "The remote repository", "Your working directory"],
+      "correct_answer": "A temporary area where you prepare changes before committing",
+      "explanation": "The staging area (index) lets you choose exactly which changes to include in the next commit, giving fine-grained control."
+    },
+    {
+      "question": "What does git checkout -b feature/login do?",
+      "options": ["Deletes a branch named feature/login", "Switches to existing branch feature/login", "Creates and switches to a new branch named feature/login", "Merges feature/login into main"],
+      "correct_answer": "Creates and switches to a new branch named feature/login",
+      "explanation": "The -b flag creates a new branch and immediately switches to it, combining git branch and git checkout into one command."
+    },
+    {
+      "question": "When does a merge conflict occur?",
+      "options": ["Any time you merge two branches", "When the same lines are changed differently in both branches being merged", "When a branch is behind main", "When there are too many commits"],
+      "correct_answer": "When the same lines are changed differently in both branches being merged",
+      "explanation": "Git auto-merges changes in different parts of files. Conflicts occur only when the exact same lines were modified in both branches."
+    },
+    {
+      "question": "Which command safely undoes a commit on a shared branch without rewriting history?",
+      "options": ["git reset --hard", "git reset --soft", "git revert", "git restore"],
+      "correct_answer": "git revert",
+      "explanation": "git revert creates a new commit that reverses previous changes, preserving history — safe for branches that others are working on."
+    },
+    {
+      "question": "What does git stash do?",
+      "options": ["Permanently deletes uncommitted changes", "Commits all changes without a message", "Temporarily saves uncommitted changes so you can switch branches", "Pushes changes to remote"],
+      "correct_answer": "Temporarily saves uncommitted changes so you can switch branches",
+      "explanation": "git stash saves your working directory changes temporarily. git stash pop restores them when you're ready to continue."
+    },
+    {
+      "question": "What files should always be in .gitignore?",
+      "options": ["package.json and README.md", "node_modules/ and .env", "src/ and index.html", ".git/ and .gitignore"],
+      "correct_answer": "node_modules/ and .env",
+      "explanation": "node_modules/ is huge and reproducible from package.json. .env contains secrets. Neither should ever be committed to version control."
+    },
+    {
+      "question": "What is the conventional commit prefix for a new feature?",
+      "options": ["add:", "new:", "create:", "feat:"],
+      "correct_answer": "feat:",
+      "explanation": "Conventional Commits specification uses 'feat:' for new features, 'fix:' for bug fixes, 'docs:' for documentation, etc."
+    },
+    {
+      "question": "What does HEAD point to in Git?",
+      "options": ["The first commit ever made", "The main branch always", "The current active branch or commit", "The remote repository"],
+      "correct_answer": "The current active branch or commit",
+      "explanation": "HEAD is a special pointer to your current position in the repository — usually the tip of the active branch."
+    },
+    {
+      "question": "What does git log --oneline show?",
+      "options": ["Full diff of every commit", "Only the last commit", "A compact one-line summary of each commit", "Only commits made today"],
+      "correct_answer": "A compact one-line summary of each commit",
+      "explanation": "--oneline condenses each commit to one line showing the short hash and commit message, making history easy to scan."
+    },
+    {
+      "question": "What is the difference between git reset --soft and git reset --hard?",
+      "options": ["They are identical", "--soft keeps changes staged; --hard discards all changes", "--soft discards changes; --hard keeps them staged", "--soft is for branches; --hard is for files"],
+      "correct_answer": "--soft keeps changes staged; --hard discards all changes",
+      "explanation": "--soft undoes the commit but keeps changes staged. --hard undoes the commit AND permanently discards all changes (use with caution)."
+    },
+    {
+      "question": "What does git remote add origin <url> do?",
+      "options": ["Creates a new repository on GitHub", "Links your local repo to a remote repository URL", "Clones a repository", "Pushes all branches"],
+      "correct_answer": "Links your local repo to a remote repository URL",
+      "explanation": "'origin' is the conventional name for your main remote. This command establishes the connection between local and remote repos."
+    },
+    {
+      "question": "What does git pull do?",
+      "options": ["Uploads local changes to remote", "Downloads remote changes and merges them into current branch", "Creates a new branch from remote", "Deletes remote branches"],
+      "correct_answer": "Downloads remote changes and merges them into current branch",
+      "explanation": "git pull is equivalent to git fetch (download) + git merge (integrate) — it brings remote changes into your current local branch."
+    }
+  ]
+}

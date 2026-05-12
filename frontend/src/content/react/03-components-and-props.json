@@ -1,0 +1,57 @@
+{
+  "id": "react-3",
+  "title": "Components and Props",
+  "slug": "03-components-and-props",
+  "category": "react",
+  "chapterNumber": 3,
+  "level": "beginner",
+  "estimatedTime": "15 min",
+  "theory": {
+    "english": "Components are the building blocks of any React application. A component is a JavaScript function that returns JSX. Props (short for properties) are how you pass data from a parent component to a child component. Props are read-only — a child component should never modify the props it receives. Props are passed like HTML attributes and received as a single object in the function parameter. You can destructure props for cleaner code. Components can be reused with different props to render different content — this is the core power of React's component model.",
+    "hindi": "Components kisi bhi React application ke building blocks hote hain. Ek component ek JavaScript function hota hai jo JSX return karta hai. Props (properties ka short form) parent component se child component ko data pass karne ka tarika hai. Props read-only hote hain — child component unhe modify nahi karna chahiye. Props HTML attributes ki tarah pass kiye jaate hain aur function parameter mein ek object ke roop mein receive hote hain.",
+    "hinglish": "Components React app ke building blocks hain. Props se parent se child ko data bhejte hain. Props read-only hote hain matlab child unhe change nahi kar sakta. Props ko destructure karo clean code ke liye. Ek component ko alag-alag props ke saath reuse kar sakte ho."
+  },
+  "examples": [
+    {
+      "title": "Passing and Receiving Props",
+      "code": "// Child Component\nfunction CourseCard({ title, chapters, level }) {\n  return (\n    <div className=\"card\">\n      <h3>{title}</h3>\n      <p>{chapters} chapters • {level}</p>\n    </div>\n  );\n}\n\n// Parent Component\nfunction App() {\n  return (\n    <div>\n      <CourseCard title=\"HTML\" chapters={22} level=\"Beginner\" />\n      <CourseCard title=\"CSS\" chapters={27} level=\"Intermediate\" />\n      <CourseCard title=\"JavaScript\" chapters={36} level=\"Advanced\" />\n    </div>\n  );\n}",
+      "explanation": "CourseCard is reused 3 times with different props. The parent passes data as attributes, and the child receives them as a destructured object."
+    },
+    {
+      "title": "Default Props",
+      "code": "function Badge({ text = 'New', color = 'blue' }) {\n  return (\n    <span style={{ backgroundColor: color, color: 'white', padding: '4px 8px', borderRadius: '4px' }}>\n      {text}\n    </span>\n  );\n}\n\n// Usage\n<Badge />                    // shows 'New' in blue\n<Badge text=\"Hot\" color=\"red\" />  // shows 'Hot' in red",
+      "explanation": "Default parameter values in destructuring act as default props. If no prop is passed, the default value is used."
+    }
+  ],
+  "exercises": [
+    {
+      "prompt": "Create a StudentCard component that accepts name, grade, and subject as props and displays them.",
+      "expectedOutcome": "A reusable component rendered multiple times with different student data."
+    },
+    {
+      "prompt": "Create a Button component that accepts label and color as props with default values.",
+      "expectedOutcome": "A component with default prop values used when no props are passed."
+    }
+  ],
+  "quiz": [
+    {
+      "question": "What are props in React?",
+      "options": ["CSS properties", "Data passed from parent to child component", "JavaScript methods", "State variables"],
+      "answer": 1,
+      "explanation": "Props (properties) are the mechanism for passing data from a parent component down to a child component."
+    },
+    {
+      "question": "Can a child component modify its props?",
+      "options": ["Yes, always", "Only if they are objects", "No, props are read-only", "Only in class components"],
+      "answer": 2,
+      "explanation": "Props are read-only. A component must never modify its own props."
+    },
+    {
+      "question": "How do you pass a number as a prop in JSX?",
+      "options": ["count='5'", "count={5}", "count=5", "count=(5)"],
+      "answer": 1,
+      "explanation": "Non-string values must be passed inside curly braces: count={5}. Quotes would make it a string."
+    }
+  ],
+  "summary": "Components aur Props chapter complete! Aapne seekha reusable components kaise banate hain, props kaise pass aur receive karte hain, aur default values kaise set karte hain."
+}

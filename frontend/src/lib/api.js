@@ -45,103 +45,85 @@ apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      // Token expired or invalid
-      console.warn('Unauthorized request')
+      console.warn('Unauthorized request - session may be expired')
     }
     return Promise.reject(error)
   },
 )
 
 /**
- * User API endpoints
+ * Auth API
+ */
+export const authAPI = {
+  login: (email, password) => apiClient.post('/auth/login', { email, password }),
+  register: (data) => apiClient.post('/auth/register', data),
+  verify: (email, otp) => apiClient.post('/auth/verify', { email, otp }),
+  logout: () => apiClient.post('/auth/logout'),
+}
+
+/**
+ * User API
  */
 export const userAPI = {
-  /**
-   * Get current authenticated user profile
-   */
-  async getProfile() {
-    try {
-      const { data } = await apiClient.get('/user/me')
-      return { data, error: null }
-    } catch (error) {
-      return { data: null, error: error.response?.data || error.message }
-    }
-  },
+  getProfile: () => apiClient.get('/auth/me'),
+  updateProfile: (updates) => apiClient.put('/user/update', updates),
+  syncStats: (stats) => apiClient.post('/user/sync-stats', stats),
+  convertXP: (amount) => apiClient.post('/user/convert-xp', { amount }),
+  getLeaderboard: () => apiClient.get('/user/leaderboard'),
+}
 
-  /**
-   * Update current user profile
-   */
-  async updateProfile(updates) {
-    try {
-      const { data } = await apiClient.put('/user/update', updates)
-      return { data, error: null }
-    } catch (error) {
-      return { data: null, error: error.response?.data || error.message }
-    }
-  },
+/**
+ * Course & Learning API
+ */
+export const courseAPI = {
+  getCourses: () => apiClient.get('/courses'),
+  getCourse: (id) => apiClient.get(`/courses/${id}`),
+  getDailyPlan: (level, lang) => apiClient.get(`/courses/daily-plan?level=${level}&language=${lang}`),
+  updateProgress: (progress) => apiClient.post('/progress/lesson', progress),
+  getCourseProgress: (courseId) => apiClient.get(`/progress/${courseId}`),
+}
 
-  /**
-   * Change user password
-   */
-  async changePassword(currentPassword, newPassword) {
-    try {
-      const { data } = await apiClient.post('/auth/change-password', {
-        current_password: currentPassword,
-        new_password: newPassword,
-      })
-      return { data, error: null }
-    } catch (error) {
-      return { data: null, error: error.response?.data || error.message }
-    }
-  },
+/**
+ * Quiz API
+ */
+export const quizAPI = {
+  submitAttempt: (quizId, data) => apiClient.post(`/quizzes/${quizId}/submit`, data),
+}
 
-  /**
-   * Get user sessions
-   */
-  async getSessions() {
-    try {
-      const { data } = await apiClient.get('/auth/sessions')
-      return { data, error: null }
-    } catch (error) {
-      return { data: null, error: error.response?.data || error.message }
-    }
-  },
+/**
+ * AI Tutor API
+ */
+export const tutorAPI = {
+  ask: (payload) => apiClient.post('/tutor', payload),
+}
 
-  /**
-   * Logout from all sessions
-   */
-  async logoutAll() {
-    try {
-      const { data } = await apiClient.post('/auth/logout-all')
-      return { data, error: null }
-    } catch (error) {
-      return { data: null, error: error.response?.data || error.message }
-    }
-  },
+/**
+ * Certificate API
+ */
+export const certificateAPI = {
+  generate: (courseId) => apiClient.post(`/certificates/generate/${courseId}`),
+  verify: (code) => apiClient.get(`/certificates/verify/${code}`),
+}
 
-  /**
-   * Delete user account
-   */
-  async deleteAccount() {
-    try {
-      const { data } = await apiClient.delete('/user/delete')
-      return { data, error: null }
-    } catch (error) {
-      return { data: null, error: error.response?.data || error.message }
-    }
-  },
+/**
+ * Upload API
+ */
+export const uploadAPI = {
+  uploadAvatar: (formData) => apiClient.post('/uploads/avatar', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' }
+  }),
+}
 
-  /**
-   * Sync user learning stats (XP, Points, Streak, Progress)
-   */
-  async syncStats(stats) {
-    try {
-      const { data } = await apiClient.post('/user/sync-stats', stats)
-      return { data, error: null }
-    } catch (error) {
-      return { data: null, error: error.response?.data || error.message }
-    }
-  },
+/**
+ * Admin API
+ */
+export const adminAPI = {
+  getStats: () => apiClient.get('/admin/stats'),
+  getHealth: () => apiClient.get('/admin/system-health'),
+  getAuditLogs: (page = 1) => apiClient.get(`/admin/audit-logs?page=${page}`),
+  manageUser: (id, data) => apiClient.put(`/admin/users/${id}`, data),
+  banUser: (id, banned) => apiClient.post(`/admin/users/${id}/ban`, { banned }),
+  adjustPoints: (userId, amount, reason) => apiClient.post('/admin/points/adjust', { userId, amount, reason }),
 }
 
 export default apiClient

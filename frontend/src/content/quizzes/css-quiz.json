@@ -1,0 +1,98 @@
+{
+  "title": "CSS Final Quiz",
+  "topic": "CSS",
+  "difficulty": "Easy",
+  "status": "Active",
+  "questions": [
+    {
+      "question": "What does CSS stand for?",
+      "options": ["Computer Style Sheets", "Cascading Style Sheets", "Creative Style System", "Colorful Style Syntax"],
+      "correct_answer": "Cascading Style Sheets",
+      "explanation": "CSS (Cascading Style Sheets) controls the visual presentation of HTML elements — colors, layout, fonts, spacing, and animations."
+    },
+    {
+      "question": "What is CSS specificity?",
+      "options": ["The speed of CSS rendering", "The order in which CSS files are loaded", "A ranking system that determines which CSS rule wins when multiple rules target the same element", "The number of CSS properties applied"],
+      "correct_answer": "A ranking system that determines which CSS rule wins when multiple rules target the same element",
+      "explanation": "Specificity hierarchy: inline styles > IDs > classes/attributes/pseudo-classes > element selectors. Higher specificity wins."
+    },
+    {
+      "question": "What does 'display: flex' do to a container?",
+      "options": ["Makes the element float", "Hides all children", "Enables Flexbox layout so children are arranged in a flexible row or column", "Makes the element fixed position"],
+      "correct_answer": "Enables Flexbox layout so children are arranged in a flexible row or column",
+      "explanation": "display:flex turns the element into a flex container. Direct children become flex items and can be aligned, sized, and ordered flexibly."
+    },
+    {
+      "question": "What does 'justify-content: space-between' do in Flexbox?",
+      "options": ["Centers items vertically", "Places first item at start, last at end, equal space between others", "Adds equal space around all items", "Stretches items to fill the container"],
+      "correct_answer": "Places first item at start, last at end, equal space between others",
+      "explanation": "space-between distributes items with no space at the edges. space-around adds equal space on both sides; space-evenly for all gaps."
+    },
+    {
+      "question": "What is the CSS Box Model?",
+      "options": ["A 3D CSS property", "The content + padding + border + margin layers that make up every element", "A grid layout system", "A responsive design tool"],
+      "correct_answer": "The content + padding + border + margin layers that make up every element",
+      "explanation": "Every HTML element is a box. From inside out: content area, padding (space inside border), border, margin (space outside border)."
+    },
+    {
+      "question": "What does 'box-sizing: border-box' do?",
+      "options": ["Adds a border automatically", "Makes width/height include padding and border in the calculation", "Removes the box model", "Sets the border to a box shape"],
+      "correct_answer": "Makes width/height include padding and border in the calculation",
+      "explanation": "With border-box, setting width:300px means the element is 300px total including padding and border — making layout math easier."
+    },
+    {
+      "question": "Which CSS property controls the stacking order of positioned elements?",
+      "options": ["layer", "stack-order", "z-index", "depth"],
+      "correct_answer": "z-index",
+      "explanation": "z-index controls the stack order of positioned elements (position: relative/absolute/fixed/sticky). Higher value = in front."
+    },
+    {
+      "question": "What does 'position: absolute' do?",
+      "options": ["Positions relative to the viewport always", "Removes element from flow, positions relative to nearest positioned ancestor", "Makes element fixed on scroll", "Centers element on the page"],
+      "correct_answer": "Removes element from flow, positions relative to nearest positioned ancestor",
+      "explanation": "absolute removes the element from normal flow and positions it relative to the nearest ancestor with position other than static."
+    },
+    {
+      "question": "What is the purpose of CSS Grid's 'grid-template-columns'?",
+      "options": ["Sets column colors", "Defines the column structure and sizes for a grid container", "Creates column headings", "Sets the column gap only"],
+      "correct_answer": "Defines the column structure and sizes for a grid container",
+      "explanation": "grid-template-columns defines how many columns the grid has and their sizes. E.g., 'repeat(3, 1fr)' creates 3 equal columns."
+    },
+    {
+      "question": "What does 'fr' unit mean in CSS Grid?",
+      "options": ["Fixed ratio", "Frame rate", "Fraction of available space", "Free row"],
+      "correct_answer": "Fraction of available space",
+      "explanation": "1fr means 1 fraction of the available space. '1fr 2fr' creates two columns where the second is twice as wide as the first."
+    },
+    {
+      "question": "What does '@media (max-width: 768px)' do?",
+      "options": ["Sets screen to 768px width", "Applies styles only when viewport is 768px wide or narrower", "Applies styles only on desktop", "Hides elements at 768px"],
+      "correct_answer": "Applies styles only when viewport is 768px wide or narrower",
+      "explanation": "Media queries apply CSS conditionally based on viewport size. max-width: 768px targets tablets and mobile devices."
+    },
+    {
+      "question": "What is the 'cascade' in Cascading Style Sheets?",
+      "options": ["The waterfall-like animation of styles", "The algorithm that determines which CSS rules apply when multiple rules target the same element", "The order of HTML elements", "CSS file loading order only"],
+      "correct_answer": "The algorithm that determines which CSS rules apply when multiple rules target the same element",
+      "explanation": "The cascade considers specificity, origin (browser/user/author), and source order to determine which rule wins for each property."
+    },
+    {
+      "question": "What does 'transition: all 0.3s ease' do?",
+      "options": ["Sets animation delay", "Animates all CSS property changes over 0.3 seconds with ease timing", "Delays page load by 0.3s", "Loops an animation 3 times"],
+      "correct_answer": "Animates all CSS property changes over 0.3 seconds with ease timing",
+      "explanation": "transition creates smooth animations for CSS property changes (like hover effects). ease starts slow, speeds up, then slows down."
+    },
+    {
+      "question": "What is the difference between em and rem units?",
+      "options": ["No difference", "em is relative to the root font size; rem is relative to the parent element", "em is relative to the parent element; rem is relative to the root (html) font size", "rem is only for margins"],
+      "correct_answer": "em is relative to the parent element; rem is relative to the root (html) font size",
+      "explanation": "em scales relative to the parent, causing compound scaling in nested elements. rem always references the root html font-size — more predictable."
+    },
+    {
+      "question": "What does 'overflow: hidden' do?",
+      "options": ["Hides the element", "Makes the element transparent", "Clips content that extends beyond the element's boundaries", "Prevents scrolling on the page"],
+      "correct_answer": "Clips content that extends beyond the element's boundaries",
+      "explanation": "overflow:hidden hides any content that overflows the element box. Useful for card layouts, image cropping, and clearing floats."
+    }
+  ]
+}

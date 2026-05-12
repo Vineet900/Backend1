@@ -1,0 +1,98 @@
+{
+  "title": "DevOps Final Quiz",
+  "topic": "DevOps",
+  "difficulty": "Hard",
+  "status": "Active",
+  "questions": [
+    {
+      "question": "What does CI stand for in DevOps?",
+      "options": ["Container Integration", "Continuous Integration", "Cloud Infrastructure", "Code Inspection"],
+      "correct_answer": "Continuous Integration",
+      "explanation": "CI (Continuous Integration) is the practice of automatically building and testing code every time a developer commits, catching bugs early."
+    },
+    {
+      "question": "What is the main goal of DevOps?",
+      "options": ["Eliminate developers", "Replace testing with automation only", "Ship software faster and more reliably by bridging dev and ops teams", "Reduce the number of servers"],
+      "correct_answer": "Ship software faster and more reliably by bridging dev and ops teams",
+      "explanation": "DevOps breaks down silos between development and operations teams to speed up delivery cycles while maintaining stability."
+    },
+    {
+      "question": "What is the difference between a Docker Image and a Container?",
+      "options": ["They are the same", "Container is the blueprint; Image is the running instance", "Image is the blueprint; Container is a running instance", "Images are stored on disk; Containers are in memory only"],
+      "correct_answer": "Image is the blueprint; Container is a running instance",
+      "explanation": "An image is a static, immutable template. A container is a running process created from that image. Multiple containers can run from one image."
+    },
+    {
+      "question": "Why should node_modules be in .dockerignore?",
+      "options": ["Docker cannot process JavaScript", "To keep the image smaller and install correct dependencies inside the container", ".dockerignore is required", "node_modules causes Docker to crash"],
+      "correct_answer": "To keep the image smaller and install correct dependencies inside the container",
+      "explanation": "Copying node_modules bloats the image and may cause platform incompatibilities. Running npm ci inside the Dockerfile installs the correct versions."
+    },
+    {
+      "question": "In Docker Compose, how do services communicate with each other?",
+      "options": ["Using localhost", "Using their public IP addresses", "Using the service name as the hostname", "Using port mapping only"],
+      "correct_answer": "Using the service name as the hostname",
+      "explanation": "Docker Compose creates a default network. Services reach each other using their service name as the hostname (e.g., 'db', 'redis')."
+    },
+    {
+      "question": "What does 'docker compose down -v' do?",
+      "options": ["Stops containers only", "Rebuilds all containers", "Stops containers and removes volumes (all data)", "Removes only the volumes"],
+      "correct_answer": "Stops containers and removes volumes (all data)",
+      "explanation": "-v removes named volumes along with containers. This permanently deletes database data. Use 'docker compose down' without -v to keep data."
+    },
+    {
+      "question": "Why tag Docker images with the git commit SHA?",
+      "options": ["SHA tags are required by registries", "SHAs are shorter than version numbers", "To trace exactly which code version is running in production", "SHA tags enable auto-deployment"],
+      "correct_answer": "To trace exactly which code version is running in production",
+      "explanation": "SHA tags create a direct link between a running container and the exact git commit that built it, enabling precise debugging and rollback."
+    },
+    {
+      "question": "Where should CI/CD secrets like DOCKER_TOKEN be stored?",
+      "options": ["In the Dockerfile ENV", "In a .env file committed to git", "In GitHub repository Secrets settings", "In the README"],
+      "correct_answer": "In GitHub repository Secrets settings",
+      "explanation": "GitHub Secrets encrypts sensitive values and exposes them as ${{ secrets.NAME }} in workflows without revealing them in logs or code."
+    },
+    {
+      "question": "What is the difference between monitoring and logging?",
+      "options": ["They are the same", "Monitoring tracks metrics over time; logging records discrete events", "Logging is only for errors; monitoring is for performance", "Monitoring requires paid tools only"],
+      "correct_answer": "Monitoring tracks metrics over time; logging records discrete events",
+      "explanation": "Monitoring gives aggregated numerical health data (requests/sec, CPU%). Logs give detailed records of individual events for debugging."
+    },
+    {
+      "question": "What should you NEVER include in application logs?",
+      "options": ["HTTP status codes", "Request timestamps", "Passwords, API tokens, or personal user data", "Error messages"],
+      "correct_answer": "Passwords, API tokens, or personal user data",
+      "explanation": "Sensitive data in logs creates security vulnerabilities as logs are often stored, transmitted, and accessed by multiple systems and people."
+    },
+    {
+      "question": "What does 'terraform plan' do?",
+      "options": ["Creates all infrastructure immediately", "Validates configuration syntax only", "Shows a preview of what Terraform will create, change, or destroy", "Destroys existing infrastructure"],
+      "correct_answer": "Shows a preview of what Terraform will create, change, or destroy",
+      "explanation": "terraform plan is a dry run that shows exactly what changes will be made without making them. Always review before running apply."
+    },
+    {
+      "question": "What is Terraform state?",
+      "options": ["The current AWS region", "The Terraform version installed", "A file mapping your config to real cloud resources Terraform created", "A list of available providers"],
+      "correct_answer": "A file mapping your config to real cloud resources Terraform created",
+      "explanation": "terraform.tfstate records what infrastructure exists. Terraform uses it to determine what to create, update, or destroy on the next apply."
+    },
+    {
+      "question": "What is a /health endpoint used for in production?",
+      "options": ["To display app version info to users", "To allow load balancers and monitoring tools to check if the app is alive", "To reset the database", "To restart the server"],
+      "correct_answer": "To allow load balancers and monitoring tools to check if the app is alive",
+      "explanation": "Health check endpoints return status, uptime, and resource usage — load balancers use them to route traffic only to healthy instances."
+    },
+    {
+      "question": "What is the purpose of the 'depends_on' in docker-compose.yml?",
+      "options": ["Sets environment variables", "Links volumes between services", "Controls the startup order of services", "Sets network permissions"],
+      "correct_answer": "Controls the startup order of services",
+      "explanation": "depends_on ensures that specified services start before the dependent service — e.g., the database starts before the API server."
+    },
+    {
+      "question": "What DORA metric measures how often you deploy to production?",
+      "options": ["Lead time", "MTTR", "Change failure rate", "Deployment frequency"],
+      "correct_answer": "Deployment frequency",
+      "explanation": "DORA (DevOps Research and Assessment) defines 4 key metrics: Deployment frequency, Lead time, MTTR (recovery time), and Change failure rate."
+    }
+  ]
+}

@@ -9,7 +9,9 @@ export default function AdminContent() {
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedCourseId, setSelectedCourseId] = useState('html')
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isCourseModalOpen, setIsCourseModalOpen] = useState(false)
   const [editingLesson, setEditingLesson] = useState(null)
+  const [editingCourse, setEditingCourse] = useState(null)
 
   const { data: coursesResponse, isLoading: coursesLoading } = useQuery({
     queryKey: ['adminCourses'],
@@ -41,20 +43,49 @@ export default function AdminContent() {
     }
   })
 
+  const saveCourseMutation = useMutation({
+    mutationFn: (course) => {
+      if (course.id) return coursesService.updateCourse(course.id, course)
+      return coursesService.createCourse(course)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['adminCourses'] })
+      setIsCourseModalOpen(false)
+      setEditingCourse(null)
+    }
+  })
+
+  const deleteCourseMutation = useMutation({
+    mutationFn: (id) => coursesService.deleteCourse(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['adminCourses'] })
+    }
+  })
+
   const courses = coursesResponse?.data || []
   const lessons = lessonsResponse?.data || []
 
   const filteredCourses = courses.filter(c => (c.title || '').toLowerCase().includes(searchTerm.toLowerCase()))
   const filteredLessons = lessons.filter(l => (l.title || '').toLowerCase().includes(searchTerm.toLowerCase()))
 
-  const handleEdit = (lesson) => {
+  const handleEditLesson = (lesson) => {
     setEditingLesson(lesson)
     setIsModalOpen(true)
   }
 
-  const handleAddNew = () => {
+  const handleAddNewLesson = () => {
     setEditingLesson(null)
     setIsModalOpen(true)
+  }
+
+  const handleEditCourse = (course) => {
+    setEditingCourse(course)
+    setIsCourseModalOpen(true)
+  }
+
+  const handleAddNewCourse = () => {
+    setEditingCourse(null)
+    setIsCourseModalOpen(true)
   }
 
   return (
@@ -66,13 +97,15 @@ export default function AdminContent() {
         </div>
         {activeTab === 'lessons' && (
           <button 
-            onClick={handleAddNew}
+            onClick={handleAddNewLesson}
             className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-xl text-sm font-medium transition flex items-center gap-2 shadow-sm shadow-blue-500/20 w-full md:w-auto justify-center">
             <Plus size={16} /> Add Lesson
           </button>
         )}
         {activeTab === 'courses' && (
-          <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-xl text-sm font-medium transition flex items-center gap-2 shadow-sm shadow-blue-500/20 w-full md:w-auto justify-center">
+          <button 
+            onClick={handleAddNewCourse}
+            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-xl text-sm font-medium transition flex items-center gap-2 shadow-sm shadow-blue-500/20 w-full md:w-auto justify-center">
             <Plus size={16} /> Add Course
           </button>
         )}
@@ -106,9 +139,19 @@ export default function AdminContent() {
             onChange={(e) => setSelectedCourseId(e.target.value)}
             className="px-4 py-2 bg-white border border-slate-300 rounded-xl text-sm font-medium dark:bg-slate-800 dark:border-slate-700 dark:text-white"
           >
-            <option value="html">HTML</option>
-            <option value="css">CSS</option>
-            <option value="javascript">JavaScript</option>
+            {courses.length > 0 ? (
+              courses.map(course => (
+                <option key={course.id} value={course.id}>{course.title || course.id}</option>
+              ))
+            ) : (
+              <>
+                <option value="html">HTML</option>
+                <option value="css">CSS</option>
+                <option value="javascript">JavaScript</option>
+                <option value="react">React</option>
+                <option value="nodejs">Node.js</option>
+              </>
+            )}
           </select>
         )}
       </div>
@@ -179,8 +222,8 @@ export default function AdminContent() {
                       </span>
                     </td>
                     <td className="px-6 py-4 flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <button className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors dark:hover:bg-blue-500/20 dark:hover:text-blue-400"><Edit2 size={16} /></button>
-                      <button className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors dark:hover:bg-red-500/20 dark:hover:text-red-400"><Trash2 size={16} /></button>
+                      <button onClick={() => handleEditCourse(course)} className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors dark:hover:bg-blue-500/20 dark:hover:text-blue-400"><Edit2 size={16} /></button>
+                      <button onClick={() => { if(window.confirm('Delete course?')) deleteCourseMutation.mutate(course.id) }} className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors dark:hover:bg-red-500/20 dark:hover:text-red-400"><Trash2 size={16} /></button>
                     </td>
                   </tr>
                 ))}
@@ -223,7 +266,7 @@ export default function AdminContent() {
                     </td>
                     <td className="px-6 py-4 text-slate-500">{lesson.estimated_time}</td>
                     <td className="px-6 py-4 flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <button onClick={() => handleEdit(lesson)} className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors dark:hover:bg-blue-500/20 dark:hover:text-blue-400"><Edit2 size={16} /></button>
+                      <button onClick={() => handleEditLesson(lesson)} className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors dark:hover:bg-blue-500/20 dark:hover:text-blue-400"><Edit2 size={16} /></button>
                       <button onClick={() => { if(window.confirm('Delete lesson?')) deleteLessonMutation.mutate(lesson.id) }} className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors dark:hover:bg-red-500/20 dark:hover:text-red-400"><Trash2 size={16} /></button>
                     </td>
                   </tr>
@@ -249,6 +292,15 @@ export default function AdminContent() {
           onClose={() => setIsModalOpen(false)} 
           onSave={(data) => saveLessonMutation.mutate(data)}
           isLoading={saveLessonMutation.isPending}
+        />
+      )}
+
+      {isCourseModalOpen && (
+        <CourseModal 
+          course={editingCourse} 
+          onClose={() => setIsCourseModalOpen(false)} 
+          onSave={(data) => saveCourseMutation.mutate(data)}
+          isLoading={saveCourseMutation.isPending}
         />
       )}
     </div>
@@ -341,6 +393,66 @@ function LessonModal({ lesson, onClose, onSave, isLoading }) {
             <button type="submit" disabled={isLoading} className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg flex items-center gap-2">
               {isLoading && <Loader2 size={16} className="animate-spin" />}
               Save Lesson
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  )
+}
+
+function CourseModal({ course, onClose, onSave, isLoading }) {
+  const [formData, setFormData] = useState(course || {
+    title: '', language: 'EN', author: '', status: 'Draft', lessons: 0
+  })
+
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setFormData(prev => ({ ...prev, [name]: value }))
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    onSave(formData)
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4 overflow-y-auto">
+      <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-xl w-full max-w-lg mt-20 md:mt-0 p-6">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-xl font-bold dark:text-white">{course ? 'Edit Course' : 'Add Course'}</h2>
+          <button onClick={onClose} className="text-slate-400 hover:text-slate-600 dark:hover:text-white">
+            <X size={20} />
+          </button>
+        </div>
+        <form onSubmit={handleSubmit} className="space-y-4 max-h-[70vh] overflow-y-auto pr-2 custom-scrollbar">
+          <div>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Title</label>
+            <input type="text" name="title" value={formData.title} onChange={handleChange} required className="w-full px-3 py-2 border border-slate-300 rounded-lg dark:bg-slate-800 dark:border-slate-700 dark:text-white" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Language</label>
+            <input type="text" name="language" value={formData.language} onChange={handleChange} className="w-full px-3 py-2 border border-slate-300 rounded-lg dark:bg-slate-800 dark:border-slate-700 dark:text-white" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Author</label>
+            <input type="text" name="author" value={formData.author} onChange={handleChange} className="w-full px-3 py-2 border border-slate-300 rounded-lg dark:bg-slate-800 dark:border-slate-700 dark:text-white" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Status</label>
+            <select name="status" value={formData.status} onChange={handleChange} className="w-full px-3 py-2 border border-slate-300 rounded-lg dark:bg-slate-800 dark:border-slate-700 dark:text-white">
+              <option value="Draft">Draft</option>
+              <option value="Published">Published</option>
+            </select>
+          </div>
+
+          <div className="flex justify-end gap-3 pt-4 border-t border-slate-200 dark:border-slate-700">
+            <button type="button" onClick={onClose} className="px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100 rounded-lg dark:text-slate-300 dark:hover:bg-slate-800">
+              Cancel
+            </button>
+            <button type="submit" disabled={isLoading} className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg flex items-center gap-2">
+              {isLoading && <Loader2 size={16} className="animate-spin" />}
+              Save Course
             </button>
           </div>
         </form>

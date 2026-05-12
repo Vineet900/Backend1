@@ -1,0 +1,48 @@
+{
+  "id": "react-20",
+  "title": "Build a Full React App",
+  "slug": "20-build-a-full-react-app",
+  "category": "react",
+  "chapterNumber": 20,
+  "level": "advanced",
+  "estimatedTime": "30 min",
+  "theory": {
+    "english": "This final chapter brings together everything you have learned to build a complete, production-ready React application. A well-structured React app has: a clean folder structure separating pages, components, hooks, context, and services. It uses React Router for navigation, Context or a state manager for global state, custom hooks for reusable logic, useEffect for data fetching, proper loading/error states, and React.memo for performance. The project in this chapter is a Course Dashboard — a mini LMS that lists courses, shows progress, and lets you filter courses by difficulty.",
+    "hindi": "Yeh final chapter sab kuch ek saath laata hai jo aapne seekha hai ek complete, production-ready React application banane ke liye. Ek well-structured React app mein hota hai: pages, components, hooks, context, aur services alag karne wala clean folder structure. Yeh React Router navigation ke liye, Context ya state manager global state ke liye, custom hooks reusable logic ke liye, useEffect data fetching ke liye, proper loading/error states, aur React.memo performance ke liye use karta hai.",
+    "hinglish": "Final project mein sab kuch milate hain. Clean folder structure: pages/, components/, hooks/, context/, services/. React Router + Context + Custom Hooks + API Fetch + Performance optimization — sab ek saath. Course Dashboard banao: course list, progress tracking, aur filtering."
+  },
+  "examples": [
+    {
+      "title": "Mini Course Dashboard App",
+      "code": "// src/context/AppContext.jsx\nimport { createContext, useContext, useState } from 'react';\nconst AppContext = createContext(null);\nexport const useApp = () => useContext(AppContext);\nexport function AppProvider({ children }) {\n  const [user] = useState({ name: 'Rahul', level: 'Intermediate' });\n  return <AppContext.Provider value={{ user }}>{children}</AppContext.Provider>;\n}\n\n// src/hooks/useCourses.js\nimport { useState, useEffect } from 'react';\nexport function useCourses() {\n  const [courses, setCourses] = useState([]);\n  const [loading, setLoading] = useState(true);\n  useEffect(() => {\n    fetch('/api/admin/courses')\n      .then(r => r.json())\n      .then(d => setCourses(d.data || []))\n      .finally(() => setLoading(false));\n  }, []);\n  return { courses, loading };\n}\n\n// src/pages/CoursesPage.jsx\nimport { memo, useState } from 'react';\nimport { useCourses } from '../hooks/useCourses';\nimport { useApp } from '../context/AppContext';\n\nconst CourseCard = memo(function CourseCard({ title, status }) {\n  return (\n    <div className=\"card\">\n      <h3>{title}</h3>\n      <span>{status}</span>\n    </div>\n  );\n});\n\nexport default function CoursesPage() {\n  const { user } = useApp();\n  const { courses, loading } = useCourses();\n  const [filter, setFilter] = useState('all');\n\n  const filtered = filter === 'all' ? courses : courses.filter(c => c.status === filter);\n\n  if (loading) return <p>Loading...</p>;\n\n  return (\n    <div>\n      <h1>Welcome, {user.name}!</h1>\n      <select onChange={e => setFilter(e.target.value)}>\n        <option value=\"all\">All</option>\n        <option value=\"Published\">Published</option>\n        <option value=\"Draft\">Draft</option>\n      </select>\n      {filtered.map(c => <CourseCard key={c.id} title={c.title} status={c.status} />)}\n    </div>\n  );\n}",
+      "explanation": "This combines Context (global user), Custom Hook (data fetching), React.memo (performance), and filter state — a complete production pattern."
+    }
+  ],
+  "exercises": [
+    {
+      "prompt": "Build a complete mini LMS dashboard with: course list from API, search input to filter by title, enrolled vs. not-enrolled tabs, and a sidebar showing logged in user info from Context.",
+      "expectedOutcome": "A multi-feature React app using Router, Context, custom hooks, memo, and API data fetching together."
+    }
+  ],
+  "quiz": [
+    {
+      "question": "What is the benefit of separating custom hooks from components?",
+      "options": ["It makes the app slower", "It separates concerns and allows logic reuse across multiple components", "It is required by React", "It reduces the number of files"],
+      "answer": 1,
+      "explanation": "Custom hooks separate data-fetching and business logic from UI code, making both easier to test and reuse."
+    },
+    {
+      "question": "Where should global state like the logged-in user be stored?",
+      "options": ["In each component separately", "In localStorage only", "In a Context Provider at the top of the app", "In a useRef"],
+      "answer": 2,
+      "explanation": "Context placed at the top of the component tree makes global state like the user available to all components without prop drilling."
+    },
+    {
+      "question": "Which React feature is best for preventing a list item component from re-rendering unnecessarily?",
+      "options": ["useEffect", "React.memo", "useReducer", "useRef"],
+      "answer": 1,
+      "explanation": "React.memo wraps a component and skips re-rendering when its props have not changed, which is ideal for list items."
+    }
+  ],
+  "summary": "React Complete ho gaya! 🎉 Aapne 20 chapters mein React fundamentals se lekar advanced patterns tak sab seekha — JSX, State, Props, Hooks, Router, Context, Performance, aur full app architecture. Ab aap production-ready React apps bana sakte hain!"
+}

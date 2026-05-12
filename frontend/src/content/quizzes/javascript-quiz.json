@@ -1,0 +1,98 @@
+{
+  "title": "JavaScript Final Quiz",
+  "topic": "JavaScript",
+  "difficulty": "Medium",
+  "status": "Active",
+  "questions": [
+    {
+      "question": "What is the difference between let, const, and var?",
+      "options": ["No difference", "var is block-scoped; let and const are function-scoped", "let and const are block-scoped; var is function-scoped and hoisted", "const cannot be declared without a value; others can be empty"],
+      "correct_answer": "let and const are block-scoped; var is function-scoped and hoisted",
+      "explanation": "var is hoisted and function-scoped (avoid it). let allows reassignment. const prevents reassignment but object properties can still change."
+    },
+    {
+      "question": "What does the spread operator (...) do?",
+      "options": ["Loops through an array", "Creates a generator", "Expands an iterable into individual elements", "Declares rest parameters"],
+      "correct_answer": "Expands an iterable into individual elements",
+      "explanation": "Spread expands arrays/objects: [...arr1, ...arr2] merges arrays; {...obj1, ...obj2} merges objects; func(...args) spreads args."
+    },
+    {
+      "question": "What is array destructuring?",
+      "options": ["Deleting array elements", "Copying an array", "Extracting values from an array into individual variables", "Sorting an array"],
+      "correct_answer": "Extracting values from an array into individual variables",
+      "explanation": "const [first, second] = arr; extracts values by position. You can skip elements with commas and use rest: const [a, ...rest] = arr."
+    },
+    {
+      "question": "What does Array.prototype.map() return?",
+      "options": ["The original array modified", "A new array with transformed elements", "A single value", "Nothing (undefined)"],
+      "correct_answer": "A new array with transformed elements",
+      "explanation": "map() creates a NEW array by calling a function on every element. It does not modify the original array."
+    },
+    {
+      "question": "What does Array.prototype.filter() return?",
+      "options": ["A single element", "A new array containing only elements where the callback returns true", "The modified original array", "A boolean"],
+      "correct_answer": "A new array containing only elements where the callback returns true",
+      "explanation": "filter() returns a new array with only the elements for which the callback function returns a truthy value."
+    },
+    {
+      "question": "What is a closure in JavaScript?",
+      "options": ["A way to close the browser", "A function that has access to variables from its outer scope even after that scope has finished executing", "A method to terminate a loop", "An error handling pattern"],
+      "correct_answer": "A function that has access to variables from its outer scope even after that scope has finished executing",
+      "explanation": "Closures let inner functions 'remember' variables from their enclosing scope. This enables data privacy, memoization, and factory functions."
+    },
+    {
+      "question": "What is the difference between == and === in JavaScript?",
+      "options": ["No difference", "== checks value only; === checks both value and type", "=== checks value only; == checks type", "=== is only for objects"],
+      "correct_answer": "== checks value only; === checks both value and type",
+      "explanation": "== performs type coercion (0 == '0' is true). === is strict equality with no coercion (0 === '0' is false). Always use ===."
+    },
+    {
+      "question": "What does async/await do in JavaScript?",
+      "options": ["Makes code run on multiple threads", "Makes code synchronous permanently", "Provides cleaner syntax for working with Promises, making async code look synchronous", "Prevents all async operations"],
+      "correct_answer": "Provides cleaner syntax for working with Promises, making async code look synchronous",
+      "explanation": "async/await is syntactic sugar over Promises. await pauses execution until the Promise resolves, without blocking the thread."
+    },
+    {
+      "question": "What does Promise.all() do?",
+      "options": ["Runs Promises sequentially", "Returns the first resolved Promise", "Runs all Promises in parallel and resolves when all complete (or rejects if any fail)", "Cancels all pending Promises"],
+      "correct_answer": "Runs all Promises in parallel and resolves when all complete (or rejects if any fail)",
+      "explanation": "Promise.all() is ideal for parallel async operations. It fails fast — if any Promise rejects, the whole thing rejects."
+    },
+    {
+      "question": "What does the 'this' keyword refer to in an arrow function?",
+      "options": ["The function itself", "The window object always", "The class instance always", "The enclosing lexical scope's 'this'"],
+      "correct_answer": "The enclosing lexical scope's 'this'",
+      "explanation": "Arrow functions don't have their own 'this'. They inherit 'this' from the surrounding scope where they were defined."
+    },
+    {
+      "question": "What is event delegation?",
+      "options": ["Removing event listeners", "Adding events to every element individually", "Attaching one event listener to a parent to handle events from its children", "Creating custom events"],
+      "correct_answer": "Attaching one event listener to a parent to handle events from its children",
+      "explanation": "Event delegation uses event bubbling — one listener on a parent handles clicks from all children, even dynamically added ones."
+    },
+    {
+      "question": "What does localStorage.setItem('key', value) do?",
+      "options": ["Stores value in session only", "Sends value to the server", "Stores key-value pair persistently in the browser until manually cleared", "Encrypts and stores the value"],
+      "correct_answer": "Stores key-value pair persistently in the browser until manually cleared",
+      "explanation": "localStorage persists across browser sessions. Values must be strings — use JSON.stringify() for objects and JSON.parse() to read back."
+    },
+    {
+      "question": "What is prototypal inheritance in JavaScript?",
+      "options": ["Copying properties from one object to another", "Objects inheriting properties and methods from their prototype chain", "A class-based inheritance system", "A way to clone objects"],
+      "correct_answer": "Objects inheriting properties and methods from their prototype chain",
+      "explanation": "JavaScript objects have a prototype chain. When accessing a property, JS walks up the chain until it finds the property or reaches null."
+    },
+    {
+      "question": "What does fetch() return?",
+      "options": ["The response body directly", "A Promise that resolves to a Response object", "JSON data automatically", "An XMLHttpRequest object"],
+      "correct_answer": "A Promise that resolves to a Response object",
+      "explanation": "fetch() returns a Promise. You await the Response, then call .json() (another Promise) to parse the body as JSON."
+    },
+    {
+      "question": "What is the purpose of try/catch in JavaScript?",
+      "options": ["To speed up code execution", "To handle runtime errors gracefully without crashing the program", "To validate variable types", "To catch syntax errors"],
+      "correct_answer": "To handle runtime errors gracefully without crashing the program",
+      "explanation": "try/catch wraps risky code. If an error occurs in try, execution jumps to catch where you can handle or log the error."
+    }
+  ]
+}

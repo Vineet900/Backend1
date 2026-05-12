@@ -1,0 +1,57 @@
+{
+  "id": "react-2",
+  "title": "JSX - JavaScript XML",
+  "slug": "02-jsx-javascript-xml",
+  "category": "react",
+  "chapterNumber": 2,
+  "level": "beginner",
+  "estimatedTime": "12 min",
+  "theory": {
+    "english": "JSX stands for JavaScript XML. It is a special syntax that lets you write HTML-like code inside JavaScript. JSX is not valid JavaScript by itself — it gets compiled by Babel into regular JavaScript function calls. JSX makes React code much easier to read and write. In JSX, every element must be properly closed. You can embed any JavaScript expression inside JSX by wrapping it in curly braces {}. JSX elements must have one root parent element — you can use a Fragment (<></>) if you do not want an extra div. JSX attributes use camelCase, for example className instead of class, and htmlFor instead of for.",
+    "hindi": "JSX ka matlab hai JavaScript XML. Yeh ek special syntax hai jo aapko JavaScript ke andar HTML jaisa code likhne deta hai. JSX khud valid JavaScript nahi hota — Babel iske compile kar ke regular JavaScript function calls mein convert karta hai. JSX mein har element properly closed hona chahiye. Aap curly braces {} ke andar koi bhi JavaScript expression embed kar sakte ho. JSX attributes camelCase mein hote hain jaise className instead of class.",
+    "hinglish": "JSX matlab JavaScript XML hai. Yeh aapko JavaScript ke andar HTML jaisa code likhne deta hai. Babel isko real JavaScript mein compile karta hai. JSX mein JavaScript use karna ho toh curly braces {} use karo. Attributes camelCase mein hote hain - class ki jagah className, for ki jagah htmlFor."
+  },
+  "examples": [
+    {
+      "title": "JSX Basics",
+      "code": "function Profile() {\n  const name = 'Rahul';\n  const age = 22;\n\n  return (\n    <div className=\"profile\">\n      <h2>{name}</h2>\n      <p>Age: {age}</p>\n      <p>{age >= 18 ? 'Adult' : 'Minor'}</p>\n    </div>\n  );\n}",
+      "explanation": "Curly braces {} embed JavaScript expressions into JSX. Notice className instead of class — this is because class is a reserved word in JavaScript."
+    },
+    {
+      "title": "JSX Fragment",
+      "code": "function TwoHeadings() {\n  return (\n    <>\n      <h1>Main Title</h1>\n      <h2>Sub Title</h2>\n    </>\n  );\n}",
+      "explanation": "When you need to return multiple elements without a wrapper div, use a Fragment (<>...</>). It renders nothing in the DOM but satisfies the single-root requirement."
+    }
+  ],
+  "exercises": [
+    {
+      "prompt": "Create a component that shows a user's name, city, and age using JSX and JavaScript variables.",
+      "expectedOutcome": "A component using curly braces to embed variable values in JSX."
+    },
+    {
+      "prompt": "Use a ternary expression in JSX to show 'Logged In' or 'Guest' based on a boolean variable.",
+      "expectedOutcome": "JSX with an inline ternary expression inside curly braces."
+    }
+  ],
+  "quiz": [
+    {
+      "question": "How do you embed a JavaScript variable in JSX?",
+      "options": ["Using double quotes", "Using {{ }}", "Using { }", "Using $ sign"],
+      "answer": 2,
+      "explanation": "Single curly braces {} are used to embed JavaScript expressions inside JSX."
+    },
+    {
+      "question": "What is the correct JSX attribute for HTML's 'class'?",
+      "options": ["class", "className", "classname", "htmlClass"],
+      "answer": 1,
+      "explanation": "Because 'class' is a reserved keyword in JavaScript, JSX uses 'className' instead."
+    },
+    {
+      "question": "What does JSX compile into?",
+      "options": ["HTML directly", "CSS", "React.createElement() calls", "JSON"],
+      "answer": 2,
+      "explanation": "Babel compiles JSX into React.createElement() function calls which React uses to build the Virtual DOM."
+    }
+  ],
+  "summary": "JSX chapter complete! Aapne seekha JSX kya hai, JavaScript expressions kaise embed karte hain, aur className jaisi JSX-specific attributes ke baare mein."
+}

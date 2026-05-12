@@ -1,0 +1,48 @@
+{
+  "id": "react-17",
+  "title": "React Performance Optimization",
+  "slug": "17-react-performance-optimization",
+  "category": "react",
+  "chapterNumber": 17,
+  "level": "advanced",
+  "estimatedTime": "18 min",
+  "theory": {
+    "english": "React is fast by default but large apps can develop performance problems. The main culprits are unnecessary re-renders, large bundle sizes, and slow computations. Key tools: React.memo wraps a component and prevents re-renders if its props have not changed. Code splitting with React.lazy and Suspense loads components only when needed, reducing initial bundle size. The React DevTools Profiler helps identify which components render too often and why. Avoid creating objects or arrays inline in JSX as they create new references on every render.",
+    "hindi": "React by default fast hota hai lekin bade apps mein performance problems aa sakti hain. Mukhya karan hain unnecessary re-renders, badi bundle sizes, aur slow computations. Key tools: React.memo ek component wrap karta hai aur re-renders rokta hai agar uske props change nahi hue. Code splitting with React.lazy aur Suspense components ko sirf tab load karta hai jab zarurat ho, initial bundle size kam karta hai.",
+    "hinglish": "React already fast hai but large apps mein optimization chahiye. React.memo se unnecessary re-renders roko. Code splitting se bundle size kamo karo. React.lazy + Suspense se lazy loading karo. React DevTools Profiler se slow components dhundo. Inline objects/arrays JSX mein mat banao."
+  },
+  "examples": [
+    {
+      "title": "React.memo and Lazy Loading",
+      "code": "import { memo, lazy, Suspense, useState } from 'react';\n\n// Lazy load a heavy component\nconst HeavyDashboard = lazy(() => import('./HeavyDashboard'));\n\n// Memoized component - only re-renders if props change\nconst UserCard = memo(function UserCard({ name, email }) {\n  console.log('UserCard rendered:', name);\n  return (\n    <div>\n      <h3>{name}</h3>\n      <p>{email}</p>\n    </div>\n  );\n});\n\nfunction App() {\n  const [showDashboard, setShowDashboard] = useState(false);\n  const [count, setCount] = useState(0);\n\n  return (\n    <div>\n      {/* UserCard won't re-render when count changes */}\n      <UserCard name=\"Rahul\" email=\"rahul@example.com\" />\n      <button onClick={() => setCount(c => c + 1)}>Count: {count}</button>\n\n      <button onClick={() => setShowDashboard(true)}>Load Dashboard</button>\n\n      {showDashboard && (\n        <Suspense fallback={<div>Loading Dashboard...</div>}>\n          <HeavyDashboard />\n        </Suspense>\n      )}\n    </div>\n  );\n}",
+      "explanation": "UserCard is wrapped in memo — clicking count button won't re-render it. HeavyDashboard is only downloaded when the button is clicked."
+    }
+  ],
+  "exercises": [
+    {
+      "prompt": "Build an app with a list of 1000 items. Wrap the list item component in React.memo and verify it does not re-render when a counter in the parent changes.",
+      "expectedOutcome": "React.memo preventing unnecessary child re-renders when unrelated parent state changes."
+    }
+  ],
+  "quiz": [
+    {
+      "question": "What does React.memo do?",
+      "options": ["Memoizes a computed value", "Prevents a component from re-rendering if its props have not changed", "Optimizes useEffect", "Caches API responses"],
+      "answer": 1,
+      "explanation": "React.memo is a higher-order component that compares previous and current props and skips re-rendering if they are equal."
+    },
+    {
+      "question": "What does React.lazy do?",
+      "options": ["Makes React run lazily", "Loads a component only when it is actually needed", "Delays state updates", "Postpones all renders"],
+      "answer": 1,
+      "explanation": "React.lazy enables code splitting — the component's code is only downloaded when it needs to be rendered."
+    },
+    {
+      "question": "What must wrap a React.lazy loaded component?",
+      "options": ["React.memo", "React.StrictMode", "Suspense with a fallback", "ErrorBoundary"],
+      "answer": 2,
+      "explanation": "Suspense provides the fallback UI to show while the lazy component's code is being downloaded."
+    }
+  ],
+  "summary": "Performance Optimization chapter complete! Aapne seekha React.memo, code splitting with lazy/Suspense, aur unnecessary re-renders kaise rokein."
+}

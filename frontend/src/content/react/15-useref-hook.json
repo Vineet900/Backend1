@@ -1,0 +1,48 @@
+{
+  "id": "react-15",
+  "title": "useRef Hook",
+  "slug": "15-useref-hook",
+  "category": "react",
+  "chapterNumber": 15,
+  "level": "intermediate",
+  "estimatedTime": "12 min",
+  "theory": {
+    "english": "useRef returns a mutable ref object whose .current property is initialized to the passed argument. Unlike state, mutating a ref does not trigger a re-render. Refs have two main uses: 1) Accessing DOM elements directly (like focusing an input, playing a video), and 2) Storing any mutable value that you want to persist across renders without triggering re-renders (like a timer ID, previous value, or render count).",
+    "hindi": "useRef ek mutable ref object return karta hai jiska .current property passed argument se initialize hoti hai. State ke unlike, ref mutate karne se re-render trigger nahi hota. Refs ke do main uses hain: 1) DOM elements ko directly access karna (jaise input focus karna, video play karna), aur 2) Koi bhi mutable value store karna jo renders ke beech persist kare bina re-render trigger kiye.",
+    "hinglish": "useRef se DOM elements ko directly access karo ya values store karo jo re-render trigger nahi karte. ref.current se value read/write karo. Input focus karna, timer ID store karna, previous value track karna — sab ke liye useRef use karo."
+  },
+  "examples": [
+    {
+      "title": "DOM Access and Value Persistence",
+      "code": "import { useState, useEffect, useRef } from 'react';\n\nfunction RefDemo() {\n  const inputRef = useRef(null);\n  const renderCount = useRef(0);\n  const [name, setName] = useState('');\n\n  // Track render count without causing re-render\n  useEffect(() => {\n    renderCount.current += 1;\n  });\n\n  const focusInput = () => {\n    inputRef.current.focus();\n  };\n\n  return (\n    <div>\n      <input ref={inputRef} value={name} onChange={e => setName(e.target.value)} />\n      <button onClick={focusInput}>Focus Input</button>\n      <p>Name: {name}</p>\n      <p>Render count: {renderCount.current}</p>\n    </div>\n  );\n}",
+      "explanation": "inputRef.current gives direct access to the DOM input element. renderCount.current tracks renders without itself causing a re-render."
+    }
+  ],
+  "exercises": [
+    {
+      "prompt": "Create a component with a video element. Add Play and Pause buttons that control the video using useRef.",
+      "expectedOutcome": "useRef pointing to the video element, buttons calling ref.current.play() and ref.current.pause()."
+    }
+  ],
+  "quiz": [
+    {
+      "question": "What happens when you change a ref's .current value?",
+      "options": ["Component re-renders", "Nothing — no re-render is triggered", "State resets", "An error is thrown"],
+      "answer": 1,
+      "explanation": "Mutating ref.current does not cause a re-render. This is the key difference between refs and state."
+    },
+    {
+      "question": "How do you attach a ref to a DOM element?",
+      "options": ["using id={ref}", "using ref={myRef}", "using data-ref={myRef}", "using attach={myRef}"],
+      "answer": 1,
+      "explanation": "Pass the ref object using the ref prop on any JSX element to attach it to the underlying DOM node."
+    },
+    {
+      "question": "What is a good use case for useRef (NOT for DOM access)?",
+      "options": ["Storing user input", "Storing a setInterval ID to clear it later", "Conditional rendering", "Creating context"],
+      "answer": 1,
+      "explanation": "Storing a timer ID in a ref lets you clear it later without causing re-renders when the ID is stored."
+    }
+  ],
+  "summary": "useRef chapter complete! Aapne seekha DOM elements access karna, render-safe mutable values store karna, aur ref vs state ka difference."
+}

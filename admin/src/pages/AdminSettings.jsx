@@ -13,9 +13,23 @@ export default function AdminSettings() {
     queryFn: settingsService.getSettings
   })
 
+  const defaultSettings = {
+    siteName: 'DevSchool Pro',
+    supportEmail: 'support@devschool.com',
+    maintenanceMode: false,
+    registrationEnabled: true,
+    emailNotifications: true
+  }
+
   useEffect(() => {
-    if (response?.data) {
-      setLocalSettings(response.data)
+    if (response) {
+      // Handle both { data: {...} } and direct object responses
+      const settingsData = response?.data || response
+      if (settingsData && typeof settingsData === 'object' && !Array.isArray(settingsData)) {
+        setLocalSettings({ ...defaultSettings, ...settingsData })
+      } else {
+        setLocalSettings(defaultSettings)
+      }
     }
   }, [response])
 
@@ -30,11 +44,14 @@ export default function AdminSettings() {
     }
   })
 
+  const effectiveSettings = localSettings || defaultSettings
+
   const handleSave = () => {
-    mutation.mutate(localSettings)
+    mutation.mutate(effectiveSettings)
   }
 
-  if (isLoading || !localSettings) {
+
+  if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
         <Loader2 className="w-8 h-8 animate-spin text-blue-600" />
@@ -80,8 +97,8 @@ export default function AdminSettings() {
                   <label className="block text-sm font-semibold text-slate-900 dark:text-white mb-2">Site Name</label>
                   <input 
                     type="text" 
-                    value={localSettings.siteName}
-                    onChange={(e) => setLocalSettings({...localSettings, siteName: e.target.value})}
+                    value={effectiveSettings.siteName || ''}
+                    onChange={(e) => setLocalSettings({...effectiveSettings, siteName: e.target.value})}
                     className="w-full bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-slate-800 dark:border-slate-700 dark:text-white transition-all" 
                   />
                 </div>
@@ -89,8 +106,8 @@ export default function AdminSettings() {
                   <label className="block text-sm font-semibold text-slate-900 dark:text-white mb-2">Support Email</label>
                   <input 
                     type="email" 
-                    value={localSettings.supportEmail}
-                    onChange={(e) => setLocalSettings({...localSettings, supportEmail: e.target.value})}
+                    value={effectiveSettings.supportEmail || ''}
+                    onChange={(e) => setLocalSettings({...effectiveSettings, supportEmail: e.target.value})}
                     className="w-full bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-slate-800 dark:border-slate-700 dark:text-white transition-all" 
                   />
                 </div>
@@ -107,7 +124,7 @@ export default function AdminSettings() {
                     <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Disables access to the platform for all non-admin users.</p>
                   </div>
                   <label className="relative inline-flex items-center cursor-pointer">
-                    <input type="checkbox" className="sr-only peer" checked={localSettings.maintenanceMode} onChange={(e) => setLocalSettings({...localSettings, maintenanceMode: e.target.checked})} />
+                    <input type="checkbox" className="sr-only peer" checked={!!effectiveSettings.maintenanceMode} onChange={(e) => setLocalSettings({...effectiveSettings, maintenanceMode: e.target.checked})} />
                     <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-red-300 dark:peer-focus:ring-red-800 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-slate-600 peer-checked:bg-red-600"></div>
                   </label>
                 </div>
@@ -118,7 +135,7 @@ export default function AdminSettings() {
                     <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Allow new users to sign up for accounts.</p>
                   </div>
                   <label className="relative inline-flex items-center cursor-pointer">
-                    <input type="checkbox" className="sr-only peer" checked={localSettings.registrationEnabled} onChange={(e) => setLocalSettings({...localSettings, registrationEnabled: e.target.checked})} />
+                    <input type="checkbox" className="sr-only peer" checked={!!effectiveSettings.registrationEnabled} onChange={(e) => setLocalSettings({...effectiveSettings, registrationEnabled: e.target.checked})} />
                     <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-slate-600 peer-checked:bg-blue-600"></div>
                   </label>
                 </div>

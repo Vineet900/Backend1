@@ -1,0 +1,57 @@
+{
+  "id": "react-4",
+  "title": "State with useState Hook",
+  "slug": "04-state-with-usestate-hook",
+  "category": "react",
+  "chapterNumber": 4,
+  "level": "beginner",
+  "estimatedTime": "15 min",
+  "theory": {
+    "english": "State is data that can change over time and when it changes, React automatically re-renders the component. The useState hook is the primary way to add state to a functional component. useState returns an array with two elements: the current state value and a setter function to update it. You must always use the setter function to update state — never mutate the state variable directly. When state changes, React re-renders only that component and its children. State is local and private to the component that owns it.",
+    "hindi": "State woh data hai jo time ke saath change ho sakta hai aur jab bhi yeh change hota hai, React automatically component ko re-render karta hai. useState hook functional component mein state add karne ka primary tarika hai. useState do elements wala array return karta hai: current state value aur use update karne ke liye ek setter function. State ko update karne ke liye hamesha setter function use karein — state variable ko directly kabhi mutate mat karein.",
+    "hinglish": "State woh data hai jo change hota hai over time. Jab state change hoti hai, React component ko re-render karta hai. useState hook se state add karte hain - yeh ek array return karta hai jisme current value aur setter function hota hai. Kabhi bhi state variable directly change mat karo - hamesha setter function use karo."
+  },
+  "examples": [
+    {
+      "title": "Counter with useState",
+      "code": "import { useState } from 'react';\n\nfunction Counter() {\n  const [count, setCount] = useState(0);\n\n  return (\n    <div>\n      <p>Count: {count}</p>\n      <button onClick={() => setCount(count + 1)}>Increment</button>\n      <button onClick={() => setCount(count - 1)}>Decrement</button>\n      <button onClick={() => setCount(0)}>Reset</button>\n    </div>\n  );\n}",
+      "explanation": "useState(0) sets the initial value to 0. setCount updates the state, which triggers a re-render showing the new count value."
+    },
+    {
+      "title": "Toggle State",
+      "code": "import { useState } from 'react';\n\nfunction ToggleButton() {\n  const [isOn, setIsOn] = useState(false);\n\n  return (\n    <button\n      onClick={() => setIsOn(prev => !prev)}\n      style={{ backgroundColor: isOn ? 'green' : 'red' }}\n    >\n      {isOn ? 'ON' : 'OFF'}\n    </button>\n  );\n}",
+      "explanation": "Using the functional form setIsOn(prev => !prev) is safer when the new state depends on the old state — it guarantees you get the latest value."
+    }
+  ],
+  "exercises": [
+    {
+      "prompt": "Create a LikeButton component that shows a like count and increments it when clicked.",
+      "expectedOutcome": "A button with useState tracking the like count, re-rendering on each click."
+    },
+    {
+      "prompt": "Create a component with an input field that shows whatever the user types in real time below it.",
+      "expectedOutcome": "A controlled input using useState, updating on every keystroke."
+    }
+  ],
+  "quiz": [
+    {
+      "question": "What does useState return?",
+      "options": ["Only the state value", "Only the setter function", "An array with state value and setter function", "An object with methods"],
+      "answer": 2,
+      "explanation": "useState returns an array: [currentStateValue, setterFunction]. We use array destructuring to name them."
+    },
+    {
+      "question": "What happens when you call the state setter function?",
+      "options": ["Nothing", "The page reloads", "React re-renders the component", "The state is deleted"],
+      "answer": 2,
+      "explanation": "Calling the setter function updates state and triggers React to re-render the component with the new value."
+    },
+    {
+      "question": "What is the correct way to update state based on the previous value?",
+      "options": ["setState(state + 1)", "setState(prev => prev + 1)", "state = state + 1", "setState.update(1)"],
+      "answer": 1,
+      "explanation": "Using a function form setState(prev => prev + 1) guarantees access to the most recent state value."
+    }
+  ],
+  "summary": "useState chapter complete! Aapne seekha state kya hoti hai, useState hook kaise use karte hain, aur state update karne ke safe tarike."
+}

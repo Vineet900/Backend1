@@ -1,11 +1,13 @@
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { Search, Filter, MoreVertical, Edit2, ShieldAlert, Ban, Star, Loader2 } from 'lucide-react'
+import { Search, Filter, MoreVertical, Edit2, ShieldAlert, Ban, Star, Loader2, X } from 'lucide-react'
 import { usersService } from '../services/services'
 
 export default function AdminUsers() {
   const queryClient = useQueryClient()
   const [searchTerm, setSearchTerm] = useState('')
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [editingUser, setEditingUser] = useState(null)
 
   const { data: response, isLoading } = useQuery({
     queryKey: ['adminUsers'],
@@ -16,6 +18,15 @@ export default function AdminUsers() {
     mutationFn: ({ id, banned }) => usersService.banUser(id, banned),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['adminUsers'] })
+    }
+  })
+
+  const updateUserMutation = useMutation({
+    mutationFn: (user) => usersService.updateUser(user.id, user),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['adminUsers'] })
+      setIsModalOpen(false)
+      setEditingUser(null)
     }
   })
 
@@ -68,7 +79,8 @@ export default function AdminUsers() {
                 <th className="px-6 py-4 font-medium">User</th>
                 <th className="px-6 py-4 font-medium">Role</th>
                 <th className="px-6 py-4 font-medium">Progress</th>
-                <th className="px-6 py-4 font-medium">Points</th>
+                <th className="px-6 py-4 font-medium">XP Balance</th>
+                <th className="px-6 py-4 font-medium">Rewards (SP)</th>
                 <th className="px-6 py-4 font-medium">Status</th>
                 <th className="px-6 py-4 font-medium text-right">Actions</th>
               </tr>
@@ -124,7 +136,13 @@ export default function AdminUsers() {
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-1.5 text-slate-700 font-medium dark:text-slate-200">
                       <Star size={14} className="text-amber-400 fill-amber-400" />
-                      {(user.points || 0).toLocaleString()}
+                      {(user.profiles?.xp || 0).toLocaleString()}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-1.5 text-purple-600 font-bold dark:text-purple-400">
+                      <Sparkles size={14} />
+                      {(user.wallets?.[0]?.balance || 0).toLocaleString()} SP
                     </div>
                   </td>
                   <td className="px-6 py-4">
@@ -139,7 +157,7 @@ export default function AdminUsers() {
                   </td>
                   <td className="px-6 py-4">
                     <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <button className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors dark:hover:bg-blue-500/20 dark:hover:text-blue-400" title="Edit Points/Progress"><Edit2 size={16} /></button>
+                      <button onClick={() => { setEditingUser(user); setIsModalOpen(true); }} className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors dark:hover:bg-blue-500/20 dark:hover:text-blue-400" title="Edit Points/Progress"><Edit2 size={16} /></button>
                       <button 
                         onClick={() => handleBanToggle(user)}
                         disabled={banMutation.isPending}
@@ -158,6 +176,75 @@ export default function AdminUsers() {
             </tbody>
           </table>
         </div>
+      </div>
+
+      {isModalOpen && (
+        <UserModal 
+          user={editingUser} 
+          onClose={() => setIsModalOpen(false)} 
+          onSave={(data) => updateUserMutation.mutate(data)}
+          isLoading={updateUserMutation.isPending}
+        />
+      )}
+    </div>
+  )
+}
+
+function UserModal({ user, onClose, onSave, isLoading }) {
+  const [formData, setFormData] = useState(user || {})
+
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setFormData(prev => ({ ...prev, [name]: name === 'points' || name === 'progress' ? Number(value) : value }))
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    // Map points back to study_points if the backend expects it, though the form captures it as points.
+    // The backend users controller returns user.points = user.study_points
+    onSave({ ...formData, study_points: formData.points })
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4 overflow-y-auto">
+      <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-xl w-full max-w-sm mt-20 md:mt-0 p-6">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-xl font-bold dark:text-white">Edit User Data</h2>
+          <button onClick={onClose} className="text-slate-400 hover:text-slate-600 dark:hover:text-white">
+            <X size={20} />
+          </button>
+        </div>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Name</label>
+            <input type="text" name="name" value={formData.name || ''} disabled className="w-full px-3 py-2 border border-slate-300 rounded-lg bg-slate-50 dark:bg-slate-800/50 dark:border-slate-700 dark:text-slate-400 cursor-not-allowed" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Role</label>
+            <select name="role" value={formData.role || 'user'} onChange={handleChange} className="w-full px-3 py-2 border border-slate-300 rounded-lg dark:bg-slate-800 dark:border-slate-700 dark:text-white">
+              <option value="user">User</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Progress (%)</label>
+            <input type="number" name="progress" min="0" max="100" value={formData.progress || 0} onChange={handleChange} className="w-full px-3 py-2 border border-slate-300 rounded-lg dark:bg-slate-800 dark:border-slate-700 dark:text-white" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Points</label>
+            <input type="number" name="points" value={formData.points || 0} onChange={handleChange} className="w-full px-3 py-2 border border-slate-300 rounded-lg dark:bg-slate-800 dark:border-slate-700 dark:text-white" />
+          </div>
+
+          <div className="flex justify-end gap-3 pt-4 border-t border-slate-200 dark:border-slate-700">
+            <button type="button" onClick={onClose} className="px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100 rounded-lg dark:text-slate-300 dark:hover:bg-slate-800">
+              Cancel
+            </button>
+            <button type="submit" disabled={isLoading} className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg flex items-center gap-2">
+              {isLoading && <Loader2 size={16} className="animate-spin" />}
+              Save
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   )

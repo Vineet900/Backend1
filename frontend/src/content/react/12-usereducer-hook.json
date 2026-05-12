@@ -1,0 +1,48 @@
+{
+  "id": "react-12",
+  "title": "useReducer Hook",
+  "slug": "12-usereducer-hook",
+  "category": "react",
+  "chapterNumber": 12,
+  "level": "intermediate",
+  "estimatedTime": "18 min",
+  "theory": {
+    "english": "useReducer is an alternative to useState for managing complex state logic. It is inspired by Redux. Instead of calling setState directly, you dispatch actions. A reducer function takes the current state and an action, then returns the new state. useReducer is preferred over useState when you have multiple sub-values in state, or when the next state depends on the previous state in complex ways. It keeps all state logic in one place making it easier to test and debug.",
+    "hindi": "useReducer useState ka ek alternative hai complex state logic manage karne ke liye. Yeh Redux se inspired hai. State directly set karne ki jagah, aap actions dispatch karte ho. Ek reducer function current state aur ek action leta hai, phir naya state return karta hai. useReducer useState se better hota hai jab state mein multiple sub-values hon ya next state complex tarike se previous state par depend kare.",
+    "hinglish": "useReducer complex state ke liye best hai. useState ki jagah dispatch karo actions. Reducer function state aur action leta hai, naya state return karta hai. Ek hi jagah sab state logic — test karna aasan. Shopping cart, form wizard jaisi complex state ke liye use karo."
+  },
+  "examples": [
+    {
+      "title": "Shopping Cart with useReducer",
+      "code": "import { useReducer } from 'react';\n\nconst initialState = { items: [], total: 0 };\n\nfunction cartReducer(state, action) {\n  switch (action.type) {\n    case 'ADD_ITEM':\n      return {\n        items: [...state.items, action.payload],\n        total: state.total + action.payload.price,\n      };\n    case 'REMOVE_ITEM':\n      const item = state.items.find(i => i.id === action.payload);\n      return {\n        items: state.items.filter(i => i.id !== action.payload),\n        total: state.total - (item?.price || 0),\n      };\n    case 'CLEAR_CART':\n      return initialState;\n    default:\n      return state;\n  }\n}\n\nfunction Cart() {\n  const [cart, dispatch] = useReducer(cartReducer, initialState);\n\n  return (\n    <div>\n      <p>Items: {cart.items.length} | Total: ₹{cart.total}</p>\n      <button onClick={() => dispatch({ type: 'ADD_ITEM', payload: { id: 1, name: 'Book', price: 299 } })}>\n        Add Book\n      </button>\n      <button onClick={() => dispatch({ type: 'CLEAR_CART' })}>\n        Clear Cart\n      </button>\n    </div>\n  );\n}",
+      "explanation": "The reducer handles all cart operations. Actions describe what happened; the reducer decides how state changes in response."
+    }
+  ],
+  "exercises": [
+    {
+      "prompt": "Build a Todo list using useReducer with actions: ADD_TODO, TOGGLE_TODO, and DELETE_TODO.",
+      "expectedOutcome": "A reducer handling three action types, dispatch calls from buttons, and rendered todo list."
+    }
+  ],
+  "quiz": [
+    {
+      "question": "What is the main advantage of useReducer over useState?",
+      "options": ["It is faster", "It handles complex state logic in one centralized place", "It does not require hooks", "It works without re-rendering"],
+      "answer": 1,
+      "explanation": "useReducer centralizes all state logic in the reducer function, making complex state changes predictable and testable."
+    },
+    {
+      "question": "What does the dispatch function do?",
+      "options": ["Directly mutates state", "Sends an action to the reducer", "Fetches data from API", "Re-renders the component"],
+      "answer": 1,
+      "explanation": "dispatch sends an action object to the reducer function, which then calculates and returns the new state."
+    },
+    {
+      "question": "What must a reducer function always do?",
+      "options": ["Modify the state directly", "Return the same state always", "Return the new state without mutating the old one", "Call useState internally"],
+      "answer": 2,
+      "explanation": "Reducers must be pure functions that return a new state object without mutating the existing state."
+    }
+  ],
+  "summary": "useReducer chapter complete! Aapne seekha reducer pattern kya hai, actions dispatch karna, aur complex state ko centralized logic se manage karna."
+}

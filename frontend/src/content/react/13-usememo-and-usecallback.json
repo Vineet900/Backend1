@@ -1,0 +1,48 @@
+{
+  "id": "react-13",
+  "title": "useMemo and useCallback",
+  "slug": "13-usememo-and-usecallback",
+  "category": "react",
+  "chapterNumber": 13,
+  "level": "intermediate",
+  "estimatedTime": "15 min",
+  "theory": {
+    "english": "useMemo and useCallback are performance optimization hooks. useMemo memoizes the result of an expensive computation — it only re-calculates when its dependencies change. useCallback memoizes a function reference — it returns the same function instance between renders unless dependencies change. This is important when passing callbacks to child components that are wrapped in React.memo, preventing unnecessary re-renders. Do not overuse these hooks — only apply them when you have measured an actual performance problem.",
+    "hindi": "useMemo aur useCallback performance optimization hooks hain. useMemo ek expensive computation ke result ko memoize karta hai — yeh tabhi recalculate karta hai jab dependencies change hoti hain. useCallback ek function reference ko memoize karta hai — yeh renders ke beech same function instance return karta hai jab tak dependencies change na hon. Yeh tab important hota hai jab aap callbacks React.memo se wrapped child components ko pass karte ho.",
+    "hinglish": "useMemo expensive calculations memoize karta hai — dependencies change hone par hi recalculate karta hai. useCallback function reference memoize karta hai — same function instance deta hai har render par. Dono performance optimization ke liye hain. Over-use mat karo — sirf actual performance problem par use karo."
+  },
+  "examples": [
+    {
+      "title": "useMemo and useCallback",
+      "code": "import { useState, useMemo, useCallback, memo } from 'react';\n\n// Child only re-renders if its props change\nconst ExpensiveChild = memo(function ExpensiveChild({ onClick }) {\n  console.log('Child rendered');\n  return <button onClick={onClick}>Click Child</button>;\n});\n\nfunction Parent() {\n  const [count, setCount] = useState(0);\n  const [name, setName] = useState('');\n\n  // Only recalculates when count changes\n  const doubled = useMemo(() => {\n    console.log('Computing doubled...');\n    return count * 2;\n  }, [count]);\n\n  // Same function reference between renders unless count changes\n  const handleClick = useCallback(() => {\n    console.log('Count is:', count);\n  }, [count]);\n\n  return (\n    <div>\n      <input value={name} onChange={e => setName(e.target.value)} placeholder=\"Type name...\" />\n      <p>Count: {count} | Doubled: {doubled}</p>\n      <button onClick={() => setCount(c => c + 1)}>Increment</button>\n      <ExpensiveChild onClick={handleClick} />\n    </div>\n  );\n}",
+      "explanation": "Without useCallback, every name input keystroke would re-render ExpensiveChild because a new function is created each render. useCallback prevents this."
+    }
+  ],
+  "exercises": [
+    {
+      "prompt": "Create a component with a search input and a large list. Use useMemo to filter the list only when the search term changes, not on other state changes.",
+      "expectedOutcome": "useMemo wrapping the filter logic with the search term as a dependency."
+    }
+  ],
+  "quiz": [
+    {
+      "question": "What does useMemo do?",
+      "options": ["Memoizes a function reference", "Memoizes the result of a computation", "Prevents all re-renders", "Stores data in localStorage"],
+      "answer": 1,
+      "explanation": "useMemo caches and returns the result of an expensive computation, only recomputing when its dependencies change."
+    },
+    {
+      "question": "When should you use useCallback?",
+      "options": ["Always, for every function", "When passing a function to a memoized child component", "When fetching data", "When using useState"],
+      "answer": 1,
+      "explanation": "useCallback is most useful when passing callbacks to child components wrapped in React.memo to prevent unnecessary re-renders."
+    },
+    {
+      "question": "What is the risk of overusing useMemo and useCallback?",
+      "options": ["App crashes", "Added complexity with no benefit for simple cases", "State stops updating", "Components stop rendering"],
+      "answer": 1,
+      "explanation": "These hooks add complexity and their own overhead. For simple cases, the optimization cost can exceed the benefit."
+    }
+  ],
+  "summary": "useMemo aur useCallback chapter complete! Aapne seekha memoization kya hai, kab use karna chahiye, aur React.memo ke saath kaise use karte hain."
+}

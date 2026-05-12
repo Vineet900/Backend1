@@ -1,0 +1,48 @@
+{
+  "id": "react-16",
+  "title": "React with API - Data Fetching",
+  "slug": "16-react-with-api-data-fetching",
+  "category": "react",
+  "chapterNumber": 16,
+  "level": "advanced",
+  "estimatedTime": "20 min",
+  "theory": {
+    "english": "Fetching data from APIs is one of the core skills in React development. The standard pattern uses useEffect to trigger the fetch on mount and useState to store loading, error, and data states. Axios is a popular HTTP client that simplifies fetch calls with automatic JSON parsing and better error handling. For production apps, libraries like React Query or SWR handle caching, background refetching, and loading states automatically. Always handle loading and error states in your UI to give users a good experience.",
+    "hindi": "APIs se data fetch karna React development mein core skills mein se ek hai. Standard pattern useEffect use karta hai mount par fetch trigger karne ke liye aur useState loading, error, aur data states store karne ke liye. Axios ek popular HTTP client hai jo automatic JSON parsing aur better error handling ke saath fetch calls simplify karta hai.",
+    "hinglish": "API se data fetch karna React ka core skill hai. useEffect + useState pattern use karo. Loading, error, aur data teeno states handle karo. Axios use karo cleaner API calls ke liye. Production mein React Query ya SWR use karo caching aur auto-refetch ke liye."
+  },
+  "examples": [
+    {
+      "title": "Complete API Fetch Pattern",
+      "code": "import { useState, useEffect } from 'react';\nimport axios from 'axios';\n\nfunction CourseList() {\n  const [courses, setCourses] = useState([]);\n  const [loading, setLoading] = useState(true);\n  const [error, setError] = useState(null);\n\n  useEffect(() => {\n    let cancelled = false;\n\n    async function fetchCourses() {\n      try {\n        const { data } = await axios.get('/api/admin/courses');\n        if (!cancelled) {\n          setCourses(data.data || []);\n        }\n      } catch (err) {\n        if (!cancelled) setError(err.message);\n      } finally {\n        if (!cancelled) setLoading(false);\n      }\n    }\n\n    fetchCourses();\n    return () => { cancelled = true; };\n  }, []);\n\n  if (loading) return <div className=\"spinner\">Loading courses...</div>;\n  if (error) return <div className=\"error\">Error: {error}</div>;\n\n  return (\n    <ul>\n      {courses.map(course => (\n        <li key={course.id}>{course.title}</li>\n      ))}\n    </ul>\n  );\n}",
+      "explanation": "The cancelled flag prevents state updates on unmounted components. Always handle loading, error, and success states separately."
+    }
+  ],
+  "exercises": [
+    {
+      "prompt": "Build a component that fetches posts from https://jsonplaceholder.typicode.com/posts and shows loading/error states. Add a Retry button that refetches on error.",
+      "expectedOutcome": "Full fetch pattern with loading spinner, error message with retry button, and posts list."
+    }
+  ],
+  "quiz": [
+    {
+      "question": "Why should you track a 'loading' state when fetching data?",
+      "options": ["To speed up fetching", "To show a spinner/message while waiting for data", "It is required by React", "To prevent API calls"],
+      "answer": 1,
+      "explanation": "Loading state lets you show a spinner or skeleton UI while data is being fetched, improving user experience."
+    },
+    {
+      "question": "What is the 'cancelled' flag pattern used for?",
+      "options": ["Cancelling the fetch request itself", "Preventing state updates after a component unmounts", "Skipping the useEffect", "Stopping re-renders"],
+      "answer": 1,
+      "explanation": "If a component unmounts before the fetch completes, the cancelled flag prevents calling setState on the unmounted component."
+    },
+    {
+      "question": "What advantage does Axios have over the native fetch API?",
+      "options": ["It is built into React", "Automatic JSON parsing and better error handling", "It is always faster", "It works offline"],
+      "answer": 1,
+      "explanation": "Axios automatically parses JSON responses and throws errors for non-2xx status codes, unlike fetch which requires manual handling."
+    }
+  ],
+  "summary": "Data Fetching chapter complete! Aapne seekha API calls karna, loading/error states handle karna, cancelled flag pattern, aur Axios advantages."
+}

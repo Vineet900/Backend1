@@ -1,0 +1,57 @@
+{
+  "id": "react-1",
+  "title": "Introduction to React",
+  "slug": "01-introduction-to-react",
+  "category": "react",
+  "chapterNumber": 1,
+  "level": "beginner",
+  "estimatedTime": "10 min",
+  "theory": {
+    "english": "React is a JavaScript library created by Facebook for building fast and interactive user interfaces. Instead of manipulating the DOM directly like in plain JavaScript, React lets you describe what the UI should look like and it handles all the updates efficiently. React uses a component-based architecture, meaning your entire app is broken into small reusable pieces called components. React uses a Virtual DOM which is a lightweight copy of the real DOM. When data changes, React updates the Virtual DOM first, then compares it with the real DOM and only updates what actually changed. This makes React extremely fast.",
+    "hindi": "React ek JavaScript library hai jo Facebook ne banai hai fast aur interactive user interfaces banane ke liye. Plain JavaScript mein aapko seedha DOM manipulate karna padta hai, lekin React mein aap describe karte ho ki UI kaisi dikhni chahiye aur React baaki sab sambhal leta hai. React component-based architecture use karta hai, matlab puri app chhote reusable pieces mein toot jaati hai jinhe components kehte hain. React Virtual DOM use karta hai jo real DOM ki ek lightweight copy hoti hai.",
+    "hinglish": "React ek JavaScript library hai jo Facebook ne banai hai. Isme aapko directly DOM nahi manipulate karna padta - aap sirf describe karo ki UI kaisi dikhni chahiye, React baaki handle kar leta hai. React component-based hai matlab puri app chhote reusable components mein divided hoti hai. Virtual DOM ki wajah se React bahut fast hoti hai."
+  },
+  "examples": [
+    {
+      "title": "Your First React Component",
+      "code": "function Welcome() {\n  return <h1>Hello, DevSchool!</h1>;\n}\n\nexport default Welcome;",
+      "explanation": "This is the simplest React component. It is a JavaScript function that returns JSX (which looks like HTML). Every React component must return JSX."
+    },
+    {
+      "title": "Rendering a Component",
+      "code": "import React from 'react';\nimport ReactDOM from 'react-dom/client';\n\nfunction App() {\n  return <h1>Welcome to React!</h1>;\n}\n\nconst root = ReactDOM.createRoot(document.getElementById('root'));\nroot.render(<App />);",
+      "explanation": "This shows how React renders your component into the real HTML page. ReactDOM.createRoot finds your HTML element and React takes over from there."
+    }
+  ],
+  "exercises": [
+    {
+      "prompt": "Create a React component called Greeting that displays your name inside an h2 tag.",
+      "expectedOutcome": "A functional component that returns JSX with an h2 element."
+    },
+    {
+      "prompt": "Create a component called CourseCard that shows a title and description of a course.",
+      "expectedOutcome": "A component returning a div with h3 for title and p for description."
+    }
+  ],
+  "quiz": [
+    {
+      "question": "What is React primarily used for?",
+      "options": ["Server-side scripting", "Building user interfaces", "Database management", "Styling websites"],
+      "answer": 1,
+      "explanation": "React is a JavaScript library specifically for building user interfaces."
+    },
+    {
+      "question": "What is the Virtual DOM?",
+      "options": ["A real browser DOM", "A lightweight copy of the DOM React uses internally", "A CSS styling tool", "A database"],
+      "answer": 1,
+      "explanation": "The Virtual DOM is React's internal lightweight copy of the real DOM that makes updates efficient."
+    },
+    {
+      "question": "What does a React component return?",
+      "options": ["CSS styles", "Database queries", "JSX", "Plain text only"],
+      "answer": 2,
+      "explanation": "React components return JSX, which is a syntax extension that looks like HTML but compiles to JavaScript."
+    }
+  ],
+  "summary": "React introduction complete! Aapne seekha ki React kya hai, Virtual DOM kaise kaam karta hai, aur pehla component kaise banate hain."
+}

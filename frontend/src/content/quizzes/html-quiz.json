@@ -1,0 +1,98 @@
+{
+  "title": "HTML Final Quiz",
+  "topic": "HTML",
+  "difficulty": "Easy",
+  "status": "Active",
+  "questions": [
+    {
+      "question": "What does HTML stand for?",
+      "options": ["Hyperlinks and Text Markup Language", "HyperText Markup Language", "High-level Text Making Language", "HyperText Machine Language"],
+      "correct_answer": "HyperText Markup Language",
+      "explanation": "HTML stands for HyperText Markup Language. It is the standard language for creating web pages, defining structure and content."
+    },
+    {
+      "question": "What is the correct HTML5 doctype declaration?",
+      "options": ["<!DOCTYPE HTML5>", "<!DOCTYPE html>", "<html doctype='5'>", "<!html>"],
+      "correct_answer": "<!DOCTYPE html>",
+      "explanation": "<!DOCTYPE html> tells the browser this document uses HTML5. It must be the very first line of every HTML document."
+    },
+    {
+      "question": "Which HTML tag is used for the main heading of a page?",
+      "options": ["<header>", "<heading>", "<h1>", "<title>"],
+      "correct_answer": "<h1>",
+      "explanation": "<h1> is the main heading. There should be only one per page. Headings go from h1 (most important) to h6 (least important)."
+    },
+    {
+      "question": "What is the difference between <div> and <span>?",
+      "options": ["No difference", "<div> is for images; <span> is for text", "<div> is block-level; <span> is inline", "<span> is block-level; <div> is inline"],
+      "correct_answer": "<div> is block-level; <span> is inline",
+      "explanation": "Block-level elements like <div> start on a new line and take full width. Inline elements like <span> flow within text content."
+    },
+    {
+      "question": "Which attribute makes an input field required?",
+      "options": ["mandatory", "validate", "required", "notnull"],
+      "correct_answer": "required",
+      "explanation": "The 'required' attribute prevents form submission if the field is empty and shows a browser validation message."
+    },
+    {
+      "question": "What does the alt attribute on an <img> tag provide?",
+      "options": ["Image title on hover", "Alternative text for accessibility and when image fails to load", "Image dimensions", "Image source fallback"],
+      "correct_answer": "Alternative text for accessibility and when image fails to load",
+      "explanation": "alt text is read by screen readers (accessibility) and displayed when the image cannot load. It's required for good HTML practice."
+    },
+    {
+      "question": "Which HTML5 element is used for navigation links?",
+      "options": ["<menu>", "<links>", "<navigation>", "<nav>"],
+      "correct_answer": "<nav>",
+      "explanation": "<nav> is a semantic HTML5 element that marks a section containing the main navigation links of a page."
+    },
+    {
+      "question": "What is the purpose of the <meta charset='UTF-8'> tag?",
+      "options": ["Adds character count to the page", "Specifies the character encoding so browsers correctly display all characters", "Sets the language of the page", "Protects against XSS"],
+      "correct_answer": "Specifies the character encoding so browsers correctly display all characters",
+      "explanation": "UTF-8 supports all Unicode characters including accented letters, emoji, and non-Latin scripts. Always include this in <head>."
+    },
+    {
+      "question": "What is the difference between <article> and <section>?",
+      "options": ["They are identical", "<article> is standalone independent content; <section> groups thematically related content", "<section> is for news only", "<article> can only contain text"],
+      "correct_answer": "<article> is standalone independent content; <section> groups thematically related content",
+      "explanation": "<article> makes sense on its own (blog post, news story). <section> groups related content within a larger context."
+    },
+    {
+      "question": "How do you create an ordered list in HTML?",
+      "options": ["<ul> with <li>", "<list type='ordered'>", "<ol> with <li>", "<dl> with <dt>"],
+      "correct_answer": "<ol> with <li>",
+      "explanation": "<ol> creates a numbered ordered list. <ul> creates a bulleted unordered list. Both use <li> for individual list items."
+    },
+    {
+      "question": "What does the href attribute in <a href='url'> specify?",
+      "options": ["The link text color", "The URL the link navigates to", "The link target ID", "The link relationship type"],
+      "correct_answer": "The URL the link navigates to",
+      "explanation": "href (Hypertext Reference) specifies the destination URL. Use # for same-page anchor links and mailto: for email links."
+    },
+    {
+      "question": "Which input type shows a date picker in modern browsers?",
+      "options": ["type='calendar'", "type='picker'", "type='datetime'", "type='date'"],
+      "correct_answer": "type='date'",
+      "explanation": "type='date' renders a native date picker UI in modern browsers, returning the value in YYYY-MM-DD format."
+    },
+    {
+      "question": "What is the <label> element used for in forms?",
+      "options": ["Adding tooltips", "Styling form inputs", "Associating a text label with a form control for accessibility", "Grouping inputs"],
+      "correct_answer": "Associating a text label with a form control for accessibility",
+      "explanation": "Clicking a <label> focuses its associated input (via for attribute matching input id). Essential for screen reader accessibility."
+    },
+    {
+      "question": "What does the <head> element contain?",
+      "options": ["The main visible content", "Navigation links only", "Metadata, title, links to CSS/JS — not visible on page", "Page header with logo"],
+      "correct_answer": "Metadata, title, links to CSS/JS — not visible on page",
+      "explanation": "<head> contains meta tags, title, charset, favicon, CSS links, and script tags — information about the document, not its content."
+    },
+    {
+      "question": "Which attribute should you use for accessibility on buttons that have no text (icon-only buttons)?",
+      "options": ["title='...'", "aria-label='...'", "name='...'", "data-label='...'"],
+      "correct_answer": "aria-label='...'",
+      "explanation": "aria-label provides an accessible name for screen readers when a button has no visible text — critical for icon-only buttons."
+    }
+  ]
+}

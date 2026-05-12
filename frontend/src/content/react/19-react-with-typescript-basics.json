@@ -1,0 +1,48 @@
+{
+  "id": "react-19",
+  "title": "React with TypeScript Basics",
+  "slug": "19-react-with-typescript-basics",
+  "category": "react",
+  "chapterNumber": 19,
+  "level": "advanced",
+  "estimatedTime": "20 min",
+  "theory": {
+    "english": "TypeScript adds static typing to JavaScript. In React, TypeScript helps you define the exact shape of props, state, and function return types, catching bugs at compile time before they reach production. You define prop types using interfaces or type aliases. The FC type (FunctionComponent) or React.ComponentProps can be used to type components. TypeScript also adds type safety to useRef, useState, and useReducer. Modern React projects increasingly use TypeScript as it significantly improves code quality, IDE autocomplete, and team collaboration.",
+    "hindi": "TypeScript JavaScript mein static typing add karta hai. React mein, TypeScript aapko props, state, aur function return types ki exact shape define karne mein help karta hai, bugs ko compile time par hi pakad leta hai production tak pahunchne se pehle. Aap prop types interfaces ya type aliases se define karte ho. Modern React projects increasingly TypeScript use kar rahe hain kyunki yeh code quality, IDE autocomplete, aur team collaboration significantly improve karta hai.",
+    "hinglish": "TypeScript se React components type-safe ho jaate hain. Props ki interface ya type define karo. Compile time par bugs catch hote hain. useState<string>() jaisi typed hooks use karo. TypeScript se IDE autocomplete bahut better ho jaata hai. Modern React projects mein TypeScript standard ban raha hai."
+  },
+  "examples": [
+    {
+      "title": "Typed React Components",
+      "code": "import { useState, FC } from 'react';\n\n// Define prop types\ninterface CourseCardProps {\n  title: string;\n  chapters: number;\n  level: 'beginner' | 'intermediate' | 'advanced';\n  onEnroll?: () => void; // Optional prop\n}\n\n// Typed function component\nconst CourseCard: FC<CourseCardProps> = ({ title, chapters, level, onEnroll }) => {\n  return (\n    <div>\n      <h3>{title}</h3>\n      <p>{chapters} chapters - {level}</p>\n      {onEnroll && <button onClick={onEnroll}>Enroll</button>}\n    </div>\n  );\n};\n\n// Typed state\ninterface User {\n  id: number;\n  name: string;\n  email: string;\n}\n\nfunction UserProfile() {\n  const [user, setUser] = useState<User | null>(null);\n  const [isLoading, setIsLoading] = useState<boolean>(false);\n\n  return <div>{user ? user.name : 'No user loaded'}</div>;\n}",
+      "explanation": "Interface defines the exact shape of props. TypeScript will error at compile time if you pass wrong prop types. Optional props use the ? suffix."
+    }
+  ],
+  "exercises": [
+    {
+      "prompt": "Convert a plain JavaScript React component with name, age, and email props into a TypeScript component with a proper interface.",
+      "expectedOutcome": "A TypeScript component using an interface for props with all types correctly defined."
+    }
+  ],
+  "quiz": [
+    {
+      "question": "What is the purpose of defining an interface for React component props?",
+      "options": ["To make components slower", "To enforce type safety and catch prop errors at compile time", "To add CSS classes", "To replace useState"],
+      "answer": 1,
+      "explanation": "Prop interfaces define exactly what data the component accepts, giving TypeScript the ability to catch incorrect usage at compile time."
+    },
+    {
+      "question": "How do you type a useState that can be either a User object or null?",
+      "options": ["useState(null)", "useState<User | null>(null)", "useState[User](null)", "useState<User>()"],
+      "answer": 1,
+      "explanation": "The generic type parameter <User | null> tells TypeScript that the state can be a User object or null."
+    },
+    {
+      "question": "How do you mark a prop as optional in a TypeScript interface?",
+      "options": ["optional name: string", "name?: string", "name: string | undefined explicitly only", "name: optional<string>"],
+      "answer": 1,
+      "explanation": "The ? suffix after the property name marks it as optional in TypeScript interfaces and type aliases."
+    }
+  ],
+  "summary": "React + TypeScript chapter complete! Aapne seekha interfaces kaise define karte hain, typed components, typed state, aur optional props ka syntax."
+}

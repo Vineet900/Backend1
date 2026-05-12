@@ -1,0 +1,98 @@
+{
+  "title": "GitHub Final Quiz",
+  "topic": "GitHub",
+  "difficulty": "Easy",
+  "status": "Active",
+  "questions": [
+    {
+      "question": "What is the difference between Git and GitHub?",
+      "options": ["They are the same", "Git is a version control tool; GitHub is a cloud platform to host Git repositories", "GitHub is older than Git", "Git requires GitHub to work"],
+      "correct_answer": "Git is a version control tool; GitHub is a cloud platform to host Git repositories",
+      "explanation": "Git tracks changes locally on your machine. GitHub is a web-based platform where you store, share, and collaborate on Git repos."
+    },
+    {
+      "question": "What does git push -u origin main do?",
+      "options": ["Pulls code from GitHub", "Deletes the main branch on GitHub", "Pushes commits and sets origin/main as the upstream tracking branch", "Creates a new branch on GitHub"],
+      "correct_answer": "Pushes commits and sets origin/main as the upstream tracking branch",
+      "explanation": "-u sets the upstream so future 'git push' and 'git pull' commands work without specifying remote and branch each time."
+    },
+    {
+      "question": "What is a Fork on GitHub?",
+      "options": ["A type of branch", "Your own copy of someone else's repository under your account", "A deleted repository", "A GitHub Action"],
+      "correct_answer": "Your own copy of someone else's repository under your account",
+      "explanation": "Forking copies a repo to your GitHub account, letting you make changes freely without affecting the original project."
+    },
+    {
+      "question": "What is a Pull Request on GitHub?",
+      "options": ["A request to download code", "A proposal to merge a branch with code review and discussion before merging", "Pulling the latest code from remote", "A GitHub Actions trigger"],
+      "correct_answer": "A proposal to merge a branch with code review and discussion before merging",
+      "explanation": "PRs are the collaboration mechanism — teammates can review, comment, request changes, and approve before code is merged."
+    },
+    {
+      "question": "What does 'Squash and merge' do to a Pull Request?",
+      "options": ["Rebases commits onto main", "Merges without any commits", "Combines all PR commits into a single commit before merging", "Deletes the PR branch automatically"],
+      "correct_answer": "Combines all PR commits into a single commit before merging",
+      "explanation": "Squash and merge collapses all feature branch commits (including WIP commits) into one clean commit on main."
+    },
+    {
+      "question": "How do you automatically close a GitHub issue when a PR is merged?",
+      "options": ["Add the issue number to the branch name", "Manually close it after merging", "Write 'Closes #number' in the PR description", "Label the issue as 'merged'"],
+      "correct_answer": "Write 'Closes #number' in the PR description",
+      "explanation": "Keywords like 'Closes #12', 'Fixes #12', or 'Resolves #12' in PR descriptions automatically close the linked issue when the PR merges."
+    },
+    {
+      "question": "Where do GitHub Actions workflow files live?",
+      "options": ["workflows/", "github/actions/", ".github/workflows/", "actions/"],
+      "correct_answer": ".github/workflows/",
+      "explanation": "GitHub automatically detects and executes YAML workflow files placed in the .github/workflows/ directory."
+    },
+    {
+      "question": "What does 'needs: test' in a GitHub Actions job mean?",
+      "options": ["The job installs testing tools", "The job only runs after the 'test' job completes successfully", "The job skips if tests fail", "The job runs in parallel with test"],
+      "correct_answer": "The job only runs after the 'test' job completes successfully",
+      "explanation": "'needs' creates a sequential dependency — the deploy job runs only if the test job succeeds, preventing broken deployments."
+    },
+    {
+      "question": "What is the 'upstream' remote in a forked repository workflow?",
+      "options": ["Your fork on GitHub", "Your local machine", "The main branch", "The original repository you forked from"],
+      "correct_answer": "The original repository you forked from",
+      "explanation": "Adding the original repo as 'upstream' lets you sync your fork with new changes from the original project."
+    },
+    {
+      "question": "Which GitHub issue label should beginners look for to find approachable issues?",
+      "options": ["bug", "help-wanted", "good first issue", "beginner-task"],
+      "correct_answer": "good first issue",
+      "explanation": "'good first issue' is a standard GitHub label maintainers use to mark issues suitable for newcomers to the project."
+    },
+    {
+      "question": "What are GitHub Secrets used for?",
+      "options": ["Private repositories", "Storing sensitive values like passwords and tokens for use in GitHub Actions", "Encrypting commits", "Hiding files from other users"],
+      "correct_answer": "Storing sensitive values like passwords and tokens for use in GitHub Actions",
+      "explanation": "GitHub Secrets securely stores credentials accessible as ${{ secrets.NAME }} in workflows without exposing them in code or logs."
+    },
+    {
+      "question": "What is the purpose of a GitHub Actions trigger 'on: pull_request'?",
+      "options": ["Runs the workflow when a PR is merged only", "Runs the workflow when a PR is opened or updated", "Runs on any git push", "Triggers only for PRs to main branch"],
+      "correct_answer": "Runs the workflow when a PR is opened or updated",
+      "explanation": "on: pull_request triggers the workflow whenever a PR is opened, synchronized (new commits pushed), or reopened."
+    },
+    {
+      "question": "What does git clone do?",
+      "options": ["Creates a new empty repository", "Copies a remote repository to your local machine with full history", "Pushes local code to GitHub", "Creates a fork on GitHub"],
+      "correct_answer": "Copies a remote repository to your local machine with full history",
+      "explanation": "git clone downloads the entire repository including all branches and commit history to your local machine."
+    },
+    {
+      "question": "What is a GitHub Project (Kanban board)?",
+      "options": ["A type of repository", "A CI/CD pipeline", "A project management board to track issues and PRs visually", "A code review tool"],
+      "correct_answer": "A project management board to track issues and PRs visually",
+      "explanation": "GitHub Projects provides a Kanban-style board to organize issues and PRs across columns like Todo, In Progress, and Done."
+    },
+    {
+      "question": "What is the purpose of a Draft Pull Request?",
+      "options": ["To delete branches", "To signal work in progress not yet ready for review", "To merge without review", "To archive old PRs"],
+      "correct_answer": "To signal work in progress not yet ready for review",
+      "explanation": "Draft PRs allow early feedback and visibility on ongoing work without requesting a full review until the code is ready."
+    }
+  ]
+}

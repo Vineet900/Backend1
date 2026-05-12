@@ -1,0 +1,57 @@
+{
+  "id": "react-10",
+  "title": "React Router - Navigation",
+  "slug": "10-react-router-navigation",
+  "category": "react",
+  "chapterNumber": 10,
+  "level": "intermediate",
+  "estimatedTime": "18 min",
+  "theory": {
+    "english": "React Router is the standard library for routing in React applications. It enables navigation between pages without reloading the browser. BrowserRouter wraps your entire app and provides routing context. Route defines which component to render for a given URL path. Link is used instead of anchor tags to navigate without page reload. useNavigate hook lets you programmatically navigate to routes. useParams hook extracts dynamic parameters from the URL. Nested routes allow you to build complex layouts.",
+    "hindi": "React Router React applications mein routing ke liye standard library hai. Yeh browser reload kiye bina pages ke beech navigation enable karta hai. BrowserRouter poori app ko wrap karta hai aur routing context deta hai. Route define karta hai ki kis URL path ke liye kaunsa component render hoga. Link anchor tags ki jagah use hota hai page reload ke bina navigate karne ke liye.",
+    "hinglish": "React Router se SPA (Single Page Application) mein navigation karte hain. BrowserRouter poori app wrap karta hai. Routes component ke andar Route likhte hain. Link se navigate karo anchor tag ki jagah. useNavigate se programmatically navigate karo. useParams se URL ka dynamic part nikalo."
+  },
+  "examples": [
+    {
+      "title": "Basic React Router Setup",
+      "code": "import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';\n\nfunction Navbar() {\n  return (\n    <nav>\n      <Link to=\"/\">Home</Link>\n      <Link to=\"/courses\">Courses</Link>\n      <Link to=\"/about\">About</Link>\n    </nav>\n  );\n}\n\nfunction App() {\n  return (\n    <BrowserRouter>\n      <Navbar />\n      <Routes>\n        <Route path=\"/\" element={<HomePage />} />\n        <Route path=\"/courses\" element={<CoursesPage />} />\n        <Route path=\"/about\" element={<AboutPage />} />\n        <Route path=\"*\" element={<NotFoundPage />} />\n      </Routes>\n    </BrowserRouter>\n  );\n}",
+      "explanation": "BrowserRouter enables routing. Routes contains all Route definitions. Link navigates without reload. The * path catches any unmatched URL."
+    },
+    {
+      "title": "Dynamic Routes with useParams",
+      "code": "import { useParams, useNavigate } from 'react-router-dom';\n\nfunction CourseDetail() {\n  const { courseId } = useParams();\n  const navigate = useNavigate();\n\n  return (\n    <div>\n      <h1>Course: {courseId}</h1>\n      <button onClick={() => navigate('/courses')}>\n        Back to Courses\n      </button>\n    </div>\n  );\n}\n\n// In Routes:\n// <Route path=\"/courses/:courseId\" element={<CourseDetail />} />",
+      "explanation": "useParams reads the :courseId dynamic segment from the URL. useNavigate allows going back programmatically."
+    }
+  ],
+  "exercises": [
+    {
+      "prompt": "Set up React Router with Home, About, and Contact pages. Add a navigation bar with Links.",
+      "expectedOutcome": "BrowserRouter with Routes, three Route elements, and a Navbar with Link components."
+    },
+    {
+      "prompt": "Create a blog app with a /posts route listing posts and a /posts/:id route showing a single post's details.",
+      "expectedOutcome": "Dynamic route with useParams to read the post ID and display the matching post."
+    }
+  ],
+  "quiz": [
+    {
+      "question": "Why should you use Link instead of anchor tag <a> in React Router?",
+      "options": ["Links look better", "Links prevent full page reload", "Links work faster", "Anchor tags are not supported in React"],
+      "answer": 1,
+      "explanation": "Link uses JavaScript navigation which updates the URL without reloading the page, keeping React state intact."
+    },
+    {
+      "question": "Which hook gives you access to URL parameters like /user/:id?",
+      "options": ["useLocation", "useHistory", "useParams", "useRoute"],
+      "answer": 2,
+      "explanation": "useParams returns an object of key-value pairs from the dynamic segments of the current URL."
+    },
+    {
+      "question": "What does the path='*' route do?",
+      "options": ["Matches all routes", "Matches no routes", "Matches only the home route", "Matches routes with wildcards only"],
+      "answer": 0,
+      "explanation": "The * path is a catch-all that matches any URL not matched by the other routes — perfect for 404 pages."
+    }
+  ],
+  "summary": "React Router chapter complete! Aapne seekha routing setup karna, Link se navigate karna, dynamic routes, useParams aur useNavigate hooks."
+}

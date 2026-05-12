@@ -1,0 +1,48 @@
+{
+  "id": "react-18",
+  "title": "Error Boundaries",
+  "slug": "18-error-boundaries",
+  "category": "react",
+  "chapterNumber": 18,
+  "level": "advanced",
+  "estimatedTime": "12 min",
+  "theory": {
+    "english": "Error Boundaries are React components that catch JavaScript errors anywhere in their child component tree and display a fallback UI instead of crashing the entire application. They catch errors during rendering, in lifecycle methods, and in constructors of the whole tree below them. Error Boundaries must be class components (currently there is no hook equivalent). Use them to wrap major sections of your app like routes, dashboards, or widgets. A common pattern is to create one reusable ErrorBoundary component and use it throughout the app.",
+    "hindi": "Error Boundaries React components hain jo apne child component tree mein kahin bhi JavaScript errors pakad lete hain aur puri application crash hone ki jagah ek fallback UI display karte hain. Yeh errors rendering ke dauran, lifecycle methods mein, aur poore tree ke neeche ke constructors mein pakad lete hain. Error Boundaries abhi class components hone chahiye. Inhe apni app ke major sections jaise routes, dashboards, ya widgets wrap karne ke liye use karein.",
+    "hinglish": "Error Boundaries se app ko crash hone se bachao. Yeh class components hote hain jo child tree ke errors catch karte hain. Fallback UI dikhate hain error aane par. Route level ya feature level par use karo. componentDidCatch lifecycle method error details log karta hai."
+  },
+  "examples": [
+    {
+      "title": "Reusable Error Boundary Component",
+      "code": "import { Component } from 'react';\n\nclass ErrorBoundary extends Component {\n  constructor(props) {\n    super(props);\n    this.state = { hasError: false, error: null };\n  }\n\n  static getDerivedStateFromError(error) {\n    return { hasError: true, error };\n  }\n\n  componentDidCatch(error, info) {\n    console.error('ErrorBoundary caught:', error, info.componentStack);\n    // Send to error tracking service like Sentry\n  }\n\n  render() {\n    if (this.state.hasError) {\n      return (\n        <div style={{ padding: '20px', border: '1px solid red', borderRadius: '8px' }}>\n          <h2>Something went wrong</h2>\n          <p>{this.state.error?.message}</p>\n          <button onClick={() => this.setState({ hasError: false, error: null })}>\n            Try Again\n          </button>\n        </div>\n      );\n    }\n    return this.props.children;\n  }\n}\n\n// Usage\nfunction App() {\n  return (\n    <ErrorBoundary>\n      <CoursesPage />\n    </ErrorBoundary>\n  );\n}",
+      "explanation": "getDerivedStateFromError updates state when an error occurs. componentDidCatch logs details. The fallback UI shows instead of the crashed component."
+    }
+  ],
+  "exercises": [
+    {
+      "prompt": "Create an ErrorBoundary component and wrap it around a component that throws an error when a button is clicked. Show a friendly error message with a reset button.",
+      "expectedOutcome": "ErrorBoundary catching the error, showing fallback UI, and resetting state on button click."
+    }
+  ],
+  "quiz": [
+    {
+      "question": "What type of component must an Error Boundary be?",
+      "options": ["Function component", "Class component", "Either type", "A custom hook"],
+      "answer": 1,
+      "explanation": "Error Boundaries must be class components because they use lifecycle methods getDerivedStateFromError and componentDidCatch."
+    },
+    {
+      "question": "What does getDerivedStateFromError do?",
+      "options": ["Logs the error", "Updates state to trigger the fallback UI render", "Fixes the error automatically", "Reloads the component"],
+      "answer": 1,
+      "explanation": "getDerivedStateFromError receives the error and returns a new state object that triggers the fallback UI."
+    },
+    {
+      "question": "What types of errors do Error Boundaries NOT catch?",
+      "options": ["Rendering errors", "Event handler errors", "Constructor errors", "Lifecycle method errors"],
+      "answer": 1,
+      "explanation": "Error Boundaries do not catch errors inside event handlers. Use regular try/catch inside event handlers instead."
+    }
+  ],
+  "summary": "Error Boundaries chapter complete! Aapne seekha Error Boundary class component kaise banate hain, getDerivedStateFromError, componentDidCatch, aur fallback UI."
+}

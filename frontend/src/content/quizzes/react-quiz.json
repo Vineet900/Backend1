@@ -1,0 +1,98 @@
+{
+  "title": "React Final Quiz",
+  "topic": "React",
+  "difficulty": "Medium",
+  "status": "Active",
+  "questions": [
+    {
+      "question": "What is JSX in React?",
+      "options": ["A separate language from JavaScript", "A JavaScript file extension", "A syntax extension that lets you write HTML-like code inside JavaScript", "A CSS-in-JS library"],
+      "correct_answer": "A syntax extension that lets you write HTML-like code inside JavaScript",
+      "explanation": "JSX is syntactic sugar for React.createElement() calls. Babel compiles JSX to regular JavaScript that browsers can execute."
+    },
+    {
+      "question": "What hook is used to add state to a function component?",
+      "options": ["useEffect", "useRef", "useContext", "useState"],
+      "correct_answer": "useState",
+      "explanation": "useState returns a state variable and a setter function. Calling the setter triggers a re-render with the new value."
+    },
+    {
+      "question": "What happens when you call a setState function in React?",
+      "options": ["State updates immediately and synchronously", "The component and its children re-render with the new state", "All components in the app re-render", "The page reloads"],
+      "correct_answer": "The component and its children re-render with the new state",
+      "explanation": "React schedules a re-render of the component (and its children) with the updated state value on the next render cycle."
+    },
+    {
+      "question": "What is the purpose of the key prop in a list?",
+      "options": ["For CSS styling", "To pass an ID to the component as a prop", "To help React identify which items changed, were added, or removed", "To sort the list"],
+      "correct_answer": "To help React identify which items changed, were added, or removed",
+      "explanation": "Keys allow React to efficiently update the DOM by tracking which list items changed between renders, improving performance."
+    },
+    {
+      "question": "What is the best value to use as a list item key?",
+      "options": ["Math.random()", "Array index always", "Date.now()", "A stable unique ID from your data (like a database ID)"],
+      "correct_answer": "A stable unique ID from your data (like a database ID)",
+      "explanation": "Stable IDs don't change between renders. Array indexes are problematic when the list reorders, causing unnecessary re-renders."
+    },
+    {
+      "question": "When does useEffect with an empty dependency array [] run?",
+      "options": ["On every render", "Never", "Only once after the initial mount", "Only when props change"],
+      "correct_answer": "Only once after the initial mount",
+      "explanation": "An empty [] tells React the effect has no dependencies, so it runs once after the component first mounts and never again."
+    },
+    {
+      "question": "What is the purpose of the cleanup function returned from useEffect?",
+      "options": ["To re-run the effect", "To reset state to initial value", "To clear side effects (subscriptions, timers) when component unmounts or before next effect", "To skip the effect"],
+      "correct_answer": "To clear side effects (subscriptions, timers) when component unmounts or before next effect",
+      "explanation": "The cleanup function prevents memory leaks by clearing intervals, cancelling subscriptions, or aborting fetches on unmount."
+    },
+    {
+      "question": "What makes a form input a 'controlled component'?",
+      "options": ["Adding a ref attribute", "Using the required attribute", "Binding value to state and updating state with onChange", "Adding the controlled prop"],
+      "correct_answer": "Binding value to state and updating state with onChange",
+      "explanation": "A controlled component's value is always driven by React state. The onChange handler updates state, which updates the input display."
+    },
+    {
+      "question": "What problem does useContext solve?",
+      "options": ["Slow rendering", "Making API calls", "Prop drilling — passing props through many component layers", "Form validation"],
+      "correct_answer": "Prop drilling — passing props through many component layers",
+      "explanation": "useContext makes data available to any component in the tree without passing it as props through every intermediate component."
+    },
+    {
+      "question": "What is the main advantage of useReducer over useState?",
+      "options": ["It is always faster", "It works without hooks", "It centralizes complex state logic in one place for predictable updates", "It removes the need for re-renders"],
+      "correct_answer": "It centralizes complex state logic in one place for predictable updates",
+      "explanation": "useReducer handles complex state with multiple sub-values using a reducer function, making all state transitions explicit and testable."
+    },
+    {
+      "question": "What does React.memo do?",
+      "options": ["Memoizes a computed value", "Stores data in localStorage", "Prevents a component from re-rendering if its props haven't changed", "Caches API responses"],
+      "correct_answer": "Prevents a component from re-rendering if its props haven't changed",
+      "explanation": "React.memo is a HOC that compares previous and current props. If equal, it skips re-rendering, optimizing performance."
+    },
+    {
+      "question": "What does useCallback memoize?",
+      "options": ["The result of an expensive computation", "A function reference between renders", "A fetched data value", "A DOM element reference"],
+      "correct_answer": "A function reference between renders",
+      "explanation": "useCallback returns the same function reference between renders unless dependencies change, preventing unnecessary child re-renders."
+    },
+    {
+      "question": "What does mutating a useRef's .current value do?",
+      "options": ["Triggers a re-render", "Throws an error", "Nothing — no re-render is triggered", "Updates the DOM directly"],
+      "correct_answer": "Nothing — no re-render is triggered",
+      "explanation": "Unlike state, mutating ref.current does not trigger a re-render. This makes refs useful for storing values that shouldn't cause re-renders."
+    },
+    {
+      "question": "What naming convention must custom hooks follow?",
+      "options": ["Start with 'hook'", "Start with 'use'", "Start with 'custom'", "Start with a capital letter"],
+      "correct_answer": "Start with 'use'",
+      "explanation": "Custom hooks must start with 'use'. This convention tells React to apply its rules of hooks to the function."
+    },
+    {
+      "question": "What must wrap a React.lazy loaded component?",
+      "options": ["React.memo", "React.StrictMode", "Suspense with a fallback prop", "ErrorBoundary"],
+      "correct_answer": "Suspense with a fallback prop",
+      "explanation": "Suspense provides a fallback UI (like a loading spinner) to show while the lazy component's code is being downloaded."
+    }
+  ]
+}

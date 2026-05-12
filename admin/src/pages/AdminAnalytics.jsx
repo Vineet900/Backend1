@@ -5,22 +5,26 @@ import { analyticsService } from '../services/services'
 export default function AdminAnalytics() {
   const { data: response, isLoading } = useQuery({
     queryKey: ['analyticsStats'],
-    queryFn: analyticsService.getStats
+    queryFn: analyticsService.getAnalytics
   })
 
-  const stats = response?.data?.stats || [
-    { label: 'Total Sessions', value: '0', change: '0%', icon: TrendingUp },
-    { label: 'Avg Session Time', value: '0', change: '0%', icon: Clock },
-    { label: 'Course Completions', value: '0', change: '0%', icon: BookOpen },
-    { label: 'New Registrations', value: '0', change: '0%', icon: Users },
+  const backendData = response?.data || {}
+
+  // Backend returns metrics array directly in data
+  const stats = backendData.metrics || [
+    { label: 'Total Sessions', value: '0', change: '0%' },
+    { label: 'Avg Session Time', value: '0', change: '0%' },
+    { label: 'Course Completions', value: '0', change: '0%' },
+    { label: 'New Registrations', value: '0', change: '0%' },
   ]
 
-  const chartData = response?.data?.chartData || {
-    bars: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+  // Backend returns chartBars and months directly
+  const chartData = {
+    bars: backendData.chartBars || [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    months: backendData.months || ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
   }
 
-  const topCourses = response?.data?.topCourses || []
+  const topCourses = backendData.topCourses || []
 
   if (isLoading) {
     return (
@@ -51,9 +55,10 @@ export default function AdminAnalytics() {
                 {stat.label === 'Avg Session Time' && <Clock size={20} />}
                 {stat.label === 'Course Completions' && <BookOpen size={20} />}
                 {stat.label === 'New Registrations' && <Users size={20} />}
+                {!['Total Sessions','Avg Session Time','Course Completions','New Registrations'].includes(stat.label) && <BarChart3 size={20} />}
               </div>
-              <span className={`text-xs font-bold px-2 py-1 rounded-full ${stat.change.startsWith('+') ? 'bg-green-50 text-green-600 dark:bg-green-500/10 dark:text-green-400' : 'bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400'}`}>
-                {stat.change}
+              <span className={`text-xs font-bold px-2 py-1 rounded-full ${(stat.change || '').startsWith('+') ? 'bg-green-50 text-green-600 dark:bg-green-500/10 dark:text-green-400' : 'bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400'}`}>
+                {stat.change || '0%'}
               </span>
             </div>
             <p className="text-sm font-medium text-slate-500 dark:text-slate-400">{stat.label}</p>
@@ -84,7 +89,7 @@ export default function AdminAnalytics() {
                   ></div>
                 </div>
                 <span className="text-xs text-slate-400 font-medium hidden md:block">{chartData.months[i]}</span>
-                <span className="text-[10px] text-slate-400 font-medium md:hidden">{chartData.months[i].charAt(0)}</span>
+                <span className="text-[10px] text-slate-400 font-medium md:hidden">{(chartData.months[i] || '').charAt(0)}</span>
               </div>
             ))}
           </div>
@@ -93,7 +98,9 @@ export default function AdminAnalytics() {
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 dark:bg-slate-900 dark:border-slate-800">
           <h3 className="text-lg font-bold text-slate-900 mb-6 dark:text-white">Top Courses</h3>
           <div className="space-y-6">
-            {topCourses.map((course, i) => (
+            {topCourses.length === 0 ? (
+              <p className="text-sm text-slate-500 text-center py-4">No data yet</p>
+            ) : topCourses.map((course, i) => (
               <div key={i}>
                 <div className="flex justify-between items-center mb-2 text-sm">
                   <span className="font-medium text-slate-700 dark:text-slate-300">{course.name}</span>
@@ -110,4 +117,3 @@ export default function AdminAnalytics() {
     </div>
   )
 }
-

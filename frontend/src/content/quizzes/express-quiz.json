@@ -1,0 +1,98 @@
+{
+  "title": "Express.js Final Quiz",
+  "topic": "Express.js",
+  "difficulty": "Medium",
+  "status": "Active",
+  "questions": [
+    {
+      "question": "What does app.use(express.json()) do?",
+      "options": ["Converts response to JSON", "Parses incoming JSON request bodies into req.body", "Validates JSON structure", "Sends JSON responses"],
+      "correct_answer": "Parses incoming JSON request bodies into req.body",
+      "explanation": "express.json() is middleware that parses requests with JSON payloads and populates req.body with the parsed object."
+    },
+    {
+      "question": "How do you read a URL parameter /users/:id in Express?",
+      "options": ["req.body.id", "req.query.id", "req.params.id", "req.url.id"],
+      "correct_answer": "req.params.id",
+      "explanation": "req.params is an object containing properties mapped to named route parameters defined with ':' in the route path."
+    },
+    {
+      "question": "How do you read a query string from /search?q=javascript?",
+      "options": ["req.params.q", "req.body.q", "req.query.q", "req.url.q"],
+      "correct_answer": "req.query.q",
+      "explanation": "req.query contains key-value pairs parsed from the URL query string. Access individual values with req.query.keyname."
+    },
+    {
+      "question": "What happens if middleware doesn't call next() and doesn't send a response?",
+      "options": ["The next middleware runs automatically", "An error is thrown", "The request hangs and times out", "Express retries the request"],
+      "correct_answer": "The request hangs and times out",
+      "explanation": "Without calling next() or res.send/json/end, the request cycle is stuck — the client waits forever until timeout."
+    },
+    {
+      "question": "How many parameters does Express error-handling middleware take?",
+      "options": ["2", "3", "4", "5"],
+      "correct_answer": "4",
+      "explanation": "Error middleware takes (err, req, res, next). The extra 'err' parameter is what tells Express it's specifically an error handler."
+    },
+    {
+      "question": "Where should global error-handling middleware be placed?",
+      "options": ["Before all routes", "After all routes and middleware", "In a separate file only", "Inside each route handler"],
+      "correct_answer": "After all routes and middleware",
+      "explanation": "Error handlers must be registered last so they can catch errors from all routes and middleware above them."
+    },
+    {
+      "question": "What is the purpose of express.Router()?",
+      "options": ["It replaces the main Express app", "It creates modular, mountable route handlers for organizing routes", "It handles only GET requests", "It connects to the database"],
+      "correct_answer": "It creates modular, mountable route handlers for organizing routes",
+      "explanation": "express.Router() creates isolated route modules that can be mounted at specific paths in the main app with app.use()."
+    },
+    {
+      "question": "How do you pass an async error to Express's error handler?",
+      "options": ["throw error", "return error", "next(error)", "res.error(error)"],
+      "correct_answer": "next(error)",
+      "explanation": "In async routes, you must call next(err) to pass errors to the error-handling middleware. Express does not catch async errors automatically."
+    },
+    {
+      "question": "What does the helmet package do in an Express app?",
+      "options": ["Handles authentication", "Sets secure HTTP headers to protect against common vulnerabilities", "Rate limits requests", "Compresses responses"],
+      "correct_answer": "Sets secure HTTP headers to protect against common vulnerabilities",
+      "explanation": "helmet sets HTTP headers like Content-Security-Policy, X-XSS-Protection, and others to protect against XSS, clickjacking, and other attacks."
+    },
+    {
+      "question": "What is the dotenv package used for in Express?",
+      "options": ["Minifying JavaScript", "Loading environment variables from a .env file into process.env", "Managing database connections", "Handling file uploads"],
+      "correct_answer": "Loading environment variables from a .env file into process.env",
+      "explanation": "dotenv reads the .env file in your project root and adds each key-value pair to process.env, keeping secrets out of your code."
+    },
+    {
+      "question": "What does morgan do in an Express application?",
+      "options": ["Handles authentication", "HTTP request logging middleware", "Database ORM", "Template engine"],
+      "correct_answer": "HTTP request logging middleware",
+      "explanation": "morgan logs HTTP requests to the console including method, URL, status code, and response time — useful for debugging and monitoring."
+    },
+    {
+      "question": "Which HTTP method should be used for updating an entire resource?",
+      "options": ["POST", "PATCH", "PUT", "GET"],
+      "correct_answer": "PUT",
+      "explanation": "PUT replaces the entire resource. PATCH makes partial updates. POST creates new resources. GET retrieves resources."
+    },
+    {
+      "question": "What does res.status(201).json({ data }) do?",
+      "options": ["Sends a 201 HTML page", "Sets status code to 201 and sends JSON body in one chain", "Only sets the status code", "Only sends the JSON"],
+      "correct_answer": "Sets status code to 201 and sends JSON body in one chain",
+      "explanation": "res.status() sets the HTTP status code and returns the response object so you can chain .json() to send the body."
+    },
+    {
+      "question": "What is the Controller pattern in Express?",
+      "options": ["Putting all logic in route files", "Separating business logic handlers from route definitions into controller files", "A database connection pattern", "A middleware pattern"],
+      "correct_answer": "Separating business logic handlers from route definitions into controller files",
+      "explanation": "Controllers contain the actual logic for each endpoint, keeping route files clean and making logic reusable and testable."
+    },
+    {
+      "question": "What does rate limiting middleware do?",
+      "options": ["Speeds up requests", "Limits the number of requests from a client in a time window to prevent abuse", "Caches responses", "Compresses request bodies"],
+      "correct_answer": "Limits the number of requests from a client in a time window to prevent abuse",
+      "explanation": "Rate limiting prevents brute force attacks and API abuse by capping how many requests an IP can make (e.g., 100 per 15 minutes)."
+    }
+  ]
+}

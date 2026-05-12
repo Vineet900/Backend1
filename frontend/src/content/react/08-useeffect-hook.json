@@ -1,0 +1,57 @@
+{
+  "id": "react-8",
+  "title": "useEffect Hook",
+  "slug": "08-useeffect-hook",
+  "category": "react",
+  "chapterNumber": 8,
+  "level": "intermediate",
+  "estimatedTime": "18 min",
+  "theory": {
+    "english": "useEffect is a hook that lets you perform side effects in function components. Side effects include things like fetching data from an API, setting up subscriptions, manually updating the DOM, or setting timers. useEffect runs after every render by default. You control when it runs using the dependency array (second argument). An empty array [] means run only once on mount. Returning a function from useEffect creates a cleanup function that runs when the component unmounts or before the next effect runs.",
+    "hindi": "useEffect ek hook hai jo aapko function components mein side effects perform karne deta hai. Side effects mein API se data fetch karna, subscriptions set up karna, DOM manually update karna, ya timers set karna shamil hain. useEffect by default har render ke baad run hota hai. Aap dependency array (doosra argument) se control kar sakte ho ki yeh kab run kare. Empty array [] matlab sirf mount par ek baar run karo.",
+    "hinglish": "useEffect se side effects handle karte hain — API calls, timers, subscriptions. By default har render ke baad run hota hai. Dependency array se control karo kab run kare. Empty array [] sirf ek baar run karata hai mount par. Cleanup function return karo unmount ke liye."
+  },
+  "examples": [
+    {
+      "title": "Three Dependency Patterns",
+      "code": "import { useState, useEffect } from 'react';\n\nfunction EffectDemo({ userId }) {\n  const [data, setData] = useState(null);\n\n  // Runs on every render\n  useEffect(() => {\n    console.log('Rendered!');\n  });\n\n  // Runs only once on mount\n  useEffect(() => {\n    console.log('Component mounted!');\n  }, []);\n\n  // Runs when userId changes\n  useEffect(() => {\n    console.log('userId changed:', userId);\n    fetch(`/api/users/${userId}`)\n      .then(r => r.json())\n      .then(d => setData(d));\n  }, [userId]);\n\n  return <div>{data?.name}</div>;\n}",
+      "explanation": "Three different dependency arrays create three different behaviors: always, once, and on dependency change."
+    },
+    {
+      "title": "Cleanup Function",
+      "code": "import { useEffect } from 'react';\n\nfunction Timer() {\n  useEffect(() => {\n    const interval = setInterval(() => {\n      console.log('Tick!');\n    }, 1000);\n\n    // Cleanup: clear interval when component unmounts\n    return () => clearInterval(interval);\n  }, []);\n\n  return <p>Timer is running...</p>;\n}",
+      "explanation": "The returned function is the cleanup. It runs when the component unmounts, preventing memory leaks from the interval."
+    }
+  ],
+  "exercises": [
+    {
+      "prompt": "Create a component that fetches a list of users from https://jsonplaceholder.typicode.com/users on mount and displays their names.",
+      "expectedOutcome": "useEffect with [] dependency array, fetch call, and state to store results."
+    },
+    {
+      "prompt": "Create a component with a counter that auto-increments every second using setInterval. Make sure to clear the interval on unmount.",
+      "expectedOutcome": "useEffect with setInterval and a cleanup function returning clearInterval."
+    }
+  ],
+  "quiz": [
+    {
+      "question": "When does useEffect with an empty [] dependency array run?",
+      "options": ["On every render", "Only when state changes", "Only once after initial mount", "Never"],
+      "answer": 2,
+      "explanation": "An empty dependency array [] tells React to run the effect only once after the component first mounts."
+    },
+    {
+      "question": "What is the purpose of the cleanup function returned from useEffect?",
+      "options": ["To re-run the effect", "To clear side effects when component unmounts", "To reset state", "To skip the effect"],
+      "answer": 1,
+      "explanation": "The cleanup function runs when the component unmounts or before the next effect, preventing memory leaks."
+    },
+    {
+      "question": "What does useEffect without a dependency array do?",
+      "options": ["Runs only once", "Never runs", "Runs after every single render", "Runs only on user interaction"],
+      "answer": 2,
+      "explanation": "Without a dependency array, useEffect runs after every render, including re-renders caused by state changes."
+    }
+  ],
+  "summary": "useEffect chapter complete! Aapne seekha side effects kya hain, dependency array ke teeno patterns, aur cleanup functions ka use."
+}

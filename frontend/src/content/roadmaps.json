@@ -1,0 +1,55 @@
+[
+  {
+    "id": "frontend",
+    "title": "Frontend Development",
+    "description": "Master the art of building beautiful, interactive user interfaces from scratch.",
+    "category": "Frontend",
+    "level": "Beginner to Advanced",
+    "duration": "6 Months",
+    "xp": 1200,
+    "icon": "Layout",
+    "steps": [
+      { "id": "html", "title": "HTML5", "description": "Semantic structure and accessibility.", "xp": 100, "isLocked": false, "progress": 0 },
+      { "id": "css", "title": "Modern CSS", "description": "Flexbox, Grid, and Animations.", "xp": 150, "isLocked": false, "progress": 0 },
+      { "id": "javascript", "title": "JavaScript Mastery", "description": "Core concepts to advanced patterns.", "xp": 250, "isLocked": true, "progress": 0 },
+      { "id": "tailwind", "title": "Tailwind CSS", "description": "Rapid UI development with utility classes.", "xp": 150, "isLocked": true, "progress": 0 },
+      { "id": "react", "title": "React.js", "description": "Component-based architecture and hooks.", "xp": 300, "isLocked": true, "progress": 0 },
+      { "id": "nextjs", "title": "Next.js", "description": "Server-side rendering and static generation.", "xp": 250, "isLocked": true, "progress": 0 }
+    ]
+  },
+  {
+    "id": "backend",
+    "title": "Backend Development",
+    "description": "Build scalable APIs and manage databases for high-performance applications.",
+    "category": "Backend",
+    "level": "Intermediate",
+    "duration": "5 Months",
+    "xp": 1500,
+    "icon": "Server",
+    "steps": [
+      { "id": "nodejs", "title": "Node.js", "description": "Event-driven architecture and core modules.", "xp": 200, "isLocked": false, "progress": 0 },
+      { "id": "express", "title": "Express.js", "description": "Middleware and routing for web apps.", "xp": 200, "isLocked": true, "progress": 0 },
+      { "id": "postgresql", "title": "PostgreSQL", "description": "Relational data modeling and SQL.", "xp": 250, "isLocked": true, "progress": 0 },
+      { "id": "mongodb", "title": "MongoDB", "description": "NoSQL document-based data management.", "xp": 250, "isLocked": true, "progress": 0 },
+      { "id": "auth", "title": "Authentication", "description": "JWT, OAuth, and security best practices.", "xp": 300, "isLocked": true, "progress": 0 },
+      { "id": "apis", "title": "RESTful APIs", "description": "Designing and documenting robust APIs.", "xp": 300, "isLocked": true, "progress": 0 }
+    ]
+  },
+  {
+    "id": "devops",
+    "title": "DevOps Engineering",
+    "description": "Automate deployments and manage cloud infrastructure at scale.",
+    "category": "DevOps",
+    "level": "Advanced",
+    "duration": "4 Months",
+    "xp": 1800,
+    "icon": "Cpu",
+    "steps": [
+      { "id": "git", "title": "Git & GitHub", "description": "Version control and collaborative workflows.", "xp": 150, "isLocked": false, "progress": 0 },
+      { "id": "docker", "title": "Docker", "description": "Containerization and isolation.", "xp": 300, "isLocked": true, "progress": 0 },
+      { "id": "aws", "title": "AWS", "description": "Cloud services and serverless compute.", "xp": 500, "isLocked": true, "progress": 0 },
+      { "id": "cicd", "title": "CI/CD", "description": "Automated pipelines and testing.", "xp": 400, "isLocked": true, "progress": 0 },
+      { "id": "deployment", "title": "Deployment", "description": "Vercel, Netlify, and Kubernetes.", "xp": 450, "isLocked": true, "progress": 0 }
+    ]
+  }
+]

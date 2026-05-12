@@ -29,7 +29,8 @@ export const quizzesService = {
 }
 
 export const analyticsService = {
-  getAnalytics: () => api.get('/analytics')
+  getAnalytics: () => api.get('/analytics'),
+  getStats: () => api.get('/analytics')
 }
 
 export const settingsService = {

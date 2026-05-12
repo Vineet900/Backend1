@@ -1,0 +1,98 @@
+{
+  "title": "Node.js Final Quiz",
+  "topic": "Node.js",
+  "difficulty": "Medium",
+  "status": "Active",
+  "questions": [
+    {
+      "question": "What JavaScript engine does Node.js use to execute code?",
+      "options": ["SpiderMonkey", "V8", "Chakra", "JavaScriptCore"],
+      "correct_answer": "V8",
+      "explanation": "Node.js is built on Google Chrome's V8 JavaScript engine, which compiles JavaScript directly to native machine code."
+    },
+    {
+      "question": "Which of the following best describes Node.js's I/O model?",
+      "options": ["Synchronous blocking", "Multi-threaded", "Non-blocking event-driven", "Sequential processing only"],
+      "correct_answer": "Non-blocking event-driven",
+      "explanation": "Node.js uses non-blocking I/O and an event loop, allowing it to handle many concurrent operations without waiting for each to complete."
+    },
+    {
+      "question": "How do you export a function named 'greet' from a CommonJS module?",
+      "options": ["export function greet() {}", "export default greet", "module.exports = { greet }", "exports default greet"],
+      "correct_answer": "module.exports = { greet }",
+      "explanation": "CommonJS modules use module.exports to export values. ES Module syntax (export) requires .mjs extension or 'type':'module' in package.json."
+    },
+    {
+      "question": "Which built-in Node.js module is used to read and write files?",
+      "options": ["http", "path", "os", "fs"],
+      "correct_answer": "fs",
+      "explanation": "The 'fs' (File System) module provides APIs for file operations like readFile, writeFile, unlink, mkdir, etc."
+    },
+    {
+      "question": "What is the purpose of fs.promises in Node.js?",
+      "options": ["To make fs sync", "To provide Promise-based fs methods compatible with async/await", "To cache file reads", "To compress files automatically"],
+      "correct_answer": "To provide Promise-based fs methods compatible with async/await",
+      "explanation": "fs.promises exposes the same fs operations but returns Promises instead of using callbacks, enabling clean async/await code."
+    },
+    {
+      "question": "What command creates a package.json file with default values?",
+      "options": ["npm create", "npm start", "npm init -y", "npm install"],
+      "correct_answer": "npm init -y",
+      "explanation": "npm init -y (--yes) skips all prompts and generates a package.json with default values immediately."
+    },
+    {
+      "question": "What is the difference between dependencies and devDependencies in package.json?",
+      "options": ["No difference", "devDependencies are installed first", "dependencies are for production; devDependencies are for development only", "devDependencies are always installed globally"],
+      "correct_answer": "dependencies are for production; devDependencies are for development only",
+      "explanation": "dependencies are required to run the app. devDependencies (like nodemon, jest) are only needed during development and excluded in production."
+    },
+    {
+      "question": "Which EventEmitter method registers a listener that fires exactly once?",
+      "options": ["on()", "emit()", "once()", "addListener()"],
+      "correct_answer": "once()",
+      "explanation": "once() attaches a listener that is automatically removed after it fires the first time, preventing repeated execution."
+    },
+    {
+      "question": "What is the main advantage of using Node.js Streams for large files?",
+      "options": ["Streams are faster on small files", "Streams process data in chunks avoiding loading the entire file into memory", "Streams encrypt data automatically", "Streams work offline"],
+      "correct_answer": "Streams process data in chunks avoiding loading the entire file into memory",
+      "explanation": "Without streams, reading a 2GB file loads all 2GB into RAM. Streams process it in small chunks, keeping memory usage low."
+    },
+    {
+      "question": "What does util.promisify() do?",
+      "options": ["Converts Promises to callbacks", "Converts callback-based functions into Promise-based functions", "Makes all code async", "Validates function arguments"],
+      "correct_answer": "Converts callback-based functions into Promise-based functions",
+      "explanation": "util.promisify() wraps Node.js-style callback functions (last arg is callback(err, result)) and returns a Promise-returning version."
+    },
+    {
+      "question": "When should you use Promise.all()?",
+      "options": ["When tasks must run sequentially", "When you want to run multiple async operations in parallel and wait for all to complete", "When you only care about the first result", "When you want to cancel other Promises"],
+      "correct_answer": "When you want to run multiple async operations in parallel and wait for all to complete",
+      "explanation": "Promise.all() runs all given Promises simultaneously and resolves once all complete, making parallel async tasks much faster."
+    },
+    {
+      "question": "How do you collect a POST request body in a raw Node.js http server?",
+      "options": ["req.body", "req.json()", "Listen to req 'data' events and parse on 'end'", "Read from req.url"],
+      "correct_answer": "Listen to req 'data' events and parse on 'end'",
+      "explanation": "Without Express middleware, request body arrives as a stream. You collect chunks in the 'data' event and parse the complete body in 'end'."
+    },
+    {
+      "question": "What is the purpose of pipe() with Node.js Streams?",
+      "options": ["Opens a network socket", "Connects a readable stream's output to a writable stream's input", "Compresses a stream", "Encrypts data in transit"],
+      "correct_answer": "Connects a readable stream's output to a writable stream's input",
+      "explanation": "pipe() chains streams together so data automatically flows from one to the next, with backpressure managed automatically."
+    },
+    {
+      "question": "Which module in Node.js is used to work with file and directory paths?",
+      "options": ["os", "url", "path", "fs"],
+      "correct_answer": "path",
+      "explanation": "The 'path' module provides utilities like path.join(), path.resolve(), path.dirname(), path.extname() for working with file paths cross-platform."
+    },
+    {
+      "question": "What HTTP status code should a successful resource creation (POST) return?",
+      "options": ["200", "204", "201", "301"],
+      "correct_answer": "201",
+      "explanation": "201 Created indicates the request succeeded and a new resource was created. 200 is for successful reads, 204 for no content."
+    }
+  ]
+}

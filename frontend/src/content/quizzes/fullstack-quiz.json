@@ -1,0 +1,98 @@
+{
+  "title": "Full Stack Development Final Quiz",
+  "topic": "Full Stack Development",
+  "difficulty": "Hard",
+  "status": "Active",
+  "questions": [
+    {
+      "question": "What is a REST API?",
+      "options": ["A database type", "A frontend framework", "A standardized way to communicate between frontend and backend over HTTP", "A deployment service"],
+      "correct_answer": "A standardized way to communicate between frontend and backend over HTTP",
+      "explanation": "REST APIs use HTTP methods (GET, POST, PUT, DELETE) and URLs to define how clients and servers exchange data in a stateless way."
+    },
+    {
+      "question": "Which layer in a full stack app holds business logic?",
+      "options": ["Frontend (React)", "Database (PostgreSQL)", "Backend (Node.js/Express)", "Browser's localStorage"],
+      "correct_answer": "Backend (Node.js/Express)",
+      "explanation": "The backend handles authentication, validation, permissions, and processing. Frontend displays; database stores; backend processes."
+    },
+    {
+      "question": "Why should passwords never be stored as plain text in a database?",
+      "options": ["Plain text is too slow to query", "Databases cannot store strings", "If the database is breached, all user passwords are exposed", "Plain text passwords are too long"],
+      "correct_answer": "If the database is breached, all user passwords are exposed",
+      "explanation": "bcrypt hashing is irreversible. Even if attackers get the database, they cannot reverse hashes to obtain original passwords."
+    },
+    {
+      "question": "What is a JWT (JSON Web Token)?",
+      "options": ["A database format", "A signed token used for stateless authentication containing user identity data", "A JavaScript testing tool", "A type of API endpoint"],
+      "correct_answer": "A signed token used for stateless authentication containing user identity data",
+      "explanation": "JWT is a compact signed token (Header.Payload.Signature) issued after login. Clients send it with every request to prove their identity."
+    },
+    {
+      "question": "How should a JWT be sent with API requests from the client?",
+      "options": ["In the URL query string", "In the request body", "In the Authorization header as 'Bearer <token>'", "In a cookie named jwt"],
+      "correct_answer": "In the Authorization header as 'Bearer <token>'",
+      "explanation": "The standard pattern is Authorization: Bearer eyJhbGc... The backend middleware extracts and verifies this token on every protected request."
+    },
+    {
+      "question": "Why should uploaded files be stored in S3 rather than the server's local disk?",
+      "options": ["S3 is always faster to read", "Server disk is lost on restarts and isn't shared across multiple instances", "S3 is free for all files", "Servers cannot store binary files"],
+      "correct_answer": "Server disk is lost on restarts and isn't shared across multiple instances",
+      "explanation": "S3 is durable, scalable, and globally accessible — unlike local disk which is lost on instance restarts and inaccessible to other servers."
+    },
+    {
+      "question": "What is the purpose of bcrypt's salt rounds (e.g., 12)?",
+      "options": ["How many characters the hash is", "The number of database queries", "Controls the computational cost of hashing — higher is more secure but slower", "How many attempts before lockout"],
+      "correct_answer": "Controls the computational cost of hashing — higher is more secure but slower",
+      "explanation": "Higher salt rounds exponentially increase hashing time, making brute force attacks impractical while remaining acceptable for login (< 1 second)."
+    },
+    {
+      "question": "What is the key difference between HTTP and WebSockets?",
+      "options": ["WebSockets are just faster HTTP", "HTTP allows server push; WebSockets require client request", "HTTP is request-response only; WebSockets allow server to push data anytime", "WebSockets only work on localhost"],
+      "correct_answer": "HTTP is request-response only; WebSockets allow server to push data anytime",
+      "explanation": "HTTP is stateless request-response. WebSockets maintain a persistent connection where both client and server can send messages at any time."
+    },
+    {
+      "question": "What are Socket.IO rooms used for?",
+      "options": ["Authenticating users", "Storing messages in the database", "Grouping sockets to send targeted messages to a subset of users", "Creating server namespaces"],
+      "correct_answer": "Grouping sockets to send targeted messages to a subset of users",
+      "explanation": "Rooms allow emitting events to specific groups — like all users in a chat channel or a single user's personal notification room."
+    },
+    {
+      "question": "Why should you build and test the API before building the frontend?",
+      "options": ["Frontend is harder to build", "APIs are built by a different team", "Testing API logic independently with Postman validates it before adding UI complexity", "Frontend cannot function without complete backend"],
+      "correct_answer": "Testing API logic independently with Postman validates it before adding UI complexity",
+      "explanation": "API-first development lets you verify business logic, edge cases, and data shapes before adding React complexity on top."
+    },
+    {
+      "question": "What does the UNIQUE(user_id, course_id) constraint in an enrollments table ensure?",
+      "options": ["Users can enroll in unlimited courses", "Each user can only be enrolled in a course once", "Only one user can enroll in each course", "Both IDs must be UUIDs"],
+      "correct_answer": "Each user can only be enrolled in a course once",
+      "explanation": "Composite UNIQUE constraints prevent duplicate records — in this case, the same user enrolling in the same course multiple times."
+    },
+    {
+      "question": "What SQL window function calculates rankings dynamically in a leaderboard query?",
+      "options": ["COUNT()", "SUM()", "RANK() OVER(ORDER BY xp DESC)", "ROW_NUMBER() only"],
+      "correct_answer": "RANK() OVER(ORDER BY xp DESC)",
+      "explanation": "RANK() OVER assigns rankings based on an order without needing to store them. Ties get the same rank with gaps in numbering."
+    },
+    {
+      "question": "Why use PM2 in production instead of 'node server.js'?",
+      "options": ["PM2 makes Node.js faster", "PM2 replaces npm", "PM2 restarts the app on crashes/reboots and provides logging and monitoring", "PM2 is required for Express"],
+      "correct_answer": "PM2 restarts the app on crashes/reboots and provides logging and monitoring",
+      "explanation": "Running node directly means the app dies on any error or server restart. PM2 provides process management, auto-restart, and clustering."
+    },
+    {
+      "question": "When should database migrations run relative to deploying new application code?",
+      "options": ["After deploying new code", "At the same time", "Before deploying new code", "Only during scheduled maintenance"],
+      "correct_answer": "Before deploying new code",
+      "explanation": "Running migrations first ensures the schema is ready for the new code that depends on it, preventing runtime errors during deployment."
+    },
+    {
+      "question": "What does the multer middleware handle in a file upload route?",
+      "options": ["Uploading files to S3 directly", "Sending email attachments", "Parsing multipart/form-data requests for file uploads", "Generating file names"],
+      "correct_answer": "Parsing multipart/form-data requests for file uploads",
+      "explanation": "multer is Express middleware for handling multipart/form-data, making uploaded file data available on req.file or req.files."
+    }
+  ]
+}

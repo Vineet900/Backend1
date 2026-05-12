@@ -1,0 +1,57 @@
+{
+  "id": "react-7",
+  "title": "Lists and Keys",
+  "slug": "07-lists-and-keys",
+  "category": "react",
+  "chapterNumber": 7,
+  "level": "beginner",
+  "estimatedTime": "12 min",
+  "theory": {
+    "english": "Rendering lists of data is one of the most common tasks in React. You use the JavaScript array .map() method to transform an array of data into an array of JSX elements. Each item in a list must have a unique key prop. Keys help React identify which items changed, were added, or removed. Keys should be stable, unique IDs from your data (like a database ID), not array indexes (unless the list never reorders). Keys are not passed as props to the component — they are used internally by React only.",
+    "hindi": "React mein data ki lists render karna sabse common tasks mein se ek hai. Aap JavaScript array ke .map() method se data array ko JSX elements ke array mein convert karte ho. List ke har item ko ek unique key prop dena zaroori hai. Keys React ko yeh identify karne mein help karti hain ki kaunse items change, add, ya remove hue hain. Keys stable, unique IDs hone chahiye — array indexes nahi (jab tak list reorder na ho).",
+    "hinglish": "Lists render karne ke liye .map() use karo. Har list item ko ek unique key prop dena zaroori hai. Key React ko changes track karne mein help karta hai. Key database ID jaisi stable value honi chahiye, index nahi. Keys component ke props mein available nahi hoti — sirf React internally use karta hai."
+  },
+  "examples": [
+    {
+      "title": "Rendering a List of Courses",
+      "code": "const courses = [\n  { id: 1, name: 'HTML', chapters: 22 },\n  { id: 2, name: 'CSS', chapters: 27 },\n  { id: 3, name: 'JavaScript', chapters: 36 },\n];\n\nfunction CourseList() {\n  return (\n    <ul>\n      {courses.map((course) => (\n        <li key={course.id}>\n          {course.name} — {course.chapters} chapters\n        </li>\n      ))}\n    </ul>\n  );\n}",
+      "explanation": "Each course is mapped to an <li> element. key={course.id} uses the unique database ID as the key."
+    },
+    {
+      "title": "Rendering a List of Components",
+      "code": "function StudentCard({ name, grade }) {\n  return (\n    <div className=\"card\">\n      <h3>{name}</h3>\n      <p>Grade: {grade}</p>\n    </div>\n  );\n}\n\nfunction StudentList({ students }) {\n  return (\n    <div>\n      {students.map((student) => (\n        <StudentCard\n          key={student.id}\n          name={student.name}\n          grade={student.grade}\n        />\n      ))}\n    </div>\n  );\n}",
+      "explanation": "The key goes on the outermost element returned by map, not inside the component. Props are passed separately."
+    }
+  ],
+  "exercises": [
+    {
+      "prompt": "Create a TodoList component that renders an array of todo objects (id, text) as list items.",
+      "expectedOutcome": "A ul element with li items, each with a unique key from the id field."
+    },
+    {
+      "prompt": "Build a ProductGrid component that renders product cards from an array with id, name, and price.",
+      "expectedOutcome": "A component using .map() to render ProductCard components with proper keys."
+    }
+  ],
+  "quiz": [
+    {
+      "question": "Why do list items need a unique key prop?",
+      "options": ["For CSS styling", "To help React track which items changed", "To number the items", "For accessibility"],
+      "answer": 1,
+      "explanation": "Keys help React efficiently update the DOM by identifying which items changed, were added, or removed."
+    },
+    {
+      "question": "What is the best source for list item keys?",
+      "options": ["Math.random()", "Array index always", "Stable unique IDs from data", "Date.now()"],
+      "answer": 2,
+      "explanation": "Stable, unique IDs (like database IDs) are the best keys because they don't change between renders."
+    },
+    {
+      "question": "Which array method is most commonly used to render lists in React?",
+      "options": [".forEach()", ".filter()", ".map()", ".reduce()"],
+      "answer": 2,
+      "explanation": ".map() transforms each array item into a JSX element and returns a new array of elements."
+    }
+  ],
+  "summary": "Lists and Keys chapter complete! Aapne seekha .map() se lists render karna, keys ki importance, aur sahi key values kaise choose karte hain."
+}

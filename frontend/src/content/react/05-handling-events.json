@@ -1,0 +1,57 @@
+{
+  "id": "react-5",
+  "title": "Handling Events",
+  "slug": "05-handling-events",
+  "category": "react",
+  "chapterNumber": 5,
+  "level": "beginner",
+  "estimatedTime": "12 min",
+  "theory": {
+    "english": "React handles events very similarly to DOM events but with some differences. Event names are camelCase in React (onClick, onChange, onSubmit) instead of lowercase. You pass a function reference as the event handler, not a string. React's event system uses Synthetic Events — wrappers around native browser events that work identically across all browsers. To prevent default browser behavior (like form submission), call event.preventDefault(). You can pass additional data to event handlers using arrow functions.",
+    "hindi": "React events ko DOM events ki tarah handle karta hai lekin kuch differences ke saath. React mein event names camelCase mein hote hain (onClick, onChange, onSubmit). Aap ek function reference pass karte ho event handler ke roop mein, string nahi. React ka event system Synthetic Events use karta hai jo native browser events ke wrappers hote hain. Default browser behavior rokne ke liye event.preventDefault() call karo.",
+    "hinglish": "React mein events camelCase mein hote hain - onClick, onChange, onSubmit. Event handler mein function reference pass karo, string nahi. React Synthetic Events use karta hai jo sab browsers mein same kaam karta hai. event.preventDefault() se default behavior rok sakte ho like form submission."
+  },
+  "examples": [
+    {
+      "title": "Click and Change Events",
+      "code": "import { useState } from 'react';\n\nfunction EventDemo() {\n  const [message, setMessage] = useState('');\n\n  const handleClick = () => {\n    alert('Button clicked!');\n  };\n\n  const handleChange = (event) => {\n    setMessage(event.target.value);\n  };\n\n  return (\n    <div>\n      <button onClick={handleClick}>Click Me</button>\n      <input onChange={handleChange} placeholder=\"Type something\" />\n      <p>You typed: {message}</p>\n    </div>\n  );\n}",
+      "explanation": "onClick handles button clicks. onChange fires on every keystroke. event.target.value gives the current input value."
+    },
+    {
+      "title": "Form Submit Event",
+      "code": "import { useState } from 'react';\n\nfunction LoginForm() {\n  const [email, setEmail] = useState('');\n\n  const handleSubmit = (event) => {\n    event.preventDefault(); // Stop page from reloading\n    console.log('Submitted:', email);\n  };\n\n  return (\n    <form onSubmit={handleSubmit}>\n      <input\n        type=\"email\"\n        value={email}\n        onChange={(e) => setEmail(e.target.value)}\n        placeholder=\"Enter email\"\n      />\n      <button type=\"submit\">Login</button>\n    </form>\n  );\n}",
+      "explanation": "event.preventDefault() stops the browser from reloading the page on form submit. This lets React handle the data instead."
+    }
+  ],
+  "exercises": [
+    {
+      "prompt": "Build a component with a text input and a button. When the button is clicked, display the input value in a paragraph below.",
+      "expectedOutcome": "State-driven display updating on button click using onClick and onChange."
+    },
+    {
+      "prompt": "Create a form that collects a username. On submit, display a welcome message without page reload.",
+      "expectedOutcome": "A form using onSubmit with event.preventDefault() and state to show the message."
+    }
+  ],
+  "quiz": [
+    {
+      "question": "How are event names written in React JSX?",
+      "options": ["lowercase: onclick", "camelCase: onClick", "UPPERCASE: ONCLICK", "kebab-case: on-click"],
+      "answer": 1,
+      "explanation": "React uses camelCase for event names: onClick, onChange, onSubmit, etc."
+    },
+    {
+      "question": "How do you prevent a form from reloading the page on submit?",
+      "options": ["return false", "event.stop()", "event.preventDefault()", "event.cancel()"],
+      "answer": 2,
+      "explanation": "event.preventDefault() stops the default browser behavior, including form page reload."
+    },
+    {
+      "question": "How do you get the value of an input field in a React event handler?",
+      "options": ["event.value", "event.target.value", "this.value", "input.value"],
+      "answer": 1,
+      "explanation": "event.target refers to the DOM element that triggered the event, and .value gives its current value."
+    }
+  ],
+  "summary": "Event Handling chapter complete! Aapne seekha React mein events kaise handle karte hain, camelCase event names, aur form submission kaise rokate hain."
+}

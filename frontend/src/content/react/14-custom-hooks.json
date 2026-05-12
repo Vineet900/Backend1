@@ -1,0 +1,52 @@
+{
+  "id": "react-14",
+  "title": "Custom Hooks",
+  "slug": "14-custom-hooks",
+  "category": "react",
+  "chapterNumber": 14,
+  "level": "intermediate",
+  "estimatedTime": "15 min",
+  "theory": {
+    "english": "Custom hooks are JavaScript functions whose names start with 'use' and can call other hooks. They let you extract and reuse stateful logic between multiple components. Instead of duplicating the same useState and useEffect logic in multiple components, you extract it into a custom hook and import it wherever needed. Custom hooks do not share state between components — each call to a custom hook creates its own isolated state. They are a clean way to follow the DRY (Don't Repeat Yourself) principle in React.",
+    "hindi": "Custom hooks JavaScript functions hain jinke naam 'use' se shuru hote hain aur jo doosre hooks call kar sakte hain. Yeh multiple components ke beech stateful logic extract aur reuse karne dete hain. Ek hi useState aur useEffect logic multiple components mein duplicate karne ki jagah, aap ise ek custom hook mein extract karte ho aur jahan chahein import karte ho. Custom hooks components ke beech state share nahi karte — har call apna isolated state create karta hai.",
+    "hinglish": "Custom hooks se reusable logic banate hain. Naam 'use' se shuru karo. Kisi bhi built-in hook ko andar use kar sakte ho. Components ke beech state share nahi hoti — har component apna instance rakhta hai. DRY principle follow karne ka best tarika React mein."
+  },
+  "examples": [
+    {
+      "title": "useLocalStorage and useFetch Hooks",
+      "code": "import { useState, useEffect } from 'react';\n\n// Custom hook for localStorage\nfunction useLocalStorage(key, initialValue) {\n  const [value, setValue] = useState(() => {\n    const stored = localStorage.getItem(key);\n    return stored ? JSON.parse(stored) : initialValue;\n  });\n\n  useEffect(() => {\n    localStorage.setItem(key, JSON.stringify(value));\n  }, [key, value]);\n\n  return [value, setValue];\n}\n\n// Custom hook for data fetching\nfunction useFetch(url) {\n  const [data, setData] = useState(null);\n  const [loading, setLoading] = useState(true);\n  const [error, setError] = useState(null);\n\n  useEffect(() => {\n    fetch(url)\n      .then(r => r.json())\n      .then(setData)\n      .catch(setError)\n      .finally(() => setLoading(false));\n  }, [url]);\n\n  return { data, loading, error };\n}\n\n// Usage\nfunction UserList() {\n  const { data, loading, error } = useFetch('https://jsonplaceholder.typicode.com/users');\n  const [theme, setTheme] = useLocalStorage('theme', 'light');\n\n  if (loading) return <p>Loading...</p>;\n  if (error) return <p>Error!</p>;\n\n  return (\n    <div>\n      <button onClick={() => setTheme(t => t === 'light' ? 'dark' : 'light')}>\n        Theme: {theme}\n      </button>\n      {data?.map(user => <p key={user.id}>{user.name}</p>)}\n    </div>\n  );\n}",
+      "explanation": "Two reusable custom hooks: useFetch handles all fetch logic and usLocalStorage persists state in localStorage. Any component can use them."
+    }
+  ],
+  "exercises": [
+    {
+      "prompt": "Build a useCounter custom hook with increment, decrement, and reset functions. Use it in two different components.",
+      "expectedOutcome": "A custom hook returning count and handler functions, used in multiple components each with independent state."
+    },
+    {
+      "prompt": "Create a useDebounce hook that delays updating a value until the user stops typing for 500ms. Use it to debounce a search input.",
+      "expectedOutcome": "Custom hook using useEffect and setTimeout to delay value updates."
+    }
+  ],
+  "quiz": [
+    {
+      "question": "What naming convention must custom hooks follow?",
+      "options": ["Start with 'hook'", "Start with 'use'", "Start with 'custom'", "Start with 'get'"],
+      "answer": 1,
+      "explanation": "Custom hooks must start with 'use'. This convention lets React know it's a hook and apply its rules to it."
+    },
+    {
+      "question": "Do two components using the same custom hook share state?",
+      "options": ["Yes, always", "Only if they are siblings", "No, each component has its own isolated state", "Only if wrapped in Provider"],
+      "answer": 2,
+      "explanation": "Each call to a custom hook creates independent, isolated state. They share logic but not data."
+    },
+    {
+      "question": "What is the main benefit of custom hooks?",
+      "options": ["Better performance", "Reusing stateful logic without duplicating code", "Replacing useState", "Faster API calls"],
+      "answer": 1,
+      "explanation": "Custom hooks let you extract reusable logic that involves hooks, following the DRY principle."
+    }
+  ],
+  "summary": "Custom Hooks chapter complete! Aapne seekha custom hooks kaise banate hain, useFetch aur useLocalStorage jaisi reusable utilities, aur DRY principle React mein."
+}

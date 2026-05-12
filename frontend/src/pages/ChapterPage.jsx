@@ -1,6 +1,22 @@
 import { useEffect, useState } from 'react'
 import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
-import { ArrowLeft, CheckCircle2, Menu, PanelRightClose, PanelRightOpen, Search } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { 
+  ArrowLeft, 
+  CheckCircle2, 
+  Menu, 
+  PanelRightClose, 
+  PanelRightOpen, 
+  Search,
+  BookOpen,
+  Zap,
+  Target,
+  ChevronRight,
+  Clock,
+  Layout,
+  Star,
+  Play
+} from 'lucide-react'
 import CourseLogo from '../components/CourseLogo'
 import { useApp } from '../context/AppContext'
 import { getAdjacentLessons, getCourseById, getLesson } from '../content/lessonStore'
@@ -15,8 +31,6 @@ export default function ChapterPage() {
   const adjacent = getAdjacentLessons(courseId, chapterId)
   const language = state.language
   const [query, setQuery] = useState('')
-  const [showMobileChapters, setShowMobileChapters] = useState(false)
-  const [showMobileNav, setShowMobileNav] = useState(false)
   const [isPanelMinimized, setIsPanelMinimized] = useState(false)
   const focusActive = state.focusMode.sessionActive
 
@@ -42,285 +56,239 @@ export default function ChapterPage() {
 
   if (!course || !lesson) return <Navigate to="/courses" replace />
 
-  const doneKey = `${course.id}:${lesson.slug}`
-  const isDone = Boolean(state.completedChapters[doneKey])
+  const doneKey = `${course.id}:${lesson.id}`
+  const isDone = Boolean(state.userProgress?.[lesson.id]?.isCompleted)
+  
+  // Strict Learning: Check if previous lesson is locked
+  const isLocked = lesson.sort_order > 1 && !state.userProgress?.[adjacent.prev?.id]?.isCompleted
+  
+  if (isLocked) {
+     toast.error('This lesson is locked. Please complete the previous chapter first.')
+     return <Navigate to={`/chapter/${courseId}/${adjacent.prev.slug}`} replace />
+  }
   const theoryKey = language === 'hi' ? 'hindi' : language
   const theory = lesson.theory?.[theoryKey] || lesson.theory?.english || ''
   const total = course.chapters.length
   const completed = course.chapters.filter((item) => state.completedChapters[`${course.id}:${item.slug}`]).length
   const progressPercent = Math.round((completed / total) * 100)
+  
   const filteredChapters = course.chapters.filter((item) => {
     const text = `${item.chapterNumber}. ${item.title}`.toLowerCase()
     return text.includes(query.trim().toLowerCase())
   })
 
   return (
-    <section
-      className={`flex-1 min-h-0 overflow-hidden flex flex-col md:grid ${
-        isPanelMinimized ? 'md:grid-cols-[minmax(0,1fr)_56px]' : 'md:grid-cols-[minmax(0,1fr)_320px]'
-      }`}
-    >
-      <div className="relative flex h-full flex-col overflow-hidden">
-        <header className="sticky top-0 z-10 border-b border-slate-200 bg-white/95 px-4 py-3 backdrop-blur dark:border-slate-800 dark:bg-slate-900/95">
-          <div className="flex items-center justify-between gap-3">
-            <div className="min-w-0">
-              <div className="mb-1">
-              {focusActive ? (
-                <button
-                  type="button"
-                  onClick={() => actions.cancelFocusMode(true)}
-                  className="interactive-chip inline-flex items-center gap-1 rounded-lg border border-red-300 px-2 py-1 text-xs font-medium text-red-700 dark:border-red-800 dark:text-red-300"
-                >
-                  {t(language, 'exitFocusMode')}
-                </button>
-              ) : null}
-              </div>
-              <p className="text-xs text-slate-500 flex items-center gap-2">
-                <CourseLogo courseId={course.id} size={16} />
-                {course.title[language]} {t(language, 'chapterCourseSuffix')}
-              </p>
-              <h2 className="truncate text-xl font-bold md:text-2xl">{lesson.title}</h2>
-              <p className="text-xs text-slate-500">
-                {t(language, 'chapterLabel')} {lesson.chapterNumber} | {lesson.level} | {lesson.estimatedTime}
-              </p>
-            </div>
-            <div className="flex items-center gap-2 md:hidden">
-              <button
-                type="button"
-                onClick={() => setShowMobileNav((prev) => !prev)}
-                className="interactive-chip rounded-lg border border-slate-300 p-2 dark:border-slate-700"
-                aria-label="Toggle navigation drawer"
-              >
-                <Menu size={16} />
-              </button>
-              <button
-                type="button"
-                onClick={() => setShowMobileChapters((prev) => !prev)}
-                className="interactive-chip rounded-lg border border-slate-300 p-2 dark:border-slate-700"
-                aria-label="Toggle chapters panel"
-              >
-                {showMobileChapters ? <PanelRightClose size={16} /> : <PanelRightOpen size={16} />}
-              </button>
-            </div>
-            <button
-              type="button"
-              onClick={() => setIsPanelMinimized((prev) => !prev)}
-              className="interactive-chip hidden rounded-lg border border-slate-300 p-2 dark:border-slate-700 md:inline-flex"
-              aria-label={isPanelMinimized ? 'Expand chapter panel' : 'Minimize chapter panel'}
-              title={isPanelMinimized ? 'Expand panel' : 'Minimize panel'}
+    <div className="flex h-[calc(100vh-80px)] overflow-hidden">
+      {/* Sidebar for Chapters */}
+      <motion.aside 
+        initial={false}
+        animate={{ width: isPanelMinimized ? 80 : 320 }}
+        className="hidden md:flex flex-col border-r border-white/5 bg-bg-deep/50 backdrop-blur-xl relative z-20"
+      >
+        <div className="p-6 flex flex-col h-full">
+          <div className="flex items-center justify-between mb-8">
+            {!isPanelMinimized && (
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                <p className="text-[10px] font-black text-white/30 uppercase tracking-[0.2em] mb-1">Roadmap</p>
+                <h2 className="text-lg font-black text-white truncate max-w-[180px]">{course.title[language]}</h2>
+              </motion.div>
+            )}
+            <button 
+              onClick={() => setIsPanelMinimized(!isPanelMinimized)}
+              className="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-white/40 hover:text-brand-cyan transition-all"
             >
-              {isPanelMinimized ? <PanelRightOpen size={16} /> : <PanelRightClose size={16} />}
+              {isPanelMinimized ? <PanelRightOpen size={20} /> : <PanelRightClose size={20} />}
             </button>
           </div>
-        </header>
 
-        {showMobileNav ? (
-          <div className="border-b border-slate-200 bg-slate-50 p-3 dark:border-slate-800 dark:bg-slate-950 md:hidden">
-            <div className="grid grid-cols-2 gap-2">
-              <Link to="/home" className="interactive-chip rounded-lg border border-transparent bg-white px-3 py-2 text-sm dark:bg-slate-900">{t(language, 'home')}</Link>
-              <Link to="/courses" className="interactive-chip rounded-lg border border-transparent bg-white px-3 py-2 text-sm dark:bg-slate-900">{t(language, 'courses')}</Link>
-              <Link to="/profile" className="interactive-chip rounded-lg border border-transparent bg-white px-3 py-2 text-sm dark:bg-slate-900">{t(language, 'profile')}</Link>
-              <Link to="/settings" className="interactive-chip rounded-lg border border-transparent bg-white px-3 py-2 text-sm dark:bg-slate-900">{t(language, 'settings')}</Link>
-            </div>
-          </div>
-        ) : null}
+          {!isPanelMinimized && (
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex-1 flex flex-col min-h-0">
+              {/* Progress */}
+              <div className="mb-8">
+                <div className="flex items-center justify-between text-[10px] font-bold mb-2">
+                  <span className="text-white/40 uppercase tracking-widest">Progress</span>
+                  <span className="text-brand-cyan">{progressPercent}%</span>
+                </div>
+                <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+                  <div className="h-full bg-brand-cyan" style={{ width: `${progressPercent}%` }}></div>
+                </div>
+              </div>
 
-        {showMobileChapters ? (
-          <div className="border-b border-slate-200 bg-slate-50 p-3 dark:border-slate-800 dark:bg-slate-950 md:hidden">
-            <label className="block">
-              <span className="text-xs text-slate-500">{t(language, 'searchChapters')}</span>
-              <div className="mt-1 flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-3 py-2 dark:border-slate-700 dark:bg-slate-900">
-                <Search size={14} />
-                <input
+              {/* Search */}
+              <div className="relative mb-6">
+                <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-white/20" />
+                <input 
                   value={query}
-                  onChange={(event) => setQuery(event.target.value)}
-                  placeholder={t(language, 'findChapter')}
-                  className="w-full bg-transparent text-sm outline-none"
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder="Find chapter..."
+                  className="w-full bg-white/5 border border-white/5 rounded-xl pl-9 pr-4 py-2 text-xs text-white focus:outline-none focus:border-brand-cyan/30 transition-all"
                 />
               </div>
-            </label>
-            <div className="mt-2 max-h-56 overflow-y-auto space-y-2">
-              {filteredChapters.map((item) => {
-                const done = Boolean(state.completedChapters[`${course.id}:${item.slug}`])
-                const active = item.slug === lesson.slug
-                const chapterRowClassName = `flex items-center justify-between rounded-xl px-3 py-2 text-sm ${
-                  active ? 'bg-blue-600 text-white' : 'interactive-list-row border border-transparent bg-white dark:bg-slate-900'
-                } ${focusActive ? 'opacity-80' : ''}`
-                return (
-                    <Link
+
+              {/* Chapters List */}
+              <div className="flex-1 overflow-y-auto no-scrollbar space-y-2 pb-10">
+                {filteredChapters.map((item) => {
+                  const done = Boolean(state.completedChapters[`${course.id}:${item.slug}`])
+                  const active = item.slug === lesson.slug
+                  return (
+                    <Link 
                       key={item.slug}
                       to={`/chapter/${course.id}/${item.slug}`}
-                      onClick={() => setShowMobileChapters(false)}
-                      className={chapterRowClassName}
+                      className={`flex items-center gap-3 p-3 rounded-xl transition-all group ${active ? 'bg-brand-cyan text-bg-deep font-bold shadow-[0_0_20px_rgba(34,211,238,0.2)]' : 'hover:bg-white/5 text-white/40 hover:text-white'}`}
                     >
-                      <span className="pr-2">{item.chapterNumber}. {item.title}</span>
-                      {done ? <CheckCircle2 size={16} className={active ? 'text-white' : 'text-emerald-500'} /> : null}
+                      <div className={`w-6 h-6 rounded-lg flex items-center justify-center text-[10px] font-black ${active ? 'bg-bg-deep/20' : 'bg-white/5'}`}>
+                        {item.chapterNumber}
+                      </div>
+                      <span className="text-sm truncate flex-1">{item.title}</span>
+                      {done && <CheckCircle2 size={14} className={active ? 'text-bg-deep' : 'text-brand-cyan'} />}
                     </Link>
-                )
-              })}
+                  )
+                })}
+              </div>
+            </motion.div>
+          )}
+
+          {isPanelMinimized && (
+            <div className="flex flex-col items-center gap-4">
+              {course.chapters.slice(0, 10).map((item) => (
+                <Link 
+                  key={item.slug}
+                  to={`/chapter/${course.id}/${item.slug}`}
+                  className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all ${item.slug === lesson.slug ? 'bg-brand-cyan text-bg-deep' : 'bg-white/5 text-white/20 hover:text-white'}`}
+                >
+                  <span className="text-xs font-black">{item.chapterNumber}</span>
+                </Link>
+              ))}
+            </div>
+          )}
+        </div>
+      </motion.aside>
+
+      {/* Main Content Area */}
+      <main className="flex-1 overflow-y-auto bg-bg-deep relative">
+        {/* Glow behind content */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-64 bg-brand-cyan/5 blur-[120px] pointer-events-none"></div>
+
+        <div className="max-w-4xl mx-auto px-6 py-12 lg:py-20 relative z-10">
+          {/* Header */}
+          <div className="mb-12">
+            <div className="flex items-center gap-4 mb-6">
+              <Link to="/courses" className="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-white/40 transition-all">
+                <ArrowLeft size={20} />
+              </Link>
+              <div className="h-px flex-1 bg-gradient-to-r from-white/10 to-transparent"></div>
+              <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-brand-cyan/10 border border-brand-cyan/20 text-brand-cyan text-[10px] font-black uppercase tracking-widest">
+                Level {lesson.level}
+              </div>
+            </div>
+
+            <h1 className="text-4xl md:text-5xl font-black text-white mb-6 leading-tight">
+              {lesson.title}
+            </h1>
+            
+            <div className="flex flex-wrap items-center gap-6">
+              <div className="flex items-center gap-2 text-white/40">
+                <Clock size={16} />
+                <span className="text-sm font-bold">{lesson.estimatedTime} read</span>
+              </div>
+              <div className="flex items-center gap-2 text-brand-purple">
+                <Star size={16} />
+                <span className="text-sm font-bold">+100 XP Reward</span>
+              </div>
+              {isDone && (
+                <div className="flex items-center gap-2 text-brand-cyan bg-brand-cyan/10 px-3 py-1 rounded-full border border-brand-cyan/20">
+                  <CheckCircle2 size={16} />
+                  <span className="text-[10px] font-black uppercase tracking-widest">Completed</span>
+                </div>
+              )}
             </div>
           </div>
-        ) : null}
 
-        <div className="min-h-0 flex-1 overflow-y-auto p-4 md:p-6">
-          <div className="mx-auto max-w-4xl space-y-4">
-            <ContentCard title={t(language, 'chapterTheory')} value={theory} />
+          {/* Theory Section */}
+          <section className="glass-card p-8 md:p-12 rounded-[2.5rem] border-white/5 mb-12">
+            <div className="flex items-center gap-3 mb-8">
+              <div className="w-10 h-10 rounded-xl bg-brand-cyan/10 flex items-center justify-center text-brand-cyan">
+                <BookOpen size={20} />
+              </div>
+              <h3 className="text-xl font-bold text-white uppercase tracking-widest">The Core Theory</h3>
+            </div>
+            <div className="prose prose-invert prose-brand-cyan max-w-none">
+              <p className="text-lg text-white/70 leading-relaxed">
+                {theory}
+              </p>
+            </div>
+          </section>
 
-            <article className="rounded-2xl border border-slate-200 p-4 dark:border-slate-700">
-              <h3 className="font-semibold">{t(language, 'chapterExamples')}</h3>
-              <div className="mt-2 space-y-3 md:m-[10px]">
-                {lesson.examples.map((example) => (
-                  <div key={example.title} className="rounded-xl bg-slate-100 p-3 dark:bg-slate-800">
-                    <p className="font-medium">{example.title}</p>
-                    <pre className="mt-2 overflow-x-auto rounded-lg bg-white p-2 text-xs dark:bg-slate-900">
-                      <code>{example.code}</code>
-                    </pre>
-                    <p className="mt-2 text-sm">{example.explanation}</p>
+          {/* Examples */}
+          {lesson.examples && lesson.examples.length > 0 && (
+            <div className="space-y-8 mb-12">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-brand-purple/10 flex items-center justify-center text-brand-purple">
+                  <Play size={20} />
+                </div>
+                <h3 className="text-xl font-bold text-white uppercase tracking-widest">Live Examples</h3>
+              </div>
+              
+              <div className="grid grid-cols-1 gap-6">
+                {lesson.examples.map((example, i) => (
+                  <div key={i} className="glass-card rounded-3xl border-white/5 overflow-hidden">
+                    <div className="bg-white/5 px-6 py-3 border-b border-white/5 flex items-center justify-between">
+                      <span className="text-xs font-bold text-white/60">{example.title}</span>
+                      <div className="flex gap-1.5">
+                        <div className="w-2.5 h-2.5 rounded-full bg-red-500/50"></div>
+                        <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/50"></div>
+                        <div className="w-2.5 h-2.5 rounded-full bg-green-500/50"></div>
+                      </div>
+                    </div>
+                    <div className="p-6 bg-[#010409]">
+                      <pre className="text-sm font-mono text-brand-cyan overflow-x-auto no-scrollbar">
+                        <code>{example.code}</code>
+                      </pre>
+                    </div>
+                    {example.explanation && (
+                      <div className="p-6 bg-white/[0.02] border-t border-white/5 text-sm text-white/40 leading-relaxed italic">
+                        {example.explanation}
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
-            </article>
-
-            <article className="rounded-2xl border border-slate-200 p-4 dark:border-slate-700">
-              <h3 className="font-semibold">{t(language, 'chapterExercises')}</h3>
-              <ul className="mt-2 space-y-2 text-sm">
-                {lesson.exercises.map((exercise) => (
-                  <li key={exercise.prompt} className="rounded-lg bg-slate-100 p-3 dark:bg-slate-800">
-                    <p>{exercise.prompt}</p>
-                    <p className="mt-1 text-xs text-slate-500">{t(language, 'expected')}: {exercise.expectedOutcome}</p>
-                  </li>
-                ))}
-              </ul>
-            </article>
-
-            <article className="rounded-2xl border border-slate-200 p-4 dark:border-slate-700">
-              <h3 className="font-semibold">{t(language, 'chapterQuiz')}</h3>
-              <ul className="mt-2 space-y-3">
-                {lesson.quiz.map((q) => (
-                  <li key={q.question} className="rounded-lg bg-slate-100 p-3 dark:bg-slate-800">
-                    <p className="font-medium">{q.question}</p>
-                    <p className="mt-1 text-xs text-slate-500">{t(language, 'answer')}: {q.options[q.answer]}</p>
-                  </li>
-                ))}
-              </ul>
-            </article>
-
-            <ContentCard title={t(language, 'chapterSummary')} value={lesson.summary} />
-
-            <div className="flex flex-wrap gap-2 pb-8">
-              <button
-                type="button"
-                onClick={() => actions.startFocusMode(course.id, lesson.slug)}
-                disabled={focusActive}
-                className="interactive-strong rounded-xl border border-amber-300 bg-amber-100 px-4 py-2 text-sm font-semibold text-amber-900 disabled:opacity-60 dark:border-amber-700 dark:bg-amber-950 dark:text-amber-100"
-              >
-                {focusActive ? `${t(language, 'focusModeActive')} (${Math.floor(state.focusMode.timerRemaining / 60)}:${String(state.focusMode.timerRemaining % 60).padStart(2, '0')})` : t(language, 'startFocusMode')}
-              </button>
-              <button
-                type="button"
-                onClick={() => actions.completeChapter(course.id, lesson.slug)}
-                className="interactive-strong rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white"
-              >
-                {isDone ? t(language, 'chapterCompleted') : t(language, 'chapterMarkComplete')}
-              </button>
-              <Link to="/exercises" className="interactive-chip rounded-xl border border-transparent bg-slate-200 px-4 py-2 text-sm font-semibold dark:bg-slate-800">
-                {t(language, 'goToExercises')}
-              </Link>
-              <Link to="/quizzes" className="interactive-chip rounded-xl border border-transparent bg-slate-200 px-4 py-2 text-sm font-semibold dark:bg-slate-800">
-                {t(language, 'takeQuiz')}
-              </Link>
-              {adjacent.prev ? (
-                <Link to={`/chapter/${course.id}/${adjacent.prev.slug}`} className="interactive-chip rounded-xl border border-transparent bg-slate-200 px-4 py-2 text-sm font-semibold dark:bg-slate-800">
-                  {t(language, 'previous')}
-                </Link>
-              ) : null}
-              {adjacent.next ? (
-                <Link to={`/chapter/${course.id}/${adjacent.next.slug}`} className="interactive-chip rounded-xl border border-transparent bg-slate-200 px-4 py-2 text-sm font-semibold dark:bg-slate-800">
-                  {t(language, 'next')}
-                </Link>
-              ) : null}
             </div>
-          </div>
-        </div>
-      </div>
-
-      <aside className="hidden md:flex flex-col h-full min-h-0 border-l border-slate-200 bg-slate-50 dark:border-slate-800 dark:bg-slate-950">
-        <div className="flex flex-1 flex-col min-h-0 p-4">
-          <div className="flex items-center justify-between">
-            <p className="text-xs uppercase text-slate-500">{t(language, 'course')}</p>
-            <button
-              type="button"
-              onClick={() => setIsPanelMinimized((prev) => !prev)}
-              className="interactive-chip rounded-lg border border-slate-300 p-1 dark:border-slate-700"
-              aria-label={isPanelMinimized ? 'Expand chapter panel' : 'Minimize chapter panel'}
-              title={isPanelMinimized ? 'Expand panel' : 'Minimize panel'}
-            >
-              {isPanelMinimized ? <PanelRightOpen size={14} /> : <PanelRightClose size={14} />}
-            </button>
-          </div>
-          {isPanelMinimized ? (
-            <div className="mt-4 text-center">
-              <p className="text-[11px] text-slate-500">{t(language, 'panelMinimized')}</p>
-            </div>
-          ) : (
-            <>
-              <h2 className="mt-1 text-xl font-bold">{course.title[language]}</h2>
-              <p className="mt-2 text-xs text-slate-500">
-                {completed}/{total} {t(language, 'completed')} ({progressPercent}%)
-              </p>
-              <div className="mt-3 rounded-full bg-slate-200 dark:bg-slate-800">
-                <div
-                  className="h-2 rounded-full bg-blue-600 transition-all"
-                  style={{ width: `${progressPercent}%` }}
-                />
-              </div>
-              <label className="mt-4 block">
-                <span className="text-xs text-slate-500">{t(language, 'searchChapters')}</span>
-                <div className="mt-1 flex items-center gap-2 rounded-xl border border-slate-300 bg-white px-3 py-2 dark:border-slate-700 dark:bg-slate-900">
-                  <Search size={14} />
-                  <input
-                    value={query}
-                    onChange={(event) => setQuery(event.target.value)}
-                    placeholder={t(language, 'findChapter')}
-                    className="w-full bg-transparent text-sm outline-none"
-                  />
-                </div>
-              </label>
-
-              <div className="mt-4 flex-1 relative">
-                <div className="absolute inset-0 overflow-y-auto pr-2 custom-scrollbar pb-6 space-y-2">
-                  {filteredChapters.map((item) => {
-                    const done = Boolean(state.completedChapters[`${course.id}:${item.slug}`])
-                    const active = item.slug === lesson.slug
-                    const chapterRowClassName = `flex items-center justify-between rounded-xl px-3 py-2 text-sm ${
-                      active ? 'bg-blue-600 text-white' : 'interactive-list-row border border-transparent bg-white dark:bg-slate-900'
-                    } ${focusActive ? 'opacity-80' : ''}`
-                    return (
-                        <Link
-                          key={item.slug}
-                          to={`/chapter/${course.id}/${item.slug}`}
-                          className={chapterRowClassName}
-                        >
-                          <span className="pr-2">{item.chapterNumber}. {item.title}</span>
-                          {done ? <CheckCircle2 size={16} className={active ? 'text-white' : 'text-emerald-500'} /> : null}
-                        </Link>
-                    )
-                  })}
-                </div>
-              </div>
-            </>
           )}
-        </div>
-      </aside>
-    </section>
-  )
-}
 
-function ContentCard({ title, value }) {
-  return (
-    <article className="rounded-2xl border border-slate-200 p-4 dark:border-slate-700">
-      <h3 className="font-semibold">{title}</h3>
-      <p className="mt-1 text-base text-slate-700 dark:text-slate-200">{value}</p>
-    </article>
+          {/* Navigation Controls */}
+          <div className="flex flex-col md:flex-row items-center justify-between gap-8 pt-12 border-t border-white/5">
+            <div className="flex items-center gap-4">
+              {adjacent.prev && (
+                <Link 
+                  to={`/chapter/${course.id}/${adjacent.prev.slug}`}
+                  className="flex items-center gap-3 px-6 py-3 rounded-2xl bg-white/5 hover:bg-white/10 text-white font-bold transition-all"
+                >
+                  <ArrowLeft size={18} /> Previous
+                </Link>
+              )}
+            </div>
+            
+            <button 
+              onClick={() => actions.completeChapter(course.id, lesson.id)}
+              className={`px-10 py-4 rounded-2xl font-black text-lg transition-all shadow-2xl ${isDone ? 'bg-white/5 text-brand-cyan border border-brand-cyan/30' : 'bg-brand-cyan text-bg-deep hover:scale-105 active:scale-95 shadow-brand-cyan/20'}`}
+            >
+              {isDone ? 'Chapter Completed' : 'Mark as Complete'}
+            </button>
+
+            <div className="flex items-center gap-4">
+              {adjacent.next && (
+                <Link 
+                  to={`/chapter/${course.id}/${adjacent.next.slug}`}
+                  className="flex items-center gap-3 px-6 py-3 rounded-2xl bg-brand-cyan/10 hover:bg-brand-cyan/20 text-brand-cyan font-bold transition-all"
+                >
+                  Next Chapter <ChevronRight size={18} />
+                </Link>
+              )}
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
   )
 }

@@ -1,0 +1,98 @@
+{
+  "title": "AWS Final Quiz",
+  "topic": "AWS",
+  "difficulty": "Hard",
+  "status": "Active",
+  "questions": [
+    {
+      "question": "What is an AWS Region?",
+      "options": ["A single data center", "A group of users", "A geographic location with multiple Availability Zones", "An AWS service category"],
+      "correct_answer": "A geographic location with multiple Availability Zones",
+      "explanation": "An AWS Region is a physical location in the world containing multiple isolated data centers called Availability Zones."
+    },
+    {
+      "question": "What is an IAM user?",
+      "options": ["An EC2 instance user", "An identity with specific permissions to access AWS services", "A database user", "An S3 bucket owner"],
+      "correct_answer": "An identity with specific permissions to access AWS services",
+      "explanation": "IAM (Identity and Access Management) users have credentials and policies defining exactly what AWS resources and actions they can access."
+    },
+    {
+      "question": "What is an AMI in EC2?",
+      "options": ["A billing tool", "Amazon Machine Image — the OS and software template for EC2 instances", "An IAM role", "A load balancer"],
+      "correct_answer": "Amazon Machine Image — the OS and software template for EC2 instances",
+      "explanation": "AMIs define what OS and pre-installed software an EC2 instance launches with. You can use AWS-provided AMIs or create custom ones."
+    },
+    {
+      "question": "What is an EC2 Security Group?",
+      "options": ["An IAM user group", "A virtual firewall controlling inbound/outbound traffic to EC2 instances", "An SSL certificate", "A VPN connection"],
+      "correct_answer": "A virtual firewall controlling inbound/outbound traffic to EC2 instances",
+      "explanation": "Security Groups are stateful firewalls. You create rules specifying which ports and IP ranges can connect to your EC2 instance."
+    },
+    {
+      "question": "What is an S3 Bucket?",
+      "options": ["A virtual server", "A database table", "A container for storing objects (files) in S3", "A network load balancer"],
+      "correct_answer": "A container for storing objects (files) in S3",
+      "explanation": "An S3 bucket is a logical container for objects. Bucket names must be globally unique across all AWS accounts."
+    },
+    {
+      "question": "What does 'aws s3 sync ./dist s3://my-bucket/' do?",
+      "options": ["Downloads bucket to dist/", "Lists all files", "Uploads only changed files from dist/ to the bucket", "Deletes all files in the bucket"],
+      "correct_answer": "Uploads only changed files from dist/ to the bucket",
+      "explanation": "sync compares local and S3 files and uploads only new or modified files — ideal for efficient static website deployments."
+    },
+    {
+      "question": "What is the main advantage of RDS over a self-managed database on EC2?",
+      "options": ["RDS is always cheaper", "AWS handles backups, patching, scaling, and failover automatically", "RDS has unlimited storage", "RDS only works with MySQL"],
+      "correct_answer": "AWS handles backups, patching, scaling, and failover automatically",
+      "explanation": "RDS is a managed service — AWS handles operational database tasks so you focus on your application instead of DBA work."
+    },
+    {
+      "question": "What does RDS Multi-AZ provide?",
+      "options": ["Lower cost", "Multiple read replicas", "Automatic failover to a standby in another Availability Zone", "Multi-region replication"],
+      "correct_answer": "Automatic failover to a standby in another Availability Zone",
+      "explanation": "Multi-AZ maintains a synchronous standby. If the primary fails, AWS automatically promotes the standby with minimal downtime."
+    },
+    {
+      "question": "What does 'serverless' mean in the context of AWS Lambda?",
+      "options": ["No internet required", "The function runs without a network", "You don't provision servers — AWS manages infrastructure automatically", "No servers exist at all"],
+      "correct_answer": "You don't provision servers — AWS manages infrastructure automatically",
+      "explanation": "Serverless means AWS automatically provisions, scales, and manages the underlying infrastructure. You only write and deploy your function code."
+    },
+    {
+      "question": "What is the maximum execution timeout for an AWS Lambda function?",
+      "options": ["1 minute", "5 minutes", "15 minutes", "60 minutes"],
+      "correct_answer": "15 minutes",
+      "explanation": "Lambda functions have a maximum execution timeout of 15 minutes. For longer tasks, use EC2, ECS, or Step Functions."
+    },
+    {
+      "question": "What is AWS CloudFront?",
+      "options": ["A virtual server service", "A CDN that caches and distributes content globally from edge locations", "A database service", "An email service"],
+      "correct_answer": "A CDN that caches and distributes content globally from edge locations",
+      "explanation": "CloudFront is AWS's Content Delivery Network. It caches your content at locations worldwide, reducing latency for global users."
+    },
+    {
+      "question": "What does S3 static website hosting allow you to do?",
+      "options": ["Run Node.js on S3", "Execute server-side code", "Serve HTML, CSS, and JS files directly from S3 as a website", "Connect S3 to RDS"],
+      "correct_answer": "Serve HTML, CSS, and JS files directly from S3 as a website",
+      "explanation": "S3 static hosting serves your React/HTML build files as a website accessible via a public URL without any server."
+    },
+    {
+      "question": "What is AWS Auto Scaling?",
+      "options": ["Scales S3 storage automatically", "Scales Lambda function memory", "Automatically adds or removes EC2 instances based on traffic load", "Auto-upgrades EC2 instance types"],
+      "correct_answer": "Automatically adds or removes EC2 instances based on traffic load",
+      "explanation": "Auto Scaling adds EC2 instances when traffic spikes and removes them when traffic drops, maintaining performance while minimizing cost."
+    },
+    {
+      "question": "What is AWS Elastic Beanstalk?",
+      "options": ["A database service", "A serverless function platform", "A managed platform that deploys and manages apps without manual EC2 configuration", "A CDN service"],
+      "correct_answer": "A managed platform that deploys and manages apps without manual EC2 configuration",
+      "explanation": "Elastic Beanstalk provisions EC2, load balancers, and auto scaling automatically. You just upload your code and it handles the infrastructure."
+    },
+    {
+      "question": "Why should you set up AWS billing alerts?",
+      "options": ["To make billing faster", "To receive notifications when AWS charges exceed your threshold and avoid surprise bills", "It is required by AWS", "To get discounts"],
+      "correct_answer": "To receive notifications when AWS charges exceed your threshold and avoid surprise bills",
+      "explanation": "Billing alerts notify you via email when estimated charges exceed a set amount, preventing unexpected large charges on your account."
+    }
+  ]
+}

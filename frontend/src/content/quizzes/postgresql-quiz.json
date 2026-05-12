@@ -1,0 +1,98 @@
+{
+  "title": "PostgreSQL Final Quiz",
+  "topic": "PostgreSQL",
+  "difficulty": "Medium",
+  "status": "Active",
+  "questions": [
+    {
+      "question": "What does SQL stand for?",
+      "options": ["Server Query Logic", "Structured Query Language", "Simple Query List", "System Query Layer"],
+      "correct_answer": "Structured Query Language",
+      "explanation": "SQL (Structured Query Language) is the standard language for managing and querying relational databases."
+    },
+    {
+      "question": "Which psql command lists all tables in the current database?",
+      "options": ["\\l", "\\db", "\\dt", "\\show"],
+      "correct_answer": "\\dt",
+      "explanation": "\\dt lists all tables (relations) in the currently connected database. \\l lists all databases on the server."
+    },
+    {
+      "question": "What does the PRIMARY KEY constraint ensure?",
+      "options": ["Column cannot be NULL only", "Column values are unique only", "Column values are unique and never NULL", "Column is auto-incremented"],
+      "correct_answer": "Column values are unique and never NULL",
+      "explanation": "PRIMARY KEY combines UNIQUE and NOT NULL constraints, uniquely identifying each row. Every table should have one."
+    },
+    {
+      "question": "What does ON DELETE CASCADE do in a foreign key relationship?",
+      "options": ["Prevents deletion of parent row", "Sets child foreign key to NULL on parent delete", "Automatically deletes child rows when parent row is deleted", "Throws an error on deletion"],
+      "correct_answer": "Automatically deletes child rows when parent row is deleted",
+      "explanation": "ON DELETE CASCADE ensures referential integrity by removing related child rows when the parent row is deleted."
+    },
+    {
+      "question": "What does RETURNING * do after an INSERT statement?",
+      "options": ["Returns count of inserted rows", "Returns the inserted row(s) data", "Returns all table data", "Returns only the ID"],
+      "correct_answer": "Returns the inserted row(s) data",
+      "explanation": "RETURNING fetches specified columns from the just-inserted/updated/deleted rows without needing a separate SELECT query."
+    },
+    {
+      "question": "What happens if you run UPDATE courses SET status='Published' without a WHERE clause?",
+      "options": ["Only updates first row", "Updates no rows", "Updates ALL rows in the table", "Throws a syntax error"],
+      "correct_answer": "Updates ALL rows in the table",
+      "explanation": "Without WHERE, UPDATE and DELETE apply to every row in the table. Always double-check your WHERE clause before running."
+    },
+    {
+      "question": "Which JOIN type returns only matching rows from both tables?",
+      "options": ["LEFT JOIN", "RIGHT JOIN", "FULL OUTER JOIN", "INNER JOIN"],
+      "correct_answer": "INNER JOIN",
+      "explanation": "INNER JOIN returns only rows where the join condition matches in both tables. Non-matching rows are excluded."
+    },
+    {
+      "question": "Which JOIN returns all rows from the left table even if there's no match in the right?",
+      "options": ["INNER JOIN", "RIGHT JOIN", "LEFT JOIN", "CROSS JOIN"],
+      "correct_answer": "LEFT JOIN",
+      "explanation": "LEFT JOIN includes all rows from the left table. For rows with no match in the right table, columns from that table are NULL."
+    },
+    {
+      "question": "What is the purpose of an index in PostgreSQL?",
+      "options": ["To enforce uniqueness only", "To create a lookup structure that speeds up queries", "To count rows faster", "To join tables"],
+      "correct_answer": "To create a lookup structure that speeds up queries",
+      "explanation": "Indexes allow PostgreSQL to find rows without scanning the entire table, dramatically speeding up WHERE, JOIN, and ORDER BY operations."
+    },
+    {
+      "question": "What does EXPLAIN ANALYZE show in PostgreSQL?",
+      "options": ["Table structure", "Query execution plan with actual timing and row counts", "Index definitions", "Foreign key relationships"],
+      "correct_answer": "Query execution plan with actual timing and row counts",
+      "explanation": "EXPLAIN ANALYZE shows whether PostgreSQL uses Index Scan or Seq Scan (full table scan), helping identify performance bottlenecks."
+    },
+    {
+      "question": "Why must you use parameterized queries ($1, $2) with the pg library?",
+      "options": ["They are faster", "They prevent SQL injection attacks", "PostgreSQL requires them", "They auto-format data types"],
+      "correct_answer": "They prevent SQL injection attacks",
+      "explanation": "Parameterized queries separate SQL code from user data, making it impossible for malicious input to alter the query structure."
+    },
+    {
+      "question": "What must you always call after using client.connect() from a pg Pool?",
+      "options": ["client.close()", "client.release()", "client.end()", "pool.return(client)"],
+      "correct_answer": "client.release()",
+      "explanation": "client.release() returns the connection to the pool. Without it, the pool runs out of connections causing a database connection leak."
+    },
+    {
+      "question": "What is a database transaction?",
+      "options": ["A single SQL statement", "A group of operations that all succeed or all fail together", "A backup of the database", "A type of join"],
+      "correct_answer": "A group of operations that all succeed or all fail together",
+      "explanation": "Transactions use BEGIN/COMMIT/ROLLBACK to ensure atomicity — if any operation fails, all changes are reversed (ROLLBACK)."
+    },
+    {
+      "question": "Which data type should you use for storing structured JSON data that needs to be queried in PostgreSQL?",
+      "options": ["TEXT", "JSON", "JSONB", "VARCHAR"],
+      "correct_answer": "JSONB",
+      "explanation": "JSONB stores JSON in a binary format that supports indexing and efficient querying. JSON stores as plain text with no indexing."
+    },
+    {
+      "question": "What does COUNT(*) do in a SELECT query?",
+      "options": ["Returns the first row", "Counts all rows including NULLs", "Counts only non-NULL values", "Counts distinct values only"],
+      "correct_answer": "Counts all rows including NULLs",
+      "explanation": "COUNT(*) counts every row in the result set including those with NULL values. COUNT(column) counts only non-NULL values in that column."
+    }
+  ]
+}

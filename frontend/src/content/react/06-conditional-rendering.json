@@ -1,0 +1,57 @@
+{
+  "id": "react-6",
+  "title": "Conditional Rendering",
+  "slug": "06-conditional-rendering",
+  "category": "react",
+  "chapterNumber": 6,
+  "level": "beginner",
+  "estimatedTime": "12 min",
+  "theory": {
+    "english": "Conditional rendering in React means showing different UI based on some condition. There are multiple patterns for this. The if/else statement works outside the return. The ternary operator works inside JSX for simple conditions. The logical AND operator (&&) renders something only when a condition is true. The optional chaining and nullish coalescing operators can also help with conditional rendering. Choosing the right pattern keeps your JSX clean and readable.",
+    "hindi": "React mein conditional rendering ka matlab hai ki alag-alag conditions ke basis par alag UI dikhana. Iske liye multiple patterns hain. if/else statement return ke bahar kaam karta hai. Ternary operator JSX ke andar simple conditions ke liye kaam karta hai. Logical AND operator (&&) tab kuch render karta hai jab condition true hoti hai.",
+    "hinglish": "Conditional rendering matlab alag-alag conditions par alag UI dikhana. if/else return ke bahar use karo. JSX ke andar ternary operator use karo. && operator tab render karta hai jab condition true ho. Sabse readable pattern choose karo apne case ke liye."
+  },
+  "examples": [
+    {
+      "title": "Three Conditional Patterns",
+      "code": "function UserStatus({ isLoggedIn, isAdmin, notifications }) {\n  // Pattern 1: if/else before return\n  if (!isLoggedIn) {\n    return <p>Please log in.</p>;\n  }\n\n  return (\n    <div>\n      {/* Pattern 2: Ternary operator */}\n      <p>{isAdmin ? 'Welcome, Admin!' : 'Welcome, User!'}</p>\n\n      {/* Pattern 3: Logical && */}\n      {notifications > 0 && (\n        <span>You have {notifications} notifications</span>\n      )}\n    </div>\n  );\n}",
+      "explanation": "Three patterns in one component: early return for blocking condition, ternary for either/or, and && for show/hide."
+    },
+    {
+      "title": "Conditional CSS Classes",
+      "code": "function Alert({ type, message }) {\n  const className = type === 'error'\n    ? 'alert alert-error'\n    : type === 'success'\n    ? 'alert alert-success'\n    : 'alert alert-info';\n\n  return <div className={className}>{message}</div>;\n}",
+      "explanation": "Chained ternaries apply different CSS classes based on the type prop — a clean pattern for dynamic styling."
+    }
+  ],
+  "exercises": [
+    {
+      "prompt": "Create a component that shows a 'Loading...' text when an isLoading prop is true, and displays content when false.",
+      "expectedOutcome": "Early return or ternary based on isLoading state."
+    },
+    {
+      "prompt": "Build a Score component that shows 'Pass' in green if score >= 60, or 'Fail' in red if below.",
+      "expectedOutcome": "Ternary inside JSX applying different text and styles based on score."
+    }
+  ],
+  "quiz": [
+    {
+      "question": "Which operator renders JSX only when a condition is true (and nothing when false)?",
+      "options": ["Ternary ?:", "Logical AND &&", "Logical OR ||", "if/else"],
+      "answer": 1,
+      "explanation": "The && operator only renders the right side when the left side is truthy. If false, it renders nothing."
+    },
+    {
+      "question": "What does {count && <p>Items</p>} render when count is 0?",
+      "options": ["Nothing", "<p>Items</p>", "0", "Error"],
+      "answer": 2,
+      "explanation": "When count is 0 (falsy), React renders the left value itself (0) which appears as text. Use count > 0 && ... to avoid this."
+    },
+    {
+      "question": "Which is the best approach to completely block rendering a component?",
+      "options": ["Returning null", "Using display:none in CSS", "Commenting out JSX", "Setting opacity to 0"],
+      "answer": 0,
+      "explanation": "Returning null from a component tells React to render nothing for that component."
+    }
+  ],
+  "summary": "Conditional Rendering chapter complete! Aapne teeno patterns seekhe — if/else, ternary operator, aur logical && operator."
+}

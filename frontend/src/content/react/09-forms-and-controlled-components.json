@@ -1,0 +1,57 @@
+{
+  "id": "react-9",
+  "title": "Forms and Controlled Components",
+  "slug": "09-forms-and-controlled-components",
+  "category": "react",
+  "chapterNumber": 9,
+  "level": "intermediate",
+  "estimatedTime": "15 min",
+  "theory": {
+    "english": "In React, form elements like input, textarea, and select can be controlled components. A controlled component is one where React state is the single source of truth for the input's value. This means the input's value is always tied to a state variable and only updates via the onChange handler. This gives you full control — you can validate, format, or block input in real time. The alternative is uncontrolled components which use refs to read values, but controlled components are the React-recommended approach.",
+    "hindi": "React mein form elements jaise input, textarea, aur select controlled components ho sakte hain. Ek controlled component woh hota hai jahan React state input ki value ka single source of truth hoti hai. Matlab input ki value hamesha ek state variable se tied hoti hai aur sirf onChange handler ke zariye update hoti hai. Yeh aapko puri control deta hai — aap real time mein validate, format, ya block kar sakte ho input ko.",
+    "hinglish": "Controlled component mein React state hi input ki value control karti hai. value={state} aur onChange={setState} dono milke kaam karte hain. Isse real-time validation, formatting, ya input blocking kar sakte ho. Multiple inputs ke liye ek state object use karo — yeh clean approach hai."
+  },
+  "examples": [
+    {
+      "title": "Controlled Multi-field Form",
+      "code": "import { useState } from 'react';\n\nfunction RegisterForm() {\n  const [form, setForm] = useState({\n    name: '',\n    email: '',\n    password: '',\n  });\n\n  const handleChange = (e) => {\n    const { name, value } = e.target;\n    setForm(prev => ({ ...prev, [name]: value }));\n  };\n\n  const handleSubmit = (e) => {\n    e.preventDefault();\n    console.log('Form data:', form);\n  };\n\n  return (\n    <form onSubmit={handleSubmit}>\n      <input name=\"name\" value={form.name} onChange={handleChange} placeholder=\"Name\" />\n      <input name=\"email\" value={form.email} onChange={handleChange} placeholder=\"Email\" />\n      <input name=\"password\" type=\"password\" value={form.password} onChange={handleChange} placeholder=\"Password\" />\n      <button type=\"submit\">Register</button>\n    </form>\n  );\n}",
+      "explanation": "One handleChange function handles all inputs using e.target.name (which matches the name attribute) and computed property [name]."
+    },
+    {
+      "title": "Select and Textarea",
+      "code": "import { useState } from 'react';\n\nfunction FeedbackForm() {\n  const [rating, setRating] = useState('5');\n  const [comment, setComment] = useState('');\n\n  return (\n    <form>\n      <select value={rating} onChange={e => setRating(e.target.value)}>\n        <option value=\"5\">5 - Excellent</option>\n        <option value=\"4\">4 - Good</option>\n        <option value=\"3\">3 - Average</option>\n      </select>\n\n      <textarea\n        value={comment}\n        onChange={e => setComment(e.target.value)}\n        placeholder=\"Your feedback...\"\n        rows={4}\n      />\n    </form>\n  );\n}",
+      "explanation": "In React, both select and textarea are controlled the same way as input — value prop and onChange handler."
+    }
+  ],
+  "exercises": [
+    {
+      "prompt": "Build a login form with email and password fields. Show a validation error if either is empty when submitted.",
+      "expectedOutcome": "A controlled form with validation on submit showing error messages."
+    },
+    {
+      "prompt": "Create a profile form with name, bio (textarea), and country (select). Show a live preview below the form.",
+      "expectedOutcome": "Multiple controlled inputs updating a live preview section in real-time."
+    }
+  ],
+  "quiz": [
+    {
+      "question": "What makes a form input a 'controlled component' in React?",
+      "options": ["Using a ref", "Binding value to state and using onChange to update it", "Using defaultValue", "Adding required attribute"],
+      "answer": 1,
+      "explanation": "A controlled component has its value driven by React state and updates via the onChange event handler."
+    },
+    {
+      "question": "What happens if you set value on an input but do not provide an onChange handler?",
+      "options": ["It works normally", "It becomes read-only and cannot be typed in", "React throws an error immediately", "The value clears on every render"],
+      "answer": 1,
+      "explanation": "Without onChange, the input is locked to the state value and the user cannot type. React will warn you about this."
+    },
+    {
+      "question": "How do you handle multiple form inputs with one onChange function?",
+      "options": ["Use separate functions for each", "Use e.target.name with a state object", "Use refs", "Use form IDs"],
+      "answer": 1,
+      "explanation": "Using e.target.name (matching the input's name attribute) with a computed property update allows one handler for all inputs."
+    }
+  ],
+  "summary": "Forms chapter complete! Aapne seekha controlled components kaise banate hain, multiple inputs ek handler se handle karna, aur form validation."
+}
