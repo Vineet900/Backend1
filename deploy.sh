@@ -1,25 +1,47 @@
 #!/bin/bash
 
-# DevSchool Pro - Automated Deployment Script
-echo "🚀 Initiating Deployment Sequence..."
+# ============================================
+# DevSchool Pro - Docker Deployment Script
+# Run this on your AWS EC2 instance
+# ============================================
 
-# 1. Pull latest changes
-echo "📥 Pulling latest code..."
+set -e
+
+echo "🚀 DevSchool Pro - Docker Deployment"
+echo "====================================="
+
+# 1. Pull latest code
+echo ""
+echo "📥 Step 1: Pulling latest code from GitHub..."
 git pull origin main
 
-# 2. Build and restart backend
-echo "⚙️  Building Backend..."
-cd backend
-npm install
-# npx prisma migrate deploy # Uncomment if using Prisma migrations
-pm2 restart devschool-backend || pm2 start src/server.js --name devschool-backend
+# 2. Stop existing containers (if any)
+echo ""
+echo "🛑 Step 2: Stopping existing containers..."
+docker compose down 2>/dev/null || docker-compose down 2>/dev/null || true
 
-# 3. Build and deploy frontend
-echo "🎨 Building Frontend..."
-cd ../frontend
-npm install
-npm run build
-# Assumes serving via Nginx or similar
-# sudo cp -r dist/* /var/www/devschool/
+# 3. Build and start containers
+echo ""
+echo "🔨 Step 3: Building Docker images..."
+docker compose build --no-cache 2>/dev/null || docker-compose build --no-cache
 
-echo "✅ Deployment Successful!"
+echo ""
+echo "🚀 Step 4: Starting containers..."
+docker compose up -d 2>/dev/null || docker-compose up -d
+
+# 4. Show status
+echo ""
+echo "📊 Step 5: Container Status:"
+docker compose ps 2>/dev/null || docker-compose ps
+
+echo ""
+echo "✅ Deployment Complete!"
+echo ""
+echo "🌐 Frontend:  http://$(curl -s ifconfig.me 2>/dev/null || echo 'YOUR_EC2_IP'):80"
+echo "🔧 Backend:   http://$(curl -s ifconfig.me 2>/dev/null || echo 'YOUR_EC2_IP'):4000"
+echo ""
+echo "📋 Useful commands:"
+echo "   docker compose logs -f backend    # Backend logs"
+echo "   docker compose logs -f frontend   # Frontend logs"
+echo "   docker compose restart             # Restart all"
+echo "   docker compose down                # Stop all"
